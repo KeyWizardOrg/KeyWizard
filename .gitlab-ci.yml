@@ -1,23 +1,61 @@
-build-job:
+image: mcr.microsoft.com/dotnet/sdk:9.0
+
+variables:
+  SOLUTION_NAME: "MicrosoftKeyWizard"
+  BUILD_CONFIG: "Release"
+
+# simple caching for better performance
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - "**/obj/project.assets.json"
+    - "**/obj/*.csproj.nuget.*"
+
+stages:
+  - build
+  - test
+  - quality
+
+build:
   stage: build
   script:
-    - echo "Hello, $GITLAB_USER_LOGIN!"
+    - dotnet restore
+    - dotnet build --configuration $BUILD_CONFIG
+    - dotnet pack --configuration $BUILD_CONFIG --output packages/
+  artifacts:
+    paths:
+      - "**/bin"
+      - "**/obj"
+      - "packages/*.nupkg"
+    expire_in: 1 week
 
-test-job1:
+test:
   stage: test
   script:
-    - echo "This job tests something"
+    - dotnet tool install --global coverlet.console
+    - dotnet test --configuration $BUILD_CONFIG --collect:"XPlat Code Coverage"
+  coverage: '/Line coverage: \d+\.\d+%/'
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: "**/coverage.cobertura.xml"
 
-test-job2:
-  stage: test
+quality:
+  stage: quality
   script:
-    - echo "This job tests something, but takes more time than test-job1."
-    - echo "After the echo commands complete, it runs the sleep command for 20 seconds"
-    - echo "which simulates a test that runs 20 seconds longer than test-job1"
-    - sleep 20
-
-deploy-prod:
-  stage: deploy
-  script:
-    - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
-  environment: production
+    - dotnet format --verify-no-changes
+    - dotnet list package --vulnerable
+    - dotnet list package --outdated
+    - |
+      echo "## Quality Report" >> quality-report.md
+      echo "Last checked: $(date)" >> quality-report.md
+      echo "### Vulnerable Packages" >> quality-report.md
+      dotnet list package --vulnerable >> quality-report.md
+      echo "### Outdated Packages" >> quality-report.md
+      dotnet list package --outdated >> quality-report.md
+    - dotnet --info
+  artifacts:
+    paths:
+      - quality-report.md
+  allow_failure: true
