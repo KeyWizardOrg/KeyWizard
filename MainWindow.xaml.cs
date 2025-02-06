@@ -15,24 +15,26 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
-
 namespace Frontend_Button
 {
     /// <summary>
-    /// An empty window that can be used on its own or navigated to within a Frame.
+    /// Main Window of Key Wizard
     /// </summary>
     public sealed partial class MainWindow : Window
     {
-        private static SizeInt32 WINDOW_SIZE = new SizeInt32(500, 200);
         public MainWindow()
         {
             this.InitializeComponent();
             ExtendsContentIntoTitleBar = true;
-            this.AppWindow.Resize(WINDOW_SIZE);
-        }
 
+            ResourceDictionary gridResources = MainGrid.Resources;
+            if (gridResources.TryGetValue("WindowWidth", out var windowWidth) &&
+                gridResources.TryGetValue("WindowHeight", out var windowHeight))
+            {
+                this.AppWindow.Resize(new SizeInt32((int)windowWidth, (int)windowHeight));
+            }
+        }
+        
         private void myButton_Click(object sender, RoutedEventArgs e)
         {
             myButton.Content = "Clicked";

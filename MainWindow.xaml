@@ -7,23 +7,57 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Title="Frontend Button">
+    Title="Microsoft Key Wizard">
 
-    <Grid Margin="10">
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
-            <TextBox x:Name="searchTextBox" Header="Search Bar: " PlaceholderText="Enter action here"></TextBox>
-            <Button x:Name="myButton" Click="myButton_Click">Click Me</Button>
-            <ListView x:Name="shortcutsList" Margin="5,5,5,5" Visibility="Collapsed">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding}"/>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-                <ListView.Items>
-                    <x:String>Action 1: Shortcut 1</x:String>
-                    <ListViewItem>Action 2: Shortcut 2</ListViewItem>
-                </ListView.Items>
-            </ListView>
-        </StackPanel>
+    <Grid x:Name="MainGrid" HorizontalAlignment="Stretch" Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid.Resources>
+            <!-- Define Window Dimensions -->
+            <x:Int32 x:Key="WindowWidth">500</x:Int32>
+            <x:Int32 x:Key="WindowHeight">200</x:Int32>
+        </Grid.Resources>
+
+        <Grid Grid.Row="0" HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <!-- 75% -->
+                <ColumnDefinition Width="1*"/>
+                <!-- 25% -->
+            </Grid.ColumnDefinitions>
+
+            <TextBox x:Name="searchTextBox"
+                    Grid.Column="0"
+                    Header="Search Bar: "
+                    PlaceholderText="Enter action here"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center"
+                    Margin="0,0,5,0"/>
+
+            <Button x:Name="myButton"
+                   Grid.Column="1"
+                   Content="Search"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Center"
+                   Click="myButton_Click"/>
+        </Grid>
+
+        <ListView Grid.Row="1"
+                 x:Name="shortcutsList"
+                 Visibility="Collapsed"
+                 Margin="5,5,5,5">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.Items>
+                <ListViewItem>Action 1: Shortcut 1</ListViewItem>
+                <ListViewItem>Action 2: Shortcut 2</ListViewItem>
+            </ListView.Items>
+        </ListView>
     </Grid>
 </Window>
