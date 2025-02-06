@@ -45,19 +45,25 @@
                    Click="myButton_Click"/>
         </Grid>
 
-        <ListView Grid.Row="1"
-                 x:Name="shortcutsList"
-                 Visibility="Collapsed"
-                 Margin="5,5,5,5">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding}"/>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-            <ListView.Items>
-                <ListViewItem>Action 1: Shortcut 1</ListViewItem>
-                <ListViewItem>Action 2: Shortcut 2</ListViewItem>
-            </ListView.Items>
-        </ListView>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <ListView x:Name="shortcutsList"
+                      Margin="5"
+                      Visibility="Collapsed">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" Padding="8"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+                <ListView.Items>
+                    <x:String>Action 1: Shortcut 1</x:String>
+                    <x:String>Action 2: Shortcut 2</x:String>
+                    <x:String>Action 3: Shortcut 3</x:String>
+                    <x:String>Action 4: Shortcut 4</x:String>
+                    <x:String>Action 5: Shortcut 5</x:String>
+                    <x:String>Action 6: Shortcut 6</x:String>
+                </ListView.Items>
+            </ListView>
+        </ScrollViewer>
     </Grid>
 </Window>

@@ -37,8 +37,8 @@ namespace Key_Wizard
         
         private void myButton_Click(object sender, RoutedEventArgs e)
         {
-            myButton.Content = "Clicked";
             shortcutsList.Visibility = Visibility.Visible;
+            myButton.Content = "Clicked";
         }
     }
 }
