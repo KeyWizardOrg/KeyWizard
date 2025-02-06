@@ -1,9 +1,9 @@
 {
   "profiles": {
-    "Frontend Button (Package)": {
+    "Key Wizard (Package)": {
       "commandName": "MsixPackage"
     },
-    "Frontend Button (Unpackaged)": {
+    "Key Wizard (Unpackaged)": {
       "commandName": "Project"
     }
   }

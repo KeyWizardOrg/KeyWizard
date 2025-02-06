@@ -15,7 +15,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics;
 
-namespace Frontend_Button
+namespace Key_Wizard
 {
     /// <summary>
     /// Main Window of Key Wizard
