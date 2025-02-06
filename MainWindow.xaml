@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="Key_Wizard.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Key_Wizard"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Microsoft Key Wizard">
+
+    <Grid x:Name="MainGrid" HorizontalAlignment="Stretch" Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid.Resources>
+            <!-- Define Window Dimensions -->
+            <x:Int32 x:Key="WindowWidth">500</x:Int32>
+            <x:Int32 x:Key="WindowHeight">200</x:Int32>
+        </Grid.Resources>
+
+        <Grid Grid.Row="0" HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <!-- 75% -->
+                <ColumnDefinition Width="1*"/>
+                <!-- 25% -->
+            </Grid.ColumnDefinitions>
+
+            <TextBox x:Name="searchTextBox"
+                    Grid.Column="0"
+                    Header="Search Bar: "
+                    PlaceholderText="Enter action here"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center"
+                    Margin="0,0,5,0"/>
+
+            <Button x:Name="myButton"
+                   Grid.Column="1"
+                   Content="Search"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Center"
+                   Click="myButton_Click"/>
+        </Grid>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <ListView x:Name="shortcutsList"
+                      Margin="5"
+                      Visibility="Collapsed">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" Padding="8"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+                <ListView.Items>
+                    <x:String>Action 1: Shortcut 1</x:String>
+                    <x:String>Action 2: Shortcut 2</x:String>
+                    <x:String>Action 3: Shortcut 3</x:String>
+                    <x:String>Action 4: Shortcut 4</x:String>
+                    <x:String>Action 5: Shortcut 5</x:String>
+                    <x:String>Action 6: Shortcut 6</x:String>
+                </ListView.Items>
+            </ListView>
+        </ScrollViewer>
+    </Grid>
+</Window>
