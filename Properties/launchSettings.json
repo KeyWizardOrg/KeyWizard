@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Frontend Button (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Frontend Button (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
