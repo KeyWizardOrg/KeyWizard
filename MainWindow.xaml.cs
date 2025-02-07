@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -27,12 +28,27 @@ namespace Key_Wizard
             this.InitializeComponent();
             ExtendsContentIntoTitleBar = true;
 
-            ResourceDictionary gridResources = MainGrid.Resources;
-            if (gridResources.TryGetValue("WindowWidth", out var windowWidth) &&
-                gridResources.TryGetValue("WindowHeight", out var windowHeight))
-            {
-                this.AppWindow.Resize(new SizeInt32((int)windowWidth, (int)windowHeight));
-            }
+            this.AppWindow.MoveAndResize(GetWindowSizeAndPos(0.3, 0.25));
+        }
+
+        private RectInt32 GetWindowSizeAndPos(double widthPercentage, double heightPercentage)
+        {
+            // Get the window handle
+            var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
+            var windowId = Win32Interop.GetWindowIdFromWindow(hWnd);
+
+            // Get the display area (screen resolution)
+            var displayArea = DisplayArea.GetFromWindowId(windowId, DisplayAreaFallback.Primary);
+            var workArea = displayArea.WorkArea;
+
+            // Calculate the window size based on the percentage
+            int windowWidth = (int)(workArea.Width * widthPercentage);
+            int windowHeight = (int)(workArea.Height * heightPercentage);
+
+            // Calculate the window position to center it on the screen
+            int windowX = (workArea.Width - windowWidth) / 2;
+            int windowY = (workArea.Height - windowHeight) / 2;
+            return new RectInt32(windowX, windowY, windowWidth, windowHeight);
         }
         
         private void myButton_Click(object sender, RoutedEventArgs e)

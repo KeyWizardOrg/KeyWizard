@@ -9,7 +9,7 @@
     mc:Ignorable="d"
     Title="Microsoft Key Wizard">
 
-    <Grid x:Name="MainGrid" HorizontalAlignment="Stretch" Margin="10">
+    <Grid x:Name="MainGrid" HorizontalAlignment="Stretch" Margin="10" TabFocusNavigation="Cycle">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
@@ -48,7 +48,8 @@
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
             <ListView x:Name="shortcutsList"
                       Margin="5"
-                      Visibility="Collapsed">
+                      Visibility="Collapsed"
+                      XYFocusKeyboardNavigation="Enabled">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding}" Padding="8"/>
