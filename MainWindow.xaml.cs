@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -55,6 +56,7 @@ namespace Key_Wizard
         {
             shortcutsList.Visibility = Visibility.Visible;
             myButton.Content = "Clicked";
+            Process.Start("explorer.exe", "shell:::{2559a1f3-21d7-11d4-bdaf-00c04f60b9f0}");
         }
     }
 }
