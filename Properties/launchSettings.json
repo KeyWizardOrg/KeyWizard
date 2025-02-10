@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Key Wizard (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Key Wizard (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
