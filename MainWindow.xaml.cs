@@ -23,6 +23,7 @@ namespace Key_Wizard
 {
     /// <summary>
     /// Main Window of Key Wizard
+    /// ...
     /// </summary>
     public sealed partial class MainWindow : Window
     {
@@ -32,6 +33,7 @@ namespace Key_Wizard
 
         [DllImport("user32.dll")]
         static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, IntPtr dwExtraInfo);
+
 
         private const int VK_TAB = 0x09;
         private const int VK_MENU = 0x12; // Alt key
