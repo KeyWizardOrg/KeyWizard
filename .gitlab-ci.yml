@@ -19,13 +19,11 @@ stages:
 
 .setup-dotnet:
   before_script:
-    - wget https://dot.net/v1/dotnet-install.sh
-    - chmod +x dotnet-install.sh
-    - ./dotnet-install.sh --version 8.0.100 --install-dir "$HOME/.dotnet"
-    - export PATH="$HOME/.dotnet:$PATH"
-    - export DOTNET_ROOT="$HOME/.dotnet"
-    #avoiding have to use sudo/root priv
-    - export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
+    - Invoke-WebRequest -Uri "https://dot.net/v1/dotnet-install.ps1" -OutFile "dotnet-install.ps1"
+    - .\dotnet-install.ps1 -Version 8.0.100 -InstallDir "$HOME\.dotnet"
+    - $env:PATH = "$HOME\.dotnet;" + $env:PATH
+    - $env:DOTNET_ROOT = "$HOME\.dotnet"
+    - $env:DOTNET_SYSTEM_GLOBALIZATION_INVARIANT = "1"
 
 build:
   stage: build
