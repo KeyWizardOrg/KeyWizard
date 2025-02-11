@@ -1,10 +1,11 @@
-image: mcr.microsoft.com/dotnet/sdk:9.0
-
 variables:
   SOLUTION_NAME: "MicrosoftKeyWizard"
   BUILD_CONFIG: "Release"
 
-# simple caching for better performance
+default:
+  tags:
+    - shared  
+
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
@@ -16,8 +17,17 @@ stages:
   - test
   - quality
 
+.setup-dotnet:
+  before_script:
+    - wget https://dot.net/v1/dotnet-install.sh
+    - chmod +x dotnet-install.sh
+    - ./dotnet-install.sh --version 8.0.100
+    - export PATH="$HOME/.dotnet:$PATH"
+    - export DOTNET_ROOT="$HOME/.dotnet"
+
 build:
   stage: build
+  extends: .setup-dotnet
   script:
     - dotnet restore
     - dotnet build --configuration $BUILD_CONFIG
@@ -31,6 +41,7 @@ build:
 
 test:
   stage: test
+  extends: .setup-dotnet
   script:
     - dotnet tool install --global coverlet.console
     - dotnet test --configuration $BUILD_CONFIG --collect:"XPlat Code Coverage"
@@ -43,6 +54,7 @@ test:
 
 quality:
   stage: quality
+  extends: .setup-dotnet
   script:
     - dotnet format --verify-no-changes
     - dotnet list package --vulnerable
