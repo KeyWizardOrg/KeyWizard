@@ -4,7 +4,7 @@ variables:
 
 default:
   tags:
-    - shared
+    - local
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}
