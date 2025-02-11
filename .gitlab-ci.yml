@@ -24,8 +24,8 @@ build:
     - dotnet clean
     - dotnet restore
     - dotnet build --configuration $BUILD_CONFIG -p:Platform=x64
-    - mkdir packages # Create the packages directory
-    - dotnet pack --configuration $BUILD_CONFIG --output packages/
+    - mkdir packages
+    # dotnet pack --configuration $BUILD_CONFIG --output packages/
   artifacts:
     paths:
       - "**/bin"
