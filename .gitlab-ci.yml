@@ -48,7 +48,7 @@ test:
 quality:
   stage: quality
   script:
-    - dotnet format --verify-no-changes
+    - dotnet format --verify-no-changes "Microsoft Key Wizard.sln" 
     - dotnet list package --vulnerable
     - dotnet list package --outdated
     - |
