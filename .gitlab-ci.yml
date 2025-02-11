@@ -17,20 +17,14 @@ stages:
   - test
   - quality
 
-.setup-dotnet:
-  before_script:
-    - Invoke-WebRequest -Uri "https://dot.net/v1/dotnet-install.ps1" -OutFile "dotnet-install.ps1"
-    - .\dotnet-install.ps1 -Version 8.0.100 -InstallDir "$HOME\.dotnet"
-    - $env:PATH = "$HOME\.dotnet;" + $env:PATH
-    - $env:DOTNET_ROOT = "$HOME\.dotnet"
-    - $env:DOTNET_SYSTEM_GLOBALIZATION_INVARIANT = "1"
-
 build:
   stage: build
-  extends: .setup-dotnet
   script:
+    - dotnet --version
+    - dotnet clean
     - dotnet restore
     - dotnet build --configuration $BUILD_CONFIG
+    - mkdir packages # Create the packages directory
     - dotnet pack --configuration $BUILD_CONFIG --output packages/
   artifacts:
     paths:
@@ -41,7 +35,6 @@ build:
 
 test:
   stage: test
-  extends: .setup-dotnet
   script:
     - dotnet tool install --global coverlet.console
     - dotnet test --configuration $BUILD_CONFIG --collect:"XPlat Code Coverage"
@@ -54,7 +47,6 @@ test:
 
 quality:
   stage: quality
-  extends: .setup-dotnet
   script:
     - dotnet format --verify-no-changes
     - dotnet list package --vulnerable
