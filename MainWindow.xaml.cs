@@ -54,6 +54,8 @@ namespace Key_Wizard
             {"Open the Settings App", settings }
             };
             AllocConsole();
+            shortcutsList.Items.Clear();
+            shortcutsList.Items.Add("Test Test");
         }
 
         private RectInt32 GetWindowSizeAndPos(double widthPercentage, double heightPercentage)
@@ -113,6 +115,12 @@ namespace Key_Wizard
         public void settings()
         {
             Process.Start("explorer.exe", "ms-settings:");
+        }
+
+        private void shortcutsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedItem = shortcutsList.SelectedItem as string;
+            System.Diagnostics.Debug.WriteLine(selectedItem);
         }
     }
 }

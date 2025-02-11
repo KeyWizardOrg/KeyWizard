@@ -15,12 +15,6 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Grid.Resources>
-            <!-- Define Window Dimensions -->
-            <x:Int32 x:Key="WindowWidth">500</x:Int32>
-            <x:Int32 x:Key="WindowHeight">200</x:Int32>
-        </Grid.Resources>
-
         <Grid Grid.Row="0" HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"/>
@@ -49,7 +43,8 @@
             <ListView x:Name="shortcutsList"
                       Margin="5"
                       Visibility="Collapsed"
-                      XYFocusKeyboardNavigation="Enabled">
+                      XYFocusKeyboardNavigation="Enabled"
+                      SelectionChanged="shortcutsList_SelectionChanged">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding}" Padding="8"/>
