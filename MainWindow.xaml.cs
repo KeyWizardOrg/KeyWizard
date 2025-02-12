@@ -54,6 +54,7 @@ namespace Key_Wizard
             {"Open the Settings App", settings }
             };
             AllocConsole();
+            CreateDictionary.initList();
         }
 
         private RectInt32 GetWindowSizeAndPos(double widthPercentage, double heightPercentage)
