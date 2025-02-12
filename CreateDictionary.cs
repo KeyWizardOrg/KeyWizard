@@ -1,22 +1,20 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace Key_Wizard
 {
     internal class CreateDictionary
     {
-        public static void initList()
+        public static Dictionary<string, Dictionary<string, string>> InitList()
         {
             string xmlFilePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App.config");
 
             if (!System.IO.File.Exists(xmlFilePath))
             {
                 Console.WriteLine($"Error: {xmlFilePath} not found");
-                return;
+                return null;
             }
 
             XDocument doc = XDocument.Load(xmlFilePath);
@@ -36,16 +34,7 @@ namespace Key_Wizard
                 sections[sectionName] = keyActions;
             }
 
-            //Loop to test, can print sections alone or with keyValue pairs
-            //foreach (var section in sections)
-            //{
-            //    Console.WriteLine($"Section: {section.Key}");
-            //    foreach (var keyAction in section.Value)
-            //    {
-            //        Console.WriteLine($"  {keyAction.Key} : {keyAction.Value}");
-            //    }
-            //}
+            return sections;
         }
-
     }
 }
