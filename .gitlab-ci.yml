@@ -1,10 +1,11 @@
-image: mcr.microsoft.com/dotnet/sdk:9.0
-
 variables:
   SOLUTION_NAME: "MicrosoftKeyWizard"
   BUILD_CONFIG: "Release"
 
-# simple caching for better performance
+default:
+  tags:
+    - local
+
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
@@ -19,9 +20,10 @@ stages:
 build:
   stage: build
   script:
+    - dotnet --version
+    - dotnet clean
     - dotnet restore
     - dotnet build --configuration $BUILD_CONFIG
-    - dotnet pack --configuration $BUILD_CONFIG --output packages/
   artifacts:
     paths:
       - "**/bin"
