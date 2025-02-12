@@ -12,6 +12,7 @@
     <EnableMsixTooling>true</EnableMsixTooling>
     <Nullable>enable</Nullable>
 	<ValidateExecutableReferencesMatchSelfContained>false</ValidateExecutableReferencesMatchSelfContained>
+	<IsPublishable>false</IsPublishable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -63,9 +64,11 @@
   </PropertyGroup>
 
   <!-- Publish Properties -->
+  <!--
   <PropertyGroup>
     <PublishReadyToRun Condition="'$(Configuration)' == 'Debug'">False</PublishReadyToRun>
     <PublishReadyToRun Condition="'$(Configuration)' != 'Debug'">True</PublishReadyToRun>
     <PublishTrimmed>False</PublishTrimmed>
   </PropertyGroup>
+  -->
 </Project>
