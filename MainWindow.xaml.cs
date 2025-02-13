@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -61,6 +62,8 @@ namespace Key_Wizard
             };
 
             AllocConsole();
+            var KeyValuePairs = new Dictionary<string, CreateSections>();
+            KeyValuePairs = CreateDictionary.InitList();
         }
 
         private RectInt32 GetWindowSizeAndPos(double widthPercentage, double heightPercentage)
@@ -109,7 +112,7 @@ namespace Key_Wizard
             // Populate the ListView with the key-action pairs
             foreach (var section in sections)
             {
-                foreach (var keyAction in section.Value)
+                foreach (var keyAction in section.Value.Data)
                 {
                     shortcutsList.Items.Add($"{keyAction.Key}: {keyAction.Value}");
                 }
