@@ -17,23 +17,13 @@ stages:
   - test
   - quality
 
-.setup-dotnet:
-  before_script:
-    - wget https://dot.net/v1/dotnet-install.sh
-    - chmod +x dotnet-install.sh
-    - ./dotnet-install.sh --version 8.0.100 --install-dir "$HOME/.dotnet"
-    - export PATH="$HOME/.dotnet:$PATH"
-    - export DOTNET_ROOT="$HOME/.dotnet"
-    #avoiding have to use sudo/root priv
-    - export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
-
 build:
   stage: build
-  extends: .setup-dotnet
   script:
+    - dotnet --version
+    - dotnet clean
     - dotnet restore
     - dotnet build --configuration $BUILD_CONFIG
-    - dotnet pack --configuration $BUILD_CONFIG --output packages/
   artifacts:
     paths:
       - "**/bin"
@@ -43,7 +33,6 @@ build:
 
 test:
   stage: test
-  extends: .setup-dotnet
   script:
     - dotnet tool install --global coverlet.console
     - dotnet test --configuration $BUILD_CONFIG --collect:"XPlat Code Coverage"
@@ -56,7 +45,6 @@ test:
 
 quality:
   stage: quality
-  extends: .setup-dotnet
   script:
     - dotnet format --verify-no-changes
     - dotnet list package --vulnerable
