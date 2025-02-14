@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Microsoft.UI;
@@ -12,9 +13,23 @@ using WinRT.Interop;
 
 namespace Key_Wizard
 {
+    public class ListItem
+    {
+        public string Prefix { get; set; }  // Bold part
+        public string Suffix { get; set; }  // Normal part
+    }
+
+    public class Section
+    {
+        public string Name { get; set; }
+        public ObservableCollection<ListItem> Items { get; set; }
+    }
     public sealed partial class MainWindow : Window
     {
-        public Dictionary<string, Action> actions;
+        private const Double MAX_HEIGHT = 0.3;
+        private const Double MAX_WIDTH = 0.4;
+        private Dictionary<string, Action> actions;
+        private Dictionary<string, CreateSections> shortcutDictionary;
 
         [DllImport("kernel32.dll")]
         static extern bool AllocConsole();
@@ -62,8 +77,8 @@ namespace Key_Wizard
             };
 
             AllocConsole();
-            var KeyValuePairs = new Dictionary<string, CreateSections>();
-            KeyValuePairs = CreateDictionary.InitList();
+            shortcutDictionary = new Dictionary<string, CreateSections>();
+            shortcutDictionary = CreateDictionary.InitList();
         }
 
         private RectInt32 GetWindowSizeAndPos(double widthPercentage, double heightPercentage)
@@ -81,42 +96,33 @@ namespace Key_Wizard
 
             return new RectInt32(windowX, windowY, windowWidth, windowHeight);
         }
-
-        private void myButton_Click(object sender, RoutedEventArgs e)
+        private void AdjustWindowToContent()
         {
-            shortcutsList.Visibility = Visibility.Visible;
-            myButton.Content = "Clicked";
+            // Force UI update
+            MainGrid.UpdateLayout();
 
-            var hWnd = WindowNative.GetWindowHandle(this);
-            var windowId = Win32Interop.GetWindowIdFromWindow(hWnd);
-            var appWindow = AppWindow.GetFromWindowId(windowId);
+            // Calculate total content size
+            int contentWidth = this.AppWindow.Size.Width;
+            int contentHeight = (int)(shortcutsList.ActualHeight + shortcutsList.Margin.Top + shortcutsList.Margin.Bottom +
+                                searchTextBox.ActualHeight + searchTextBox.Margin.Top + searchTextBox.Margin.Bottom +
+                                MainGrid.Margin.Top + MainGrid.Margin.Bottom);
 
-            if (appWindow != null)
-            {
-                // Get the current window size
-                var currentSize = appWindow.Size;
+            // Get display information
+            var workArea = DisplayArea.Primary.WorkArea;
 
-                // triple the height of the window
-                var newHeight = currentSize.Height * 3;
+            // Ensure window doesn't exceed screen bounds
+            var maxWidth = workArea.Width * MAX_WIDTH; // 10px margin on each side
+            var maxHeight = workArea.Height * MAX_HEIGHT;
 
-                // Resize the window
-                appWindow.Resize(new Windows.Graphics.SizeInt32(currentSize.Width, newHeight));
-            }
+            contentWidth = (int)Math.Min(contentWidth, maxWidth);
+            contentHeight = (int)Math.Min(contentHeight, maxHeight);
 
-            // Load the XML data
-            var sections = CreateDictionary.InitList();
-
-            // Clear the existing items in the ListView
-            shortcutsList.Items.Clear();
-
-            // Populate the ListView with the key-action pairs
-            foreach (var section in sections)
-            {
-                foreach (var keyAction in section.Value.Data)
-                {
-                    shortcutsList.Items.Add($"{keyAction.Key}: {keyAction.Value}");
-                }
-            }
+            this.AppWindow.MoveAndResize(new RectInt32(
+                (workArea.Width - contentWidth) / 2,
+                (workArea.Height - contentHeight) / 2,
+                contentWidth,
+                contentHeight
+            ));
         }
 
         public void runDialog()
@@ -145,10 +151,30 @@ namespace Key_Wizard
             Process.Start("explorer.exe", "ms-settings:");
         }
 
-        private void shortcutsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var selectedItem = shortcutsList.SelectedItem as string;
-            System.Diagnostics.Debug.WriteLine(selectedItem);
+            shortcutsList.Visibility = Visibility.Visible;
+
+            ObservableCollection<Section> sections = new ObservableCollection<Section>();
+
+            // Populate the ListView with the key-action pairs
+            foreach (var section in shortcutDictionary)
+            {
+                ObservableCollection<ListItem> items = new ObservableCollection<ListItem>();
+
+                foreach (var keyAction in section.Value.Data)
+                {
+                    ListItem newItem = new ListItem { Prefix = $"{keyAction.Key}: ", Suffix = $"{keyAction.Value}" };
+                    items.Add(newItem);
+                }
+
+                sections.Add(new Section { Name = section.Key, Items = items });
+            }
+
+            shortcutsList.ItemsSource = sections;
+
+            // Resize the window
+            AdjustWindowToContent();
         }
     }
 }
