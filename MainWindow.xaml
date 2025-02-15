@@ -43,10 +43,13 @@
 
                             <!-- Section Items List -->
                             <ListView ItemsSource="{x:Bind Items}"
-                                      SelectionMode="Single">
+                                      SelectionMode="Single"
+                                      KeyDown="ListView_KeyDown"
+                                      IsItemClickEnabled="True"
+                                      ItemClick="ListView_ItemClick">
                                 <ListView.ItemTemplate>
                                     <DataTemplate x:DataType="local:ListItem">
-                                        <TextBlock Margin="10,5">
+                                        <TextBlock Margin="10,5" >
                                             <Run Text="{x:Bind Prefix}" FontWeight="Bold"/>
                                             <Run Text="{x:Bind Suffix}"/>
                                         </TextBlock>
