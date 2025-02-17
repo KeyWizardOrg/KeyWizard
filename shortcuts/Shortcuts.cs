@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Key_Wizard.shortcuts
 {
-    internal class Shortcuts
+    public class Shortcuts
     {
 
         [DllImport("user32.dll")]
@@ -19,9 +19,10 @@ namespace Key_Wizard.shortcuts
         private const int KEYEVENTF_KEYUP = 0x0002;
 
         // Opens Run dialog
-        public static void windowsKeyR()
+        public static int windowsKeyR()
         {
-            Process.Start("explorer.exe", "shell:::{2559a1f3-21d7-11d4-bdaf-00c04f60b9f0}");
+            var process = Process.Start("explorer.exe", "shell:::{2559a1f3-21d7-11d4-bdaf-00c04f60b9f0}");
+            return process.Id;
         }
 
         // Switches to previous window
@@ -43,9 +44,10 @@ namespace Key_Wizard.shortcuts
         }
 
         // Opens the Settings menu
-        public static void windowsKeyI()
+        public static int windowsKeyI()
         {
-            Process.Start("explorer.exe", "ms-settings:");
+            var process = Process.Start("explorer.exe", "ms-settings:");
+            return process.Id;
         }
     }
 }
