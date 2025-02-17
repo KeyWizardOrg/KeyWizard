@@ -124,6 +124,12 @@ namespace Key_Wizard
 
             ObservableCollection<Section> sections = new ObservableCollection<Section>();
 
+            string searchQuery = searchTextBox.Text;
+
+            List<ListItem> searchList = new List<ListItem>();
+
+            ObservableCollection<Section> display = new ObservableCollection<Section>();
+
             // Populate the ListView with the key-action pairs
             foreach (var section in shortcutDictionary)
             {
@@ -133,12 +139,21 @@ namespace Key_Wizard
                 {
                     ListItem newItem = new ListItem { Prefix = $"{keyAction.Key}: ", Suffix = $"{keyAction.Value.action}", Action = $"{keyAction.Value.function}" };
                     items.Add(newItem);
+                    searchList.Add(newItem);
                 }
 
                 sections.Add(new Section { Name = section.Key, Items = items });
             }
-
-            shortcutsList.ItemsSource = sections;
+            List<ListItem> results = Search(searchList, searchQuery);
+            if (string.IsNullOrWhiteSpace(searchQuery))
+            {
+                shortcutsList.ItemsSource = sections;
+            }
+            else
+            {
+                display.Add(new Section { Name = "Search Results", Items = new ObservableCollection<ListItem>(results) });
+                shortcutsList.ItemsSource = display;
+            }
 
             // Resize the window
             AdjustWindowToContent();
@@ -174,6 +189,18 @@ namespace Key_Wizard
             // errors during the demo. We will add some error handling once we have all the actions implemented.
         }
 
-        
+        private List<ListItem> Search(List<ListItem> items, string query)
+        {
+            List<ListItem> searchList = new List<ListItem>();
+            foreach (var item in items)
+            {
+                if (item.Prefix.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    item.Suffix.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    searchList.Add(item);
+                }
+            }
+            return searchList;
+        }
     }
 }
