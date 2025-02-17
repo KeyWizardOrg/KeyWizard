@@ -19,10 +19,9 @@ namespace Key_Wizard.shortcuts
         private const int KEYEVENTF_KEYUP = 0x0002;
 
         // Opens Run dialog
-        public static int windowsKeyR()
+        public static void windowsKeyR()
         {
-            var process = Process.Start("explorer.exe", "shell:::{2559a1f3-21d7-11d4-bdaf-00c04f60b9f0}");
-            return process.Id;
+            Process.Start("explorer.exe", "shell:::{2559a1f3-21d7-11d4-bdaf-00c04f60b9f0}");
         }
 
         // Switches to previous window
@@ -44,10 +43,9 @@ namespace Key_Wizard.shortcuts
         }
 
         // Opens the Settings menu
-        public static int windowsKeyI()
+        public static void windowsKeyI()
         {
-            var process = Process.Start("explorer.exe", "ms-settings:");
-            return process.Id;
+            Process.Start("explorer.exe", "ms-settings:");
         }
     }
 }
