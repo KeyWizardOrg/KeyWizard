@@ -30,7 +30,8 @@
                       Margin="5"
                       Visibility="Collapsed"
                       SelectionMode="None"
-                      XYFocusKeyboardNavigation="Enabled">
+                      XYFocusKeyboardNavigation="Enabled"
+                      SizeChanged="shortcutsList_SizeChanged">
 
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="local:Section">
