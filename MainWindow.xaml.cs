@@ -156,7 +156,7 @@ namespace Key_Wizard
             }
 
             // Resize the window
-            AdjustWindowToContent();
+            //AdjustWindowToContent();
         }
 
         private void ListView_KeyDown(object sender, KeyRoutedEventArgs e)
@@ -201,6 +201,34 @@ namespace Key_Wizard
                 }
             }
             return searchList;
+        }
+
+        private void shortcutsList_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            // Force UI update
+            MainGrid.UpdateLayout();
+
+            // Calculate total content size
+            int contentWidth = this.AppWindow.Size.Width;
+            int contentHeight = (int)(searchTextBox.ActualHeight + searchTextBox.Margin.Top + searchTextBox.Margin.Bottom +
+                                      MainGrid.Margin.Top + MainGrid.Margin.Bottom + e.NewSize.Height);
+
+            // Get display information
+            var workArea = DisplayArea.Primary.WorkArea;
+
+            // Ensure window doesn't exceed screen bounds
+            var maxWidth = workArea.Width * MAX_WIDTH; // 10px margin on each side
+            var maxHeight = workArea.Height * MAX_HEIGHT;
+
+            contentWidth = (int)Math.Min(contentWidth, maxWidth);
+            contentHeight = (int)Math.Min(contentHeight, maxHeight);
+
+            this.AppWindow.MoveAndResize(new RectInt32(
+                (workArea.Width - contentWidth) / 2,
+                (workArea.Height - contentHeight) / 2,
+                contentWidth,
+                contentHeight
+            ));
         }
     }
 }
