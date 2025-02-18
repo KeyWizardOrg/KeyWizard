@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
+using Key_Wizard.search;
 using Key_Wizard.shortcuts;
 using Key_Wizard.startup;
 using Microsoft.UI;
@@ -22,7 +24,6 @@ namespace Key_Wizard
     {
         public string Prefix { get; set; }  // Bold part
         public string Suffix { get; set; }  // Normal part
-
         public string Action { get; set; }  // Function to be triggered on click
     }
 
@@ -89,43 +90,12 @@ namespace Key_Wizard
 
             return new RectInt32(windowX, windowY, windowWidth, windowHeight);
         }
-        private void AdjustWindowToContent()
-        {
-            // Force UI update
-            MainGrid.UpdateLayout();
-
-            // Calculate total content size
-            int contentWidth = this.AppWindow.Size.Width;
-            int contentHeight = (int)(shortcutsList.ActualHeight + shortcutsList.Margin.Top + shortcutsList.Margin.Bottom +
-                                searchTextBox.ActualHeight + searchTextBox.Margin.Top + searchTextBox.Margin.Bottom +
-                                MainGrid.Margin.Top + MainGrid.Margin.Bottom);
-
-            // Get display information
-            var workArea = DisplayArea.Primary.WorkArea;
-
-            // Ensure window doesn't exceed screen bounds
-            var maxWidth = workArea.Width * MAX_WIDTH; // 10px margin on each side
-            var maxHeight = workArea.Height * MAX_HEIGHT;
-
-            contentWidth = (int)Math.Min(contentWidth, maxWidth);
-            contentHeight = (int)Math.Min(contentHeight, maxHeight);
-
-            this.AppWindow.MoveAndResize(new RectInt32(
-                (workArea.Width - contentWidth) / 2,
-                (workArea.Height - contentHeight) / 2,
-                contentWidth,
-                contentHeight
-            ));
-        }
-
         private void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             shortcutsList.Visibility = Visibility.Visible;
 
             ObservableCollection<Section> sections = new ObservableCollection<Section>();
-
             string searchQuery = searchTextBox.Text;
-
             List<ListItem> searchList = new List<ListItem>();
 
             ObservableCollection<Section> display = new ObservableCollection<Section>();
@@ -144,7 +114,7 @@ namespace Key_Wizard
 
                 sections.Add(new Section { Name = section.Key, Items = items });
             }
-            List<ListItem> results = Search(searchList, searchQuery);
+            List<ListItem> results = Search.FuzzySearch(searchList, searchQuery);
             if (string.IsNullOrWhiteSpace(searchQuery))
             {
                 shortcutsList.ItemsSource = sections;
@@ -154,9 +124,6 @@ namespace Key_Wizard
                 display.Add(new Section { Name = "Search Results", Items = new ObservableCollection<ListItem>(results) });
                 shortcutsList.ItemsSource = display;
             }
-
-            // Resize the window
-            AdjustWindowToContent();
         }
 
         private void ListView_KeyDown(object sender, KeyRoutedEventArgs e)
@@ -189,18 +156,32 @@ namespace Key_Wizard
             // errors during the demo. We will add some error handling once we have all the actions implemented.
         }
 
-        private List<ListItem> Search(List<ListItem> items, string query)
+        private void shortcutsList_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            List<ListItem> searchList = new List<ListItem>();
-            foreach (var item in items)
-            {
-                if (item.Prefix.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    item.Suffix.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0)
-                {
-                    searchList.Add(item);
-                }
-            }
-            return searchList;
+            // Force UI update
+            MainGrid.UpdateLayout();
+
+            // Calculate total content size
+            int contentWidth = this.AppWindow.Size.Width;
+            int contentHeight = (int)(searchTextBox.ActualHeight + searchTextBox.Margin.Top + searchTextBox.Margin.Bottom +
+                                      MainGrid.Margin.Top + MainGrid.Margin.Bottom + e.NewSize.Height);
+
+            // Get display information
+            var workArea = DisplayArea.Primary.WorkArea;
+
+            // Ensure window doesn't exceed screen bounds
+            var maxWidth = workArea.Width * MAX_WIDTH; // 10px margin on each side
+            var maxHeight = workArea.Height * MAX_HEIGHT;
+
+            contentWidth = (int)Math.Min(contentWidth, maxWidth);
+            contentHeight = (int)Math.Min(contentHeight, maxHeight);
+
+            this.AppWindow.MoveAndResize(new RectInt32(
+                (workArea.Width - contentWidth) / 2,
+                (workArea.Height - contentHeight) / 2,
+                contentWidth,
+                contentHeight
+            ));
         }
     }
 }
