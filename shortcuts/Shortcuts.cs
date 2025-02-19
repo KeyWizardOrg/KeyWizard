@@ -16,6 +16,8 @@ namespace Key_Wizard.shortcuts
 
         private const int VK_TAB = 0x09;
         private const int VK_MENU = 0x12; // Alt key
+        const byte VK_LSHIFT = 0xA0; // Left Shift key
+        const byte VK_CONTROL = 0x11;  // Ctrl key
         private const int KEYEVENTF_KEYUP = 0x0002;
 
         // Opens Run dialog
@@ -46,6 +48,17 @@ namespace Key_Wizard.shortcuts
         public static void windowsKeyI()
         {
             Process.Start("explorer.exe", "ms-settings:");
+        }
+        public static void ctrlAltTab()
+        {
+            keybd_event(VK_CONTROL, 0, 0, IntPtr.Zero);//Press ctrl
+            keybd_event(VK_MENU, 0, 0, IntPtr.Zero);// Press Shift
+            keybd_event(VK_TAB, 0, 0, IntPtr.Zero);//Press Tab
+
+            // Release 
+            keybd_event(VK_TAB, 0, KEYEVENTF_KEYUP, IntPtr.Zero);
+            keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, IntPtr.Zero);
+            keybd_event(VK_CONTROL, 0, KEYEVENTF_KEYUP, IntPtr.Zero);
         }
     }
 }
