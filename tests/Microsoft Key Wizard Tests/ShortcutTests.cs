@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Microsoft_Key_Wizard_Tests
 {
     [TestClass]
-    public class TestShortcuts
+    public class ShortcutTests
     {
         [TestMethod]
         public void TestWindowsKeyI()
