@@ -90,5 +90,53 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.ALT);
             Keys.Release(Keys.WIN);
         }
+        //Jan:<add key="Windows key + Alt + H" action="When voice typing is open, set the focus to the keyboard" function ="windowsKeyAltH"/>
+            //<add key = "Windows key + Alt + K" action="Mute or unmute the microphone in supported apps" function ="windowsKeyAltK"/>
+            //<add key = "Windows key + Alt + Up arrow" action="Snap the active window to the top half of the screen" function ="windowsKeyAltUp"/>
+            //<add key = "Windows key + comma (,)" action="Temporarily peek at the desktop" function ="windowsKeyComma"/>
+            //<add key = "Windows key + Ctrl + C" action="If turned on in settings, enable or disable color filters" function ="windowsKeyCtrlC"/> 
+        public static void windowsKeyAltH()
+        {
+            Keys.Press(Keys.WIN);
+            Keys.Press(Keys.ALT);
+            Keys.Press(Keys.H);
+            Keys.Release(Keys.H);
+            Keys.Release(Keys.ALT);
+            Keys.Release(Keys.WIN);
+        }
+        public static void windowsKeyAltK()
+        {
+            Keys.Press(Keys.WIN);
+            Keys.Press(Keys.ALT);
+            Keys.Press(Keys.K);
+            Keys.Release(Keys.K);
+            Keys.Release(Keys.ALT);
+            Keys.Release(Keys.WIN);
+        }
+        public static void windowsKeyAltUp()
+        {
+            Keys.Press(Keys.WIN);
+            Keys.Press(Keys.ALT);
+            Keys.Press(Keys.UP);
+            Keys.Release(Keys.UP);
+            Keys.Release(Keys.ALT);
+            Keys.Release(Keys.WIN);
+        }
+        public static void windowsKeyComma()
+        {
+            Keys.Press(Keys.WIN);
+            Keys.Press(Keys.COMMA);
+            Keys.Release(Keys.COMMA);
+            Keys.Release(Keys.WIN);
+        }
+        public static void windowsKeyCtrlC()
+        {
+            Keys.Press(Keys.WIN);
+            Keys.Press(Keys.CTRL);
+            Keys.Press(Keys.C);
+            Keys.Release(Keys.C);
+            Keys.Release(Keys.CTRL);
+            Keys.Release(Keys.WIN);
+        }
     }
 }
