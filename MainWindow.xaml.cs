@@ -69,7 +69,7 @@ namespace Key_Wizard
             this.ExtendsContentIntoTitleBar = true;
             this.SetTitleBar(null); // Set to null to remove the default title bar
 
-            this.AppWindow.MoveAndResize(GetWindowSizeAndPos(0.3, 0.06));
+            this.AppWindow.MoveAndResize(GetWindowSizeAndPos(0.3, 0.08));
 
             shortcutDictionary = new Dictionary<string, CreateSections>();
             shortcutDictionary = CreateDictionary.InitList();
@@ -144,16 +144,32 @@ namespace Key_Wizard
 
         private void TriggerAction(ListItem item)
         {
-            var methodInfo = typeof(Shortcuts).GetMethod(item.Action, System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
-
-            if (methodInfo != null)
+            try
             {
-                Action action = (Action)Delegate.CreateDelegate(typeof(Action), methodInfo);
-                action.Invoke();
-                this.Close();
+                // Get method that accepts MainWindow as parameter
+                var methodInfo = typeof(Shortcuts).GetMethod(item.Action,
+                    System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public,
+                    null, // use default binder
+                    new Type[] { typeof(MainWindow) }, // parameter types
+                    null);
+
+                if (methodInfo != null)
+                {
+                    // Create delegate with MainWindow parameter
+                    var action = (Action<MainWindow>)Delegate.CreateDelegate(
+                        typeof(Action<MainWindow>),
+                        methodInfo
+                    );
+
+                    // Pass current window instance
+                    action.Invoke(this);
+                    this.Close();
+                }
             }
-            // Right now there is no error handling for if the action doesn't exist as we do not want any
-            // errors during the demo. We will add some error handling once we have all the actions implemented.
+            catch (Exception ex)
+            {
+
+            }
         }
 
         private void shortcutsList_SizeChanged(object sender, SizeChangedEventArgs e)
