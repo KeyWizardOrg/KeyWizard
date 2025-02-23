@@ -10,55 +10,83 @@ namespace Key_Wizard.shortcuts
 {
     public class Shortcuts
     {
-
-        [DllImport("user32.dll")]
-        static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, IntPtr dwExtraInfo);
-
-        private const int VK_TAB = 0x09;
-        private const int VK_MENU = 0x12; // Alt key
-        const byte VK_LSHIFT = 0xA0; // Left Shift key
-        const byte VK_CONTROL = 0x11;  // Ctrl key
-        private const int KEYEVENTF_KEYUP = 0x0002;
-
-        // Opens Run dialog
         public static void windowsKeyR()
         {
             Process.Start("explorer.exe", "shell:::{2559a1f3-21d7-11d4-bdaf-00c04f60b9f0}");
         }
-
-        // Switches to previous window
-        public static void altTab()
-        {
-            keybd_event(VK_MENU, 0, 0, IntPtr.Zero);  // Press Alt
-            keybd_event(VK_TAB, 0, 0, IntPtr.Zero);   // Press Tab
-            keybd_event(VK_TAB, 0, KEYEVENTF_KEYUP, IntPtr.Zero);  // Release Tab
-            keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, IntPtr.Zero); // Release Alt
-        }
-
-        // Opens screenshot tool
-        public static void PrtSc()
-        {
-            keybd_event(0x5B, 0, 0, IntPtr.Zero);     // Windows key down
-            keybd_event(0x2C, 0, 0, IntPtr.Zero);     // Print Screen
-            keybd_event(0x2C, 0, KEYEVENTF_KEYUP, IntPtr.Zero);
-            keybd_event(0x5B, 0, KEYEVENTF_KEYUP, IntPtr.Zero);
-        }
-
-        // Opens the Settings menu
         public static void windowsKeyI()
         {
             Process.Start("explorer.exe", "ms-settings:");
         }
+
+        public static void altTab()
+        {
+            Keys.Press(Keys.ALT);
+            Keys.Press(Keys.TAB);
+            Keys.Release(Keys.TAB);
+            Keys.Release(Keys.ALT);
+        }
+
+        public static void PrtSc()
+        {
+            Keys.Press(Keys.WIN);
+            Keys.Press(Keys.PRTSCR);
+            Keys.Release(Keys.PRTSCR);
+            Keys.Release(Keys.WIN);
+        }
+       
         public static void ctrlAltTab()
         {
-            keybd_event(VK_CONTROL, 0, 0, IntPtr.Zero);//Press ctrl
-            keybd_event(VK_MENU, 0, 0, IntPtr.Zero);// Press Shift
-            keybd_event(VK_TAB, 0, 0, IntPtr.Zero);//Press Tab
+            Keys.Press(Keys.CTRL);
+            Keys.Press(Keys.ALT);
+            Keys.Press(Keys.TAB);
+            Keys.Release(Keys.TAB);
+            Keys.Release(Keys.ALT);
+            Keys.Release(Keys.CTRL);
+        }
 
-            // Release 
-            keybd_event(VK_TAB, 0, KEYEVENTF_KEYUP, IntPtr.Zero);
-            keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, IntPtr.Zero);
-            keybd_event(VK_CONTROL, 0, KEYEVENTF_KEYUP, IntPtr.Zero);
+        public static void windowsKey()
+        {
+            Keys.Press(Keys.WIN);
+            Keys.Release(Keys.WIN);
+        }
+
+        public static void windowsKeyA()
+        {
+            Keys.Press(Keys.WIN);
+            Keys.Press(Keys.A);
+            Keys.Release(Keys.A);
+            Keys.Release(Keys.WIN);
+        }
+
+        public static void windowsKeyAltB()
+        {
+            Keys.Press(Keys.WIN);
+            Keys.Press(Keys.ALT);
+            Keys.Press(Keys.B);
+            Keys.Release(Keys.B);
+            Keys.Release(Keys.ALT);
+            Keys.Release(Keys.WIN);
+        }
+
+        public static void windowsKeyAltD()
+        {
+            Keys.Press(Keys.WIN);
+            Keys.Press(Keys.ALT);
+            Keys.Press(Keys.D);
+            Keys.Release(Keys.D);
+            Keys.Release(Keys.ALT);
+            Keys.Release(Keys.WIN);
+        }
+
+        public static void windowsKeyAltDown()
+        {
+            Keys.Press(Keys.WIN);
+            Keys.Press(Keys.ALT);
+            Keys.Press(Keys.DOWN);
+            Keys.Release(Keys.DOWN);
+            Keys.Release(Keys.ALT);
+            Keys.Release(Keys.WIN);
         }
     }
 }
