@@ -27,7 +27,7 @@ namespace Key_Wizard.shortcuts
         public const int K = 0x4B;
         public const int H = 0x48;
         public const int UP = 0x26;
-        public const int COMMA = 0x2C;
+        public const int COMMA = 0xBC;
         public const int C = 0x43;
 
 
