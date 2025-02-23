@@ -10,13 +10,15 @@ namespace Key_Wizard.shortcuts
 {
     public class Shortcuts
     {
-        public static void windowsKeyR()
+        public static int windowsKeyR()
         {
-            Process.Start("explorer.exe", "shell:::{2559a1f3-21d7-11d4-bdaf-00c04f60b9f0}");
+            var process = Process.Start("explorer.exe", "shell:::{2559a1f3-21d7-11d4-bdaf-00c04f60b9f0}");
+            return process.Id;
         }
-        public static void windowsKeyI()
+        public static int windowsKeyI()
         {
-            Process.Start("explorer.exe", "ms-settings:");
+            var process = Process.Start("explorer.exe", "ms-settings:");
+            return process.Id;
         }
 
         public static void altTab()

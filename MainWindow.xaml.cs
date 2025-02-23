@@ -148,8 +148,11 @@ namespace Key_Wizard
 
             if (methodInfo != null)
             {
-                Action action = (Action)Delegate.CreateDelegate(typeof(Action), methodInfo);
-                action.Invoke();
+                var result = methodInfo.Invoke(null, null);
+                if (result is Action action)
+                {
+                    action.Invoke();
+                }
                 this.Close();
             }
             // Right now there is no error handling for if the action doesn't exist as we do not want any
