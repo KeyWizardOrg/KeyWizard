@@ -146,21 +146,26 @@ namespace Key_Wizard
         {
             try
             {
-                // Get method that accepts MainWindow as parameter
+                // Create instance of Shortcuts class
+                var shortcuts = new Shortcuts(this); // Pass any required dependencies
+
+                // Get method info from the instance
                 var methodInfo = typeof(Shortcuts).GetMethod(item.Action,
-                    System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public,
-                    null, // use default binder
-                    new Type[] { typeof(MainWindow) }, // parameter types
+                    System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public,
+                    null, // default binder
+                    new Type[0], // parameter types (none for this example)
                     null);
 
-            if (methodInfo != null)
-            {
-                var result = methodInfo.Invoke(null, null);
-                if (result is Action action)
+                if (methodInfo != null)
                 {
+                    // Create delegate with instance
+                    var action = (Action)Delegate.CreateDelegate(typeof(Action), shortcuts, methodInfo);
                     action.Invoke();
+                    this.Close();
                 }
-                this.Close();
+            }
+            catch (Exception ex)
+            {
             }
             // Right now there is no error handling for if the action doesn't exist as we do not want any
             // errors during the demo. We will add some error handling once we have all the actions implemented.

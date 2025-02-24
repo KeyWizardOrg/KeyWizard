@@ -11,18 +11,48 @@ namespace Key_Wizard.shortcuts
 {
     public class Shortcuts
     {
-        public static int windowsKeyR()
+        [DllImport("user32.dll")]
+        static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, IntPtr dwExtraInfo);
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetWindow(IntPtr hWnd, uint uCmd);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool IsWindowVisible(IntPtr hWnd);
+
+        private MainWindow mainWindow;
+        private const uint GW_HWNDNEXT = 2;
+        public Shortcuts(MainWindow mainWindow)
+        {
+            this.mainWindow = mainWindow;
+        }
+
+        private void FocusWindowBehind()
+        {
+            IntPtr hWnd = GetWindow(WindowNative.GetWindowHandle(mainWindow), GW_HWNDNEXT);
+            while (hWnd != IntPtr.Zero && !IsWindowVisible(hWnd))
+            {
+                hWnd = GetWindow(hWnd, GW_HWNDNEXT);
+            }
+            SetForegroundWindow(hWnd);
+        }
+        public int windowsKeyR()
         {
             var process = Process.Start("explorer.exe", "shell:::{2559a1f3-21d7-11d4-bdaf-00c04f60b9f0}");
             return process.Id;
         }
-        public static int windowsKeyI()
+        public int windowsKeyI()
         {
             var process = Process.Start("explorer.exe", "ms-settings:");
             return process.Id;
         }
 
-        public static void altTab()
+        public void altTab()
         {
             Keys.Press(Keys.ALT);
             Keys.Press(Keys.TAB);
@@ -30,7 +60,7 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.ALT);
         }
 
-        public static void PrtSc()
+        public void PrtSc()
         {
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.PRTSCR);
@@ -38,7 +68,7 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.WIN);
         }
        
-        public static void ctrlAltTab()
+        public void ctrlAltTab()
         {
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.ALT);
@@ -48,13 +78,13 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.CTRL);
         }
 
-        public static void windowsKey()
+        public void windowsKey()
         {
             Keys.Press(Keys.WIN);
             Keys.Release(Keys.WIN);
         }
 
-        public static void windowsKeyA()
+        public void windowsKeyA()
         {
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.A);
@@ -62,7 +92,7 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.WIN);
         }
 
-        public static void windowsKeyAltB()
+        public void windowsKeyAltB()
         {
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.ALT);
@@ -72,7 +102,7 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.WIN);
         }
 
-        public static void windowsKeyAltD()
+        public void windowsKeyAltD()
         {
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.ALT);
@@ -82,7 +112,7 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.WIN);
         }
 
-        public static void windowsKeyAltDown()
+        public void windowsKeyAltDown()
         {
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.ALT);
@@ -92,16 +122,13 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.WIN);
         }
 
-        public static void ctrlC(MainWindow window)
+        public void ctrlC()
         {
-            FocusWindowBehind(window);
-
-            keybd_event(VK_CONTROL, 0, 0, IntPtr.Zero);//Press ctrl
-            keybd_event(VK_C, 0, 0, IntPtr.Zero);// Press C
-
-            // Release 
-            keybd_event(VK_C, 0, KEYEVENTF_KEYUP, IntPtr.Zero);
-            keybd_event(VK_CONTROL, 0, KEYEVENTF_KEYUP, IntPtr.Zero);
+            FocusWindowBehind();
+            Keys.Press(Keys.CTRL);
+            Keys.Press(Keys.C);
+            Keys.Release(Keys.C);
+            Keys.Release(Keys.CTRL);
         }
     }
 }
