@@ -153,23 +153,17 @@ namespace Key_Wizard
                     new Type[] { typeof(MainWindow) }, // parameter types
                     null);
 
-                if (methodInfo != null)
-                {
-                    // Create delegate with MainWindow parameter
-                    var action = (Action<MainWindow>)Delegate.CreateDelegate(
-                        typeof(Action<MainWindow>),
-                        methodInfo
-                    );
-
-                    // Pass current window instance
-                    action.Invoke(this);
-                    this.Close();
-                }
-            }
-            catch (Exception ex)
+            if (methodInfo != null)
             {
-
+                var result = methodInfo.Invoke(null, null);
+                if (result is Action action)
+                {
+                    action.Invoke();
+                }
+                this.Close();
             }
+            // Right now there is no error handling for if the action doesn't exist as we do not want any
+            // errors during the demo. We will add some error handling once we have all the actions implemented.
         }
 
         private void shortcutsList_SizeChanged(object sender, SizeChangedEventArgs e)

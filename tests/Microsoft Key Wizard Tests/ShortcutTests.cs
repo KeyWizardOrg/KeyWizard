@@ -10,13 +10,22 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Microsoft_Key_Wizard_Tests
 {
     [TestClass]
-    public class TestShortcuts
+    public class ShortcutTests
     {
         [TestMethod]
         public void TestWindowsKeyI()
         {
             var processId = Key_Wizard.shortcuts.Shortcuts.windowsKeyI();
-            Thread.Sleep(2000);
+            Thread.Sleep(500);
+            var process = System.Diagnostics.Process.GetProcessById(processId);
+            Assert.IsNotNull(process);
+        }
+
+        [TestMethod]
+        public void TestWindowsKeyR()
+        {
+            var processId = Key_Wizard.shortcuts.Shortcuts.windowsKeyR();
+            Thread.Sleep(500);
             var process = System.Diagnostics.Process.GetProcessById(processId);
             Assert.IsNotNull(process);
         }

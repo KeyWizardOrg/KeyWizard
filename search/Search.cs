@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Key_Wizard.search
 {
-    internal class Search
+    public class Search
     {
         public static List<ListItem> FuzzySearch(List<ListItem> items, string query, bool caseSensitive = false)
         {
