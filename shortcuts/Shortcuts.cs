@@ -90,5 +90,52 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.ALT);
             Keys.Release(Keys.WIN);
         }
+        public static void windowsKeyCtrlEnter()
+        {
+            Keys.Press(Keys.WIN);
+            Keys.Press(Keys.CTRL);
+            Keys.Press(Keys.ENTER);
+            Keys.Release(Keys.ENTER);
+            Keys.Release(Keys.CTRL);
+            Keys.Release(Keys.WIN);
+        }
+        public static void windowsKeyCtrlF()
+        {
+            Keys.Press(Keys.WIN);
+            Keys.Press(Keys.CTRL);
+            Keys.Press(Keys.F);
+            Keys.Release(Keys.F);
+            Keys.Release(Keys.CTRL);
+            Keys.Release(Keys.WIN);
+        }
+        public static void windowsKeyCtrlQ()
+        {
+            Keys.Press(Keys.WIN);
+            Keys.Press(Keys.CTRL);
+            Keys.Press(Keys.Q);
+            Keys.Release(Keys.Q);
+            Keys.Release(Keys.CTRL);
+            Keys.Release(Keys.WIN);
+        }
+        public static void windowsKeyCtrlShiftB()
+        {
+            Keys.Press(Keys.WIN);
+            Keys.Press(Keys.CTRL);
+            Keys.Press(Keys.SHIFT);
+            Keys.Release(Keys.B);
+            Keys.Release(Keys.B);
+            Keys.Release(Keys.SHIFT);
+            Keys.Release(Keys.CTRL);
+            Keys.Release(Keys.WIN);
+        }
+        public static void windowsKeyCtrlSpacebar()
+        {
+            Keys.Press(Keys.WIN);
+            Keys.Press(Keys.CTRL);
+            Keys.Press(Keys.Spacebar);
+            Keys.Release(Keys.Spacebar);
+            Keys.Release(Keys.CTRL);
+            Keys.Release(Keys.WIN);
+        }
     }
 }

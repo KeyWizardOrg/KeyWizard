@@ -22,9 +22,12 @@ namespace Key_Wizard.shortcuts
         public const int A = 0x41;
         public const int B = 0x42;
         public const int D = 0x44;
+        public const int F = 0x46;
+        public const int Q = 0x51;
         public const int WIN = 0x5B;
         public const int SHIFT = 0xA0;
-
+        public const int ENTER = 0x0D;
+        public const int Spacebar = 0x20;
 
         public static void Press(byte key)
         {
