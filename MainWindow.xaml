@@ -1,59 +1,190 @@
-<Window
-    x:Class="Key_Wizard.MainWindow"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Key_Wizard"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Title="Microsoft Key Wizard">
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Linq;
+using System.Runtime.InteropServices;
+using Key_Wizard.search;
+using Key_Wizard.shortcuts;
+using Key_Wizard.startup;
+using Microsoft.UI;
+using Microsoft.UI.Input;
+using Microsoft.UI.Windowing;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
+using Windows.Graphics;
+using Windows.System;
+using WinRT.Interop;
 
-    <Grid x:Name="MainGrid" HorizontalAlignment="Stretch" Margin="10" TabFocusNavigation="Cycle">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
+namespace Key_Wizard
+{
+    public class ListItem
+    {
+        public string Prefix { get; set; }  // Bold part
+        public string Suffix { get; set; }  // Normal part
+        public string Action { get; set; }  // Function to be triggered on click
+    }
 
-        <Grid.Resources>
-            <!-- Define Window Dimensions -->
-            <x:Int32 x:Key="WindowWidth">500</x:Int32>
-            <x:Int32 x:Key="WindowHeight">10</x:Int32>
-        </Grid.Resources>
+    public class Section
+    {
+        public string Name { get; set; }
+        public ObservableCollection<ListItem> Items { get; set; }
+    }
+    public sealed partial class MainWindow : Window
+    {
+        private const Double MAX_HEIGHT = 0.3;
+        private const Double MAX_WIDTH = 0.4;
+        private Dictionary<string, CreateSections> shortcutDictionary;
 
-        <Grid Grid.Row="0" HorizontalAlignment="Stretch">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"/>
-                <!-- 75% -->
-                <ColumnDefinition Width="1*"/>
-                <!-- 25% -->
-            </Grid.ColumnDefinitions>
+        [DllImport("kernel32.dll")]
+        static extern bool AllocConsole();
 
-            <TextBox x:Name="searchTextBox"
-                    Grid.Column="0"
-                    PlaceholderText="KeyWizard"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Center"
-                    Margin="0,0,5,0"/>
+        public MainWindow()
+        {
+            // Uncomment the below line to spawn a console window
+            // AllocConsole();
 
-            <Button x:Name="myButton"
-                   Grid.Column="1"
-                   Content="Search"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Bottom"
-                   Click="myButton_Click"/>
-        </Grid>
+            this.InitializeComponent();
 
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-            <ListView x:Name="shortcutsList"
-                      Margin="5"
-                      Visibility="Collapsed"
-                      XYFocusKeyboardNavigation="Enabled">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding}" Padding="8"/>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </ScrollViewer>
-    </Grid>
-</Window>
+            // Get the AppWindow for the current window
+            var hWnd = WindowNative.GetWindowHandle(this);
+            var windowId = Win32Interop.GetWindowIdFromWindow(hWnd);
+            var appWindow = AppWindow.GetFromWindowId(windowId);
+
+            // Set the presenter to OverlappedPresenter and disable the maximize, minimize, and close buttons
+            if (appWindow != null)
+            {
+                var presenter = appWindow.Presenter as OverlappedPresenter;
+                if (presenter != null)
+                {
+                    presenter.IsMaximizable = false; // Disable the maximize button
+                    presenter.IsResizable = true;  // Disable resizing
+                    presenter.IsMinimizable = false; // Disable the minimize button
+                }
+            }
+
+            // Extend the client area into the title bar
+            this.ExtendsContentIntoTitleBar = true;
+            this.SetTitleBar(null); // Set to null to remove the default title bar
+
+            this.AppWindow.MoveAndResize(GetWindowSizeAndPos(0.3, 0.06));
+
+            shortcutDictionary = new Dictionary<string, CreateSections>();
+            shortcutDictionary = CreateDictionary.InitList();
+        }
+
+        private RectInt32 GetWindowSizeAndPos(double widthPercentage, double heightPercentage)
+        {
+            var hWnd = WindowNative.GetWindowHandle(this);
+            var windowId = Win32Interop.GetWindowIdFromWindow(hWnd);
+            var displayArea = DisplayArea.GetFromWindowId(windowId, DisplayAreaFallback.Primary);
+            var workArea = displayArea.WorkArea;
+
+            int windowWidth = (int)(workArea.Width * widthPercentage);
+            int windowHeight = (int)(workArea.Height * heightPercentage);
+
+            int windowX = (workArea.Width - windowWidth) / 2;
+            int windowY = (workArea.Height - windowHeight) / 2;
+
+            return new RectInt32(windowX, windowY, windowWidth, windowHeight);
+        }
+        private void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            shortcutsList.Visibility = Visibility.Visible;
+
+            ObservableCollection<Section> sections = new ObservableCollection<Section>();
+            string searchQuery = searchTextBox.Text;
+            List<ListItem> searchList = new List<ListItem>();
+
+            ObservableCollection<Section> display = new ObservableCollection<Section>();
+
+            // Populate the ListView with the key-action pairs
+            foreach (var section in shortcutDictionary)
+            {
+                ObservableCollection<ListItem> items = new ObservableCollection<ListItem>();
+
+                foreach (var keyAction in section.Value.Data)
+                {
+                    ListItem newItem = new ListItem { Prefix = $"{keyAction.Key}: ", Suffix = $"{keyAction.Value.action}", Action = $"{keyAction.Value.function}" };
+                    items.Add(newItem);
+                    searchList.Add(newItem);
+                }
+
+                sections.Add(new Section { Name = section.Key, Items = items });
+            }
+            List<ListItem> results = Search.FuzzySearch(searchList, searchQuery);
+            if (string.IsNullOrWhiteSpace(searchQuery)||!results.Any())
+            {
+                shortcutsList.ItemsSource = display;
+            }
+            else
+            {
+                display.Add(new Section { Name = "Search Results", Items = new ObservableCollection<ListItem>(results) });
+                shortcutsList.ItemsSource = display;
+            }
+        }
+
+        private void ListView_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == VirtualKey.Enter || e.Key == VirtualKey.Space)
+            {
+                var listView = (ListView)sender;
+                var item = (ListItem)listView.SelectedItem;
+                TriggerAction(item);
+            }
+        }
+
+        private void ListView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var item = (ListItem)e.ClickedItem;
+            TriggerAction(item);
+        }
+
+        private void TriggerAction(ListItem item)
+        {
+            var methodInfo = typeof(Shortcuts).GetMethod(item.Action, System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+
+            if (methodInfo != null)
+            {
+                var result = methodInfo.Invoke(null, null);
+                if (result is Action action)
+                {
+                    action.Invoke();
+                }
+                this.Close();
+            }
+            // Right now there is no error handling for if the action doesn't exist as we do not want any
+            // errors during the demo. We will add some error handling once we have all the actions implemented.
+        }
+
+        private void shortcutsList_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            // Force UI update
+            MainGrid.UpdateLayout();
+
+            // Calculate total content size
+            int contentWidth = this.AppWindow.Size.Width;
+            int contentHeight = (int)(searchTextBox.ActualHeight + searchTextBox.Margin.Top + searchTextBox.Margin.Bottom +
+                                      MainGrid.Margin.Top + MainGrid.Margin.Bottom + e.NewSize.Height);
+
+            // Get display information
+            var workArea = DisplayArea.Primary.WorkArea;
+
+            // Ensure window doesn't exceed screen bounds
+            var maxWidth = workArea.Width * MAX_WIDTH; // 10px margin on each side
+            var maxHeight = workArea.Height * MAX_HEIGHT;
+
+            contentWidth = (int)Math.Min(contentWidth, maxWidth);
+            contentHeight = (int)Math.Min(contentHeight, maxHeight);
+
+            this.AppWindow.MoveAndResize(new RectInt32(
+                (workArea.Width - contentWidth) / 2,
+                (workArea.Height - contentHeight) / 2,
+                contentWidth,
+                contentHeight
+            ));
+        }
+    }
+}
