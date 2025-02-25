@@ -69,7 +69,7 @@ namespace Key_Wizard
             this.ExtendsContentIntoTitleBar = true;
             this.SetTitleBar(null); // Set to null to remove the default title bar
 
-            this.AppWindow.MoveAndResize(GetWindowSizeAndPos(0.3, 0.08));
+            this.AppWindow.MoveAndResize(GetWindowSizeAndPos(0.3, 0.06));
 
             shortcutDictionary = new Dictionary<string, CreateSections>();
             shortcutDictionary = CreateDictionary.InitList();
@@ -115,9 +115,9 @@ namespace Key_Wizard
                 sections.Add(new Section { Name = section.Key, Items = items });
             }
             List<ListItem> results = Search.FuzzySearch(searchList, searchQuery);
-            if (string.IsNullOrWhiteSpace(searchQuery))
+            if (string.IsNullOrWhiteSpace(searchQuery) || !results.Any())
             {
-                shortcutsList.ItemsSource = sections;
+                shortcutsList.ItemsSource = display;
             }
             else
             {
@@ -144,28 +144,16 @@ namespace Key_Wizard
 
         private void TriggerAction(ListItem item)
         {
-            try
+            var methodInfo = typeof(Shortcuts).GetMethod(item.Action, System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+
+            if (methodInfo != null)
             {
-                // Create instance of Shortcuts class
-                var shortcuts = new Shortcuts(this); // Pass any required dependencies
-
-                // Get method info from the instance
-                var methodInfo = typeof(Shortcuts).GetMethod(item.Action,
-                    System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public,
-                    null, // default binder
-                    new Type[0], // parameter types (none for this example)
-                    null);
-
-                if (methodInfo != null)
+                var result = methodInfo.Invoke(null, null);
+                if (result is Action action)
                 {
-                    // Create delegate with instance
-                    var action = (Action)Delegate.CreateDelegate(typeof(Action), shortcuts, methodInfo);
                     action.Invoke();
-                    this.Close();
                 }
-            }
-            catch (Exception ex)
-            {
+                this.Close();
             }
             // Right now there is no error handling for if the action doesn't exist as we do not want any
             // errors during the demo. We will add some error handling once we have all the actions implemented.
@@ -200,3 +188,4 @@ namespace Key_Wizard
         }
     }
 }
+
