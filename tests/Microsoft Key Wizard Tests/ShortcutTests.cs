@@ -15,7 +15,8 @@ namespace Microsoft_Key_Wizard_Tests
         [TestMethod]
         public void TestWindowsKeyI()
         {
-            var processId = Key_Wizard.shortcuts.Shortcuts.windowsKeyI();
+            var shortcuts = new Key_Wizard.shortcuts.Shortcuts(null);
+            var processId = shortcuts.windowsKeyI();
             Thread.Sleep(500);
             var process = System.Diagnostics.Process.GetProcessById(processId);
             Assert.IsNotNull(process);
@@ -24,7 +25,8 @@ namespace Microsoft_Key_Wizard_Tests
         [TestMethod]
         public void TestWindowsKeyR()
         {
-            var processId = Key_Wizard.shortcuts.Shortcuts.windowsKeyR();
+            var shortcuts = new Key_Wizard.shortcuts.Shortcuts(null);
+            var processId = shortcuts.windowsKeyR();
             Thread.Sleep(500);
             var process = System.Diagnostics.Process.GetProcessById(processId);
             Assert.IsNotNull(process);
