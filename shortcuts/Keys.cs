@@ -21,6 +21,7 @@ namespace Key_Wizard.shortcuts
         public const int PRTSCR = 0x2C;
         public const int A = 0x41;
         public const int B = 0x42;
+        public const int C = 0x43;
         public const int D = 0x44;
         public const int WIN = 0x5B;
         public const int SHIFT = 0xA0;
