@@ -36,10 +36,6 @@ namespace Key_Wizard
     }
     public sealed partial class MainWindow : Window
     {
-        private const Double MAX_HEIGHT = 0.3;
-        private const Double MAX_WIDTH = 0.4;
-        private const Double MIN_HEIGHT = 0.06;
-        private const Double MIN_WIDTH = 0.3;
         private Dictionary<string, CreateSections> shortcutDictionary;
         private List<ListItem> searchList;
 
@@ -74,25 +70,9 @@ namespace Key_Wizard
             this.ExtendsContentIntoTitleBar = true;
             this.SetTitleBar(null); // Set to null to remove the default title bar
 
-            this.AppWindow.MoveAndResize(GetWindowSizeAndPos(MIN_WIDTH, MIN_HEIGHT));
+            this.AppWindow.MoveAndResize(Screen.GetWindowSizeAndPos(this, Screen.MIN_WIDTH, Screen.MIN_HEIGHT));
             shortcutDictionary = CreateDictionary.InitList();
             searchList = CreateDictionary.InitSearch(shortcutDictionary);
-        }
-
-        private RectInt32 GetWindowSizeAndPos(double widthPercentage, double heightPercentage)
-        {
-            var hWnd = WindowNative.GetWindowHandle(this);
-            var windowId = Win32Interop.GetWindowIdFromWindow(hWnd);
-            var displayArea = DisplayArea.GetFromWindowId(windowId, DisplayAreaFallback.Primary);
-            var workArea = displayArea.WorkArea;
-
-            int windowWidth = (int)(workArea.Width * widthPercentage);
-            int windowHeight = (int)(workArea.Height * heightPercentage);
-
-            int windowX = (workArea.Width - windowWidth) / 2;
-            int windowY = (workArea.Height - windowHeight) / 2;
-
-            return new RectInt32(windowX, windowY, windowWidth, windowHeight);
         }
         private void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -106,7 +86,7 @@ namespace Key_Wizard
             }
             else
             {
-                this.AppWindow.MoveAndResize(GetWindowSizeAndPos(MIN_WIDTH, MIN_HEIGHT));
+                this.AppWindow.MoveAndResize(Screen.GetWindowSizeAndPos(this, Screen.MIN_WIDTH, Screen.MIN_HEIGHT));
             }
 
             shortcutsList.ItemsSource = display;
@@ -157,19 +137,37 @@ namespace Key_Wizard
 
             // Get display information
             var workArea = DisplayArea.Primary.WorkArea;
+            double screenAspectRatio = (double)workArea.Width / workArea.Height;
 
-            // Ensure window doesn't exceed screen bounds
-            var maxWidth = workArea.Width * MAX_WIDTH;
-            var maxHeight = workArea.Height * MAX_HEIGHT;
-            var minWidth = workArea.Width * MIN_WIDTH;
-            var minHeight = workArea.Height * MIN_HEIGHT;
+            // Calculate base max and min dimensions
+            var maxWidth = workArea.Width * Screen.MAX_WIDTH;
+            var maxHeight = workArea.Height * Screen.MAX_HEIGHT;
+            var minWidth = workArea.Width * Screen.MIN_WIDTH;
+            var minHeight = workArea.Height * Screen.MIN_HEIGHT;
 
-            contentWidth = (int)Math.Min(contentWidth, maxWidth);
-            contentHeight = (int)Math.Min(contentHeight, maxHeight);
+            // Adjust for aspect ratio
+            var (adjustedMaxWidth, adjustedMaxHeight) = Screen.AdjustForAspectRatio(
+                (int)maxWidth,
+                (int)maxHeight,
+                screenAspectRatio,
+                Screen.MAX_WIDTH,
+                Screen.MAX_HEIGHT);
 
-            contentWidth = (int)Math.Max(contentWidth, minWidth);
-            contentHeight = (int)Math.Max(contentHeight, minHeight);
+            var (adjustedMinWidth, adjustedMinHeight) = Screen.AdjustForAspectRatio(
+                (int)minWidth,
+                (int)minHeight,
+                screenAspectRatio,
+                Screen.MIN_WIDTH,
+                Screen.MIN_HEIGHT);
 
+            // Apply constraints
+            contentWidth = Math.Min(contentWidth, adjustedMaxWidth);
+            contentHeight = Math.Min(contentHeight, adjustedMaxHeight);
+
+            contentWidth = Math.Max(contentWidth, adjustedMinWidth);
+            contentHeight = Math.Max(contentHeight, adjustedMinHeight);
+
+            // Center the window
             this.AppWindow.MoveAndResize(new RectInt32(
                 (workArea.Width - contentWidth) / 2,
                 (workArea.Height - contentHeight) / 2,
