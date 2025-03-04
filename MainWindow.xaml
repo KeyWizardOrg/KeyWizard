@@ -28,7 +28,6 @@
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
             <ListView x:Name="shortcutsList"
                       Margin="5"
-                      Visibility="Collapsed"
                       SelectionMode="None"
                       XYFocusKeyboardNavigation="Enabled"
                       SizeChanged="shortcutsList_SizeChanged">
