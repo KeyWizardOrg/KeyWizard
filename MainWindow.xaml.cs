@@ -22,6 +22,7 @@ namespace Key_Wizard
 {
     public class ListItem
     {
+        public string Section { get; set; }  // Section
         public string Prefix { get; set; }  // Bold part
         public string Suffix { get; set; }  // Normal part
         public string Action { get; set; }  // Function to be triggered on click
@@ -104,10 +105,11 @@ namespace Key_Wizard
             foreach (var section in shortcutDictionary)
             {
                 ObservableCollection<ListItem> items = new ObservableCollection<ListItem>();
+                String sectionName = section.Key.Replace('_', ' ');
 
                 foreach (var keyAction in section.Value.Data)
                 {
-                    ListItem newItem = new ListItem { Prefix = $"{keyAction.Key}: ", Suffix = $"{keyAction.Value.action}", Action = $"{keyAction.Value.function}" };
+                    ListItem newItem = new ListItem { Section = $"{sectionName}  ", Prefix = $"{keyAction.Key}: ", Suffix = $"{keyAction.Value.action}", Action = $"{keyAction.Value.function}" };
                     items.Add(newItem);
                     searchList.Add(newItem);
                 }
