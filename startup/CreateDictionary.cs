@@ -30,6 +30,10 @@ namespace Key_Wizard.startup
                 //String function = string.Empty;
 
                 var sectionName = section.Name.LocalName;
+                if (Icons.iconDictionary.TryGetValue(sectionName, out var icon))
+                {
+                    sectionName += " " + icon;
+                }
 
                 foreach (var Element in section.Elements("add"))
                 {

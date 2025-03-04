@@ -57,7 +57,8 @@
                                 <ListView.ItemTemplate>
                                     <DataTemplate x:DataType="local:ListItem">
                                         <TextBlock Margin="10,5" >
-                                            <Run Text="{x:Bind Prefix}" FontWeight="Bold"/>
+                                            <Run Text="{x:Bind Section}" FontWeight="SemiBold"/>
+                                            <Run Text="{x:Bind Prefix}" FontWeight="ExtraBold"/>
                                             <Run Text="{x:Bind Suffix}"/>
                                         </TextBlock>
                                     </DataTemplate>
