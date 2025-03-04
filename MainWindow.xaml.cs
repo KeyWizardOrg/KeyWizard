@@ -38,7 +38,10 @@ namespace Key_Wizard
     {
         private const Double MAX_HEIGHT = 0.3;
         private const Double MAX_WIDTH = 0.4;
+        private const Double MIN_HEIGHT = 0.06;
+        private const Double MIN_WIDTH = 0.3;
         private Dictionary<string, CreateSections> shortcutDictionary;
+        private List<ListItem> searchList;
 
         [DllImport("kernel32.dll")]
         static extern bool AllocConsole();
@@ -71,10 +74,9 @@ namespace Key_Wizard
             this.ExtendsContentIntoTitleBar = true;
             this.SetTitleBar(null); // Set to null to remove the default title bar
 
-            this.AppWindow.MoveAndResize(GetWindowSizeAndPos(0.3, 0.06));
-
-            shortcutDictionary = new Dictionary<string, CreateSections>();
+            this.AppWindow.MoveAndResize(GetWindowSizeAndPos(MIN_WIDTH, MIN_HEIGHT));
             shortcutDictionary = CreateDictionary.InitList();
+            searchList = CreateDictionary.InitSearch(shortcutDictionary);
         }
 
         private RectInt32 GetWindowSizeAndPos(double widthPercentage, double heightPercentage)
@@ -94,39 +96,20 @@ namespace Key_Wizard
         }
         private void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            shortcutsList.Visibility = Visibility.Visible;
-
-            ObservableCollection<Section> sections = new ObservableCollection<Section>();
             string searchQuery = searchTextBox.Text;
-            List<ListItem> searchList = new List<ListItem>();
-
             ObservableCollection<Section> display = new ObservableCollection<Section>();
 
-            // Populate the ListView with the key-action pairs
-            foreach (var section in shortcutDictionary)
-            {
-                ObservableCollection<ListItem> items = new ObservableCollection<ListItem>();
-                String sectionName = section.Key.Replace('_', ' ');
-
-                foreach (var keyAction in section.Value.Data)
-                {
-                    ListItem newItem = new ListItem { Section = $"{sectionName}  ", Prefix = $"{keyAction.Key}: ", Suffix = $"{keyAction.Value.action}", Action = $"{keyAction.Value.function}" };
-                    items.Add(newItem);
-                    searchList.Add(newItem);
-                }
-
-                sections.Add(new Section { Name = section.Key, Items = items });
-            }
             List<ListItem> results = Search.FuzzySearch(searchList, searchQuery);
-            if (string.IsNullOrWhiteSpace(searchQuery) || !results.Any())
+            if (!string.IsNullOrWhiteSpace(searchQuery) && results.Any())
             {
-                shortcutsList.ItemsSource = display;
+                display.Add(new Section { Name = "Search Results", Items = new ObservableCollection<ListItem>(results) });
             }
             else
             {
-                display.Add(new Section { Name = "Search Results", Items = new ObservableCollection<ListItem>(results) });
-                shortcutsList.ItemsSource = display;
+                this.AppWindow.MoveAndResize(GetWindowSizeAndPos(MIN_WIDTH, MIN_HEIGHT));
             }
+
+            shortcutsList.ItemsSource = display;
         }
 
         private void ListView_KeyDown(object sender, KeyRoutedEventArgs e)
@@ -176,11 +159,16 @@ namespace Key_Wizard
             var workArea = DisplayArea.Primary.WorkArea;
 
             // Ensure window doesn't exceed screen bounds
-            var maxWidth = workArea.Width * MAX_WIDTH; // 10px margin on each side
+            var maxWidth = workArea.Width * MAX_WIDTH;
             var maxHeight = workArea.Height * MAX_HEIGHT;
+            var minWidth = workArea.Width * MIN_WIDTH;
+            var minHeight = workArea.Height * MIN_HEIGHT;
 
             contentWidth = (int)Math.Min(contentWidth, maxWidth);
             contentHeight = (int)Math.Min(contentHeight, maxHeight);
+
+            contentWidth = (int)Math.Max(contentWidth, minWidth);
+            contentHeight = (int)Math.Max(contentHeight, minHeight);
 
             this.AppWindow.MoveAndResize(new RectInt32(
                 (workArea.Width - contentWidth) / 2,
