@@ -43,7 +43,7 @@ namespace Key_Wizard.shortcuts
         }
 
         // Copilot Keys 
-            // Could have it made so test if copilot is available first, and if its not, run windows search
+        // Could have it made so test if copilot is available first, and if its not, run windows search
         public void CopilotKey()
         {
             Keys.Press(Keys.WIN);
@@ -737,25 +737,8 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.ALT);
             Keys.Release(Keys.WIN);
         }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
-        public void ctrlC()
-        {
-            FocusWindowBehind();
-=======
->>>>>>> 365afb1e286e6b2d1fdc65d635f265f5b414165d
-        //Jan:<add key="Windows key + Alt + H" action="When voice typing is open, set the focus to the keyboard" function ="windowsKeyAltH"/>
-            //<add key = "Windows key + Alt + K" action="Mute or unmute the microphone in supported apps" function ="windowsKeyAltK"/>
-            //<add key = "Windows key + Alt + Up arrow" action="Snap the active window to the top half of the screen" function ="windowsKeyAltUp"/>
-            //<add key = "Windows key + comma (,)" action="Temporarily peek at the desktop" function ="windowsKeyComma"/>
-            //<add key = "Windows key + Ctrl + C" action="If turned on in settings, enable or disable color filters" function ="windowsKeyCtrlC"/> 
-        public static void windowsKeyAltH()
-=======
 
         public void windowsKeyAltH()
->>>>>>> main
         {
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.ALT);
@@ -764,12 +747,8 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.ALT);
             Keys.Release(Keys.WIN);
         }
-<<<<<<< HEAD
-        public static void windowsKeyAltK()
-=======
 
         public void windowsKeyAltK()
->>>>>>> main
         {
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.ALT);
@@ -778,12 +757,8 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.ALT);
             Keys.Release(Keys.WIN);
         }
-<<<<<<< HEAD
-        public static void windowsKeyAltUp()
-=======
 
         public void windowsKeyAltUp()
->>>>>>> main
         {
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.ALT);
@@ -792,45 +767,24 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.ALT);
             Keys.Release(Keys.WIN);
         }
-<<<<<<< HEAD
-        public static void windowsKeyComma()
-        {
-            Keys.Press(Keys.WIN);
-            Keys.Press(Keys.COMMA);
-            Keys.Release(Keys.COMMA);
-            Keys.Release(Keys.WIN);
-        }
-        public static void windowsKeyCtrlC()
-=======
 
         public void windowsKeyComma()
         {
             Keys.Press(Keys.WIN);
-<<<<<<< HEAD
             Keys.Press(Keys.OEM_COMMA);
             Keys.Release(Keys.OEM_COMMA);
             Keys.Release(Keys.WIN);
         }
 
         public void windowsKeyCtrlC()
->>>>>>> main
         {
             Keys.Press(Keys.WIN);
-=======
->>>>>>> 5eacf4c4a4359b84b376bec35e03166f82cb76dd
->>>>>>> 365afb1e286e6b2d1fdc65d635f265f5b414165d
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.C);
             Keys.Release(Keys.C);
             Keys.Release(Keys.CTRL);
-<<<<<<< HEAD
             Keys.Release(Keys.WIN);
-=======
-<<<<<<< HEAD
->>>>>>> 365afb1e286e6b2d1fdc65d635f265f5b414165d
         }
-<<<<<<< HEAD
-=======
 
         public void windowsKeyCtrlEnter()
         {
@@ -866,11 +820,6 @@ namespace Key_Wizard.shortcuts
             Keys.Press(Keys.SPACEBAR);
             Keys.Release(Keys.SPACEBAR);
             Keys.Release(Keys.CTRL);
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 5eacf4c4a4359b84b376bec35e03166f82cb76dd
->>>>>>> 365afb1e286e6b2d1fdc65d635f265f5b414165d
             Keys.Release(Keys.WIN);
         }
 
@@ -1548,6 +1497,5 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.ENTER);
         }
 
->>>>>>> main
     }
 }

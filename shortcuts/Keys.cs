@@ -62,22 +62,6 @@ namespace Key_Wizard.shortcuts
         public const int B = 0x42;
         public const int C = 0x43;
         public const int D = 0x44;
-<<<<<<< HEAD
-        public const int WIN = 0x5B;
-        public const int SHIFT = 0xA0;
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-        public const int ENTER = 0x0D;
-        public const int Spacebar = 0x20;
-=======
->>>>>>> 365afb1e286e6b2d1fdc65d635f265f5b414165d
-        public const int K = 0x4B;
-        public const int H = 0x48;
-        public const int UP = 0x26;
-        public const int COMMA = 0xBC;
-        public const int C = 0x43;
-=======
         public const int E = 0x45;
         public const int F = 0x46;
         public const int G = 0x47;
@@ -143,12 +127,7 @@ namespace Key_Wizard.shortcuts
         public const int OEM_6 = 0xDD;          // ]}
         public const int OEM_7 = 0xDE;          // '"
 
->>>>>>> main
 
-<<<<<<< HEAD
-=======
->>>>>>> 5eacf4c4a4359b84b376bec35e03166f82cb76dd
->>>>>>> 365afb1e286e6b2d1fdc65d635f265f5b414165d
 
         public static void Press(byte key)
         {

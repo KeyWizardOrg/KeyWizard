@@ -15,6 +15,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Windows.Graphics;
+using Windows.Media.SpeechRecognition;
 using Windows.System;
 using WinRT.Interop;
 
@@ -185,6 +186,38 @@ namespace Key_Wizard
                 contentWidth,
                 contentHeight
             ));
+        }
+        private async void VoiceInput(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                using (SpeechRecognizer speechRecognizer = new SpeechRecognizer())
+                {
+                    // Compile the recognizer
+                    await speechRecognizer.CompileConstraintsAsync();
+
+                    // Update UI to indicate listening
+                    searchTextBox.Text = "Listening...";
+
+                    // Start listening
+                    SpeechRecognitionResult result = await speechRecognizer.RecognizeAsync();
+
+                    if (result.Status == SpeechRecognitionResultStatus.Success)
+                    {
+                        searchTextBox.ClearUndoRedoHistory();
+                        searchTextBox.Text = result.Text;  // Update textbox with recognized text
+                    }
+                    else
+                    {
+                        searchTextBox.Text = "Could not recognize speech.";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Speech Recognition Error: {ex.Message}");
+                searchTextBox.Text = "Speech Recognition not supported.";
+            }
         }
     }
 }
