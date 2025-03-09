@@ -896,9 +896,10 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.WIN);
         }
 
-        public void windowsKeyI()
+        public int windowsKeyI()
         {
-            Process.Start("explorer.exe", "ms-settings:");
+            var process = Process.Start("explorer.exe", "ms-settings:");
+            return process.Id;
         }
 
         public void windowsKeyJ()
@@ -999,9 +1000,10 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.WIN);
         }
 
-        public void windowsKeyR()
+        public int windowsKeyR()
         {
-            Process.Start("explorer.exe", "shell:::{2559a1f3-21d7-11d4-bdaf-00c04f60b9f0}");
+            var process = Process.Start("explorer.exe", "shell:::{2559a1f3-21d7-11d4-bdaf-00c04f60b9f0}");
+            return process.Id;
         }
 
         public void windowsKeyRight()
