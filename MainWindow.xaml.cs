@@ -85,7 +85,7 @@ namespace Key_Wizard
             shortcutDictionary = CreateDictionary.InitList();
             searchList = CreateDictionary.InitSearch(shortcutDictionary);
         }
-        private void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private async void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             // Reset and restart the timer
             searchDelayTimer.Stop();
@@ -101,7 +101,7 @@ namespace Key_Wizard
             string searchQuery = searchTextBox.Text;
             ObservableCollection<Section> display = new ObservableCollection<Section>();
 
-            List<ListItem> results = Search.FuzzySearch(searchList, searchQuery);
+            List<ListItem> results = NewSearch.Search(searchList, searchQuery);
             if (!string.IsNullOrWhiteSpace(searchQuery) && results.Any())
             {
                 display.Add(new Section { Name = "Search Results", Items = new ObservableCollection<ListItem>(results) });
@@ -115,6 +115,7 @@ namespace Key_Wizard
 
             shortcutsList.ItemsSource = display;
         }
+
 
         private void ListView_KeyDown(object sender, KeyRoutedEventArgs e)
         {
