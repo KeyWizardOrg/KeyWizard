@@ -60,6 +60,9 @@ namespace Key_Wizard
             var windowId = Win32Interop.GetWindowIdFromWindow(hWnd);
             var appWindow = AppWindow.GetFromWindowId(windowId);
 
+            // Hide the window from the taskbar and Alt+Tab
+            appWindow.IsShownInSwitchers = false;
+
             // Set the presenter to OverlappedPresenter and disable the maximize, minimize, and close buttons
             if (appWindow != null)
             {
@@ -199,6 +202,14 @@ namespace Key_Wizard
             if (e.Key == Windows.System.VirtualKey.Escape)
             {
                 this.Close(); // Close the app when ESC is pressed
+            }
+        }
+
+        private void Window_Activated(object sender, WindowActivatedEventArgs e)
+        {
+            if (e.WindowActivationState == WindowActivationState.Deactivated)
+            {
+                this.Close(); // Close the app when focus is lost
             }
         }
     }

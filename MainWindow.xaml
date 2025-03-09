@@ -6,7 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Title="Microsoft Key Wizard">
+    Title="Microsoft Key Wizard"
+    Activated="Window_Activated">
 
     <Window.SystemBackdrop>
         <MicaBackdrop />
@@ -79,7 +80,7 @@
                 <!-- ListView templates remain the same -->
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="local:Section">
-                        <StackPanel Margin="0,8">
+                        <StackPanel Margin="0,0,0,0">
                             <!-- Section Header -->
                             <TextBlock Text="{x:Bind Name}"
                                        FontWeight="SemiBold"
@@ -93,7 +94,7 @@
                                       ItemClick="ListView_ItemClick">
                                 <ListView.ItemTemplate>
                                     <DataTemplate x:DataType="local:ListItem">
-                                        <TextBlock Margin="8,4" >
+                                        <TextBlock Margin="0,0,0,0" >
                                             <Run Text="{x:Bind Section}" FontWeight="Normal"/>
                                             <Run Text="{x:Bind Prefix}" FontWeight="ExtraBold"/>
                                             <Run Text="{x:Bind Suffix}"/>
