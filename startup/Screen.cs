@@ -14,9 +14,9 @@ namespace Key_Wizard.startup
     {
         // Constants for different aspect ratios
         public const Double MAX_HEIGHT = 0.3;
-        public const Double MAX_WIDTH = 0.4;
+        public const Double MAX_WIDTH = 0.3;
         public const Double MIN_HEIGHT = 0.06;
-        public const Double MIN_WIDTH = 0.4;
+        public const Double MIN_WIDTH = 0.3;
 
         // Aspect ratio reference points
         public const Double ULTRAWIDE_RATIO = 1.78; // 16:9
