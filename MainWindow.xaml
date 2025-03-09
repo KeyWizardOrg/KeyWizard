@@ -87,7 +87,7 @@
 
             <!-- Results List -->
             <ScrollViewer VerticalScrollBarVisibility="Auto" 
-                        Margin="0,16,0,0" 
+                        Margin="0,16,0,4" 
                         VerticalAlignment="Stretch">
                 <ListView x:Name="shortcutsList"
                         Margin="8,4,8,8"
