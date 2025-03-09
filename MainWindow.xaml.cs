@@ -105,10 +105,12 @@ namespace Key_Wizard
             if (!string.IsNullOrWhiteSpace(searchQuery) && results.Any())
             {
                 display.Add(new Section { Name = "Search Results", Items = new ObservableCollection<ListItem>(results) });
+                ResultsBorderBar.Visibility = Visibility.Visible;
             }
             else
             {
                 this.AppWindow.MoveAndResize(Screen.GetWindowSizeAndPos(this, Screen.MIN_WIDTH, Screen.MIN_HEIGHT));
+                ResultsBorderBar.Visibility = Visibility.Collapsed;
             }
 
             shortcutsList.ItemsSource = display;
