@@ -115,9 +115,9 @@ namespace Key_Wizard
                 sections.Add(new Section { Name = section.Key, Items = items });
             }
             List<ListItem> results = Search.FuzzySearch(searchList, searchQuery);
-            if (string.IsNullOrWhiteSpace(searchQuery))
+            if (string.IsNullOrWhiteSpace(searchQuery) || !results.Any())
             {
-                shortcutsList.ItemsSource = sections;
+                shortcutsList.ItemsSource = display;
             }
             else
             {
@@ -188,3 +188,4 @@ namespace Key_Wizard
         }
     }
 }
+
