@@ -90,7 +90,7 @@ namespace Key_Wizard
 
             return new RectInt32(windowX, windowY, windowWidth, windowHeight);
         }
-        private void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private async void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             shortcutsList.Visibility = Visibility.Visible;
 
@@ -114,7 +114,7 @@ namespace Key_Wizard
 
                 sections.Add(new Section { Name = section.Key, Items = items });
             }
-            List<ListItem> results = Search.FuzzySearch(searchList, searchQuery);
+            List<ListItem> results = NewSearch.Search(searchList, searchQuery);
             if (string.IsNullOrWhiteSpace(searchQuery) || !results.Any())
             {
                 shortcutsList.ItemsSource = display;
