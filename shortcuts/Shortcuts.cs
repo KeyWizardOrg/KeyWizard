@@ -738,6 +738,14 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.WIN);
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+        public void ctrlC()
+        {
+            FocusWindowBehind();
+=======
+>>>>>>> 365afb1e286e6b2d1fdc65d635f265f5b414165d
         //Jan:<add key="Windows key + Alt + H" action="When voice typing is open, set the focus to the keyboard" function ="windowsKeyAltH"/>
             //<add key = "Windows key + Alt + K" action="Mute or unmute the microphone in supported apps" function ="windowsKeyAltK"/>
             //<add key = "Windows key + Alt + Up arrow" action="Snap the active window to the top half of the screen" function ="windowsKeyAltUp"/>
@@ -798,6 +806,7 @@ namespace Key_Wizard.shortcuts
         public void windowsKeyComma()
         {
             Keys.Press(Keys.WIN);
+<<<<<<< HEAD
             Keys.Press(Keys.OEM_COMMA);
             Keys.Release(Keys.OEM_COMMA);
             Keys.Release(Keys.WIN);
@@ -807,11 +816,18 @@ namespace Key_Wizard.shortcuts
 >>>>>>> main
         {
             Keys.Press(Keys.WIN);
+=======
+>>>>>>> 5eacf4c4a4359b84b376bec35e03166f82cb76dd
+>>>>>>> 365afb1e286e6b2d1fdc65d635f265f5b414165d
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.C);
             Keys.Release(Keys.C);
             Keys.Release(Keys.CTRL);
+<<<<<<< HEAD
             Keys.Release(Keys.WIN);
+=======
+<<<<<<< HEAD
+>>>>>>> 365afb1e286e6b2d1fdc65d635f265f5b414165d
         }
 <<<<<<< HEAD
 =======
@@ -850,6 +866,11 @@ namespace Key_Wizard.shortcuts
             Keys.Press(Keys.SPACEBAR);
             Keys.Release(Keys.SPACEBAR);
             Keys.Release(Keys.CTRL);
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 5eacf4c4a4359b84b376bec35e03166f82cb76dd
+>>>>>>> 365afb1e286e6b2d1fdc65d635f265f5b414165d
             Keys.Release(Keys.WIN);
         }
 
