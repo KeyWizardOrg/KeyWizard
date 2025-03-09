@@ -37,6 +37,8 @@ namespace Key_Wizard
     {
         private Dictionary<string, CreateSections> shortcutDictionary;
         private List<ListItem> searchList;
+        private DispatcherTimer searchDelayTimer;
+        private const int SEARCH_DELAY_MS = 300; // 300ms delay, adjust as needed
 
         [DllImport("kernel32.dll")]
         static extern bool AllocConsole();
@@ -47,6 +49,11 @@ namespace Key_Wizard
             // AllocConsole();
 
             this.InitializeComponent();
+
+            // Initialize the search delay timer
+            searchDelayTimer = new DispatcherTimer();
+            searchDelayTimer.Interval = TimeSpan.FromMilliseconds(SEARCH_DELAY_MS);
+            searchDelayTimer.Tick += SearchDelayTimer_Tick;
 
             // Get the AppWindow for the current window
             var hWnd = WindowNative.GetWindowHandle(this);
@@ -75,6 +82,17 @@ namespace Key_Wizard
         }
         private void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            // Reset and restart the timer
+            searchDelayTimer.Stop();
+            searchDelayTimer.Start();
+        }
+
+        private void SearchDelayTimer_Tick(object sender, object e)
+        {
+            // Stop the timer
+            searchDelayTimer.Stop();
+
+            // Now perform the search
             string searchQuery = searchTextBox.Text;
             ObservableCollection<Section> display = new ObservableCollection<Section>();
 
