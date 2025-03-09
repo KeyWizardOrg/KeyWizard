@@ -67,9 +67,10 @@ namespace Key_Wizard
                 if (presenter != null)
                 {
                     presenter.IsMaximizable = false; // Disable the maximize button
-                    presenter.IsResizable = true;  // Disable resizing
+                    presenter.IsResizable = false;  // Disable resizing
                     presenter.IsMinimizable = false; // Disable the minimize button
-                }
+                    presenter.SetBorderAndTitleBar(true, false);
+                 }
             }
 
             // Extend the client area into the title bar
@@ -191,6 +192,14 @@ namespace Key_Wizard
                 contentWidth,
                 contentHeight
             ));
+        }
+
+        private void MainGrid_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Escape)
+            {
+                this.Close(); // Close the app when ESC is pressed
+            }
         }
     }
 }
