@@ -133,20 +133,27 @@ namespace Key_Wizard
 
         private void TriggerAction(ListItem item)
         {
-            var methodInfo = typeof(Shortcuts).GetMethod(item.Action, System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
-
-            if (methodInfo != null)
+            try
             {
-                var result = methodInfo.Invoke(null, null);
-                if (result is Action action)
+                var shortcuts = new Shortcuts(this);
+
+                var methodInfo = typeof(Shortcuts).GetMethod(item.Action,
+                    System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+
+                if (methodInfo != null)
                 {
-                    action.Invoke();
+                    methodInfo.Invoke(shortcuts, null);
+                    this.Close();
                 }
-                this.Close();
+            }
+            catch (Exception ex)
+            {
+                
             }
             // Right now there is no error handling for if the action doesn't exist as we do not want any
             // errors during the demo. We will add some error handling once we have all the actions implemented.
         }
+
 
         private void shortcutsList_SizeChanged(object sender, SizeChangedEventArgs e)
         {
