@@ -17,7 +17,7 @@ namespace Microsoft_Key_Wizard_Tests
             {
                 new Key_Wizard.ListItem { Prefix = "Test", Suffix = "Item", Action = "TestAction" }
             };
-            var results = Key_Wizard.search.Search.FuzzySearch(items, "NoMatch");
+            var results = Key_Wizard.search.NewSearch.Search(items, "ThisWillNotMatch");
             Assert.AreEqual(0, results.Count);
         }
 
@@ -28,7 +28,7 @@ namespace Microsoft_Key_Wizard_Tests
             {
                 new Key_Wizard.ListItem { Prefix = "Test", Suffix = "Item", Action = "TestAction" }
             };
-            var results = Key_Wizard.search.Search.FuzzySearch(items, "Test");
+            var results = Key_Wizard.search.NewSearch.Search(items, "Test");
             Assert.AreEqual(1, results.Count);
             Assert.AreEqual("Test Item", results[0].Prefix + " " + results[0].Suffix);
         }
