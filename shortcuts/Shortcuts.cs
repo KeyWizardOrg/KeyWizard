@@ -43,7 +43,7 @@ namespace Key_Wizard.shortcuts
         }
 
         // Copilot Keys 
-            // Could have it made so test if copilot is available first, and if its not, run windows search
+        // Could have it made so test if copilot is available first, and if its not, run windows search
         public void CopilotKey()
         {
             Keys.Press(Keys.WIN);
