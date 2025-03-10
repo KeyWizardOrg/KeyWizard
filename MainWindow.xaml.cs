@@ -115,8 +115,6 @@ namespace Key_Wizard
 
             shortcutsList.ItemsSource = display;
         }
-
-
         private void ListView_KeyDown(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key == VirtualKey.Enter || e.Key == VirtualKey.Space)
