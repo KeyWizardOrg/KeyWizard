@@ -25,18 +25,28 @@ namespace Key_Wizard.search
             var scores = new PriorityQueue<double, double>(new MaxHeapComparer());
 
             var querySizeFactor = (double) normalizedQuery.Length / 10;
+
+            var queries = SearchLib.ExtraQueries(normalizedQuery);
             foreach (var item in items)
             {
                 var target = SearchLib.NormalizeQuery(item.Suffix);
 
-                // carry out both algorithms on input query and suffix
-                var jaccard = JaccardSimilarity(normalizedQuery, target);
-                var damerau = DamerauLevenshteinDistance(normalizedQuery, target);
+                double distance = 1;
+                foreach (var currentQuery in queries)
+                {
+                    // carry out both algorithms on input query and suffix
+                    var jaccard = JaccardSimilarity(currentQuery, target);
+                    var damerau = DamerauLevenshteinDistance(currentQuery, target);
 
-                // calculate value combining jaccard and damerau using weight
-                var weight = 0.5;
-                var distance = weight * jaccard + (1 - weight) * damerau;
-                distance = distance * querySizeFactor;
+                    // calculate value combining jaccard and damerau using weight
+                    var weight = 0.5;
+                    var current = weight * jaccard + (1 - weight) * damerau;
+                    current *= querySizeFactor;
+                    if (current < distance)
+                    {
+                        distance = current;
+                    }
+                }              
 
                 // only add result if distance is reasonable
                 if (distance < 0.8)
