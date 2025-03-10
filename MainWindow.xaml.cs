@@ -23,6 +23,7 @@ namespace Key_Wizard
 {
     public class ListItem
     {
+        public string Section { get; set; }  // Section
         public string Prefix { get; set; }  // Bold part
         public string Suffix { get; set; }  // Normal part
         public string Action { get; set; }  // Function to be triggered on click
@@ -35,9 +36,10 @@ namespace Key_Wizard
     }
     public sealed partial class MainWindow : Window
     {
-        private const Double MAX_HEIGHT = 0.3;
-        private const Double MAX_WIDTH = 0.4;
         private Dictionary<string, CreateSections> shortcutDictionary;
+        private List<ListItem> searchList;
+        private DispatcherTimer searchDelayTimer;
+        private const int SEARCH_DELAY_MS = 300; // 300ms delay, adjust as needed
 
         [DllImport("kernel32.dll")]
         static extern bool AllocConsole();
@@ -49,10 +51,18 @@ namespace Key_Wizard
 
             this.InitializeComponent();
 
+            // Initialize the search delay timer
+            searchDelayTimer = new DispatcherTimer();
+            searchDelayTimer.Interval = TimeSpan.FromMilliseconds(SEARCH_DELAY_MS);
+            searchDelayTimer.Tick += SearchDelayTimer_Tick;
+
             // Get the AppWindow for the current window
             var hWnd = WindowNative.GetWindowHandle(this);
             var windowId = Win32Interop.GetWindowIdFromWindow(hWnd);
             var appWindow = AppWindow.GetFromWindowId(windowId);
+
+            // Hide the window from the taskbar and Alt+Tab
+            appWindow.IsShownInSwitchers = false;
 
             // Set the presenter to OverlappedPresenter and disable the maximize, minimize, and close buttons
             if (appWindow != null)
@@ -61,70 +71,49 @@ namespace Key_Wizard
                 if (presenter != null)
                 {
                     presenter.IsMaximizable = false; // Disable the maximize button
-                    presenter.IsResizable = true;  // Disable resizing
+                    presenter.IsResizable = false;  // Disable resizing
                     presenter.IsMinimizable = false; // Disable the minimize button
-                }
+                    presenter.SetBorderAndTitleBar(true, false);
+                 }
             }
 
             // Extend the client area into the title bar
             this.ExtendsContentIntoTitleBar = true;
             this.SetTitleBar(null); // Set to null to remove the default title bar
 
-            this.AppWindow.MoveAndResize(GetWindowSizeAndPos(0.3, 0.06));
-
-            shortcutDictionary = new Dictionary<string, CreateSections>();
+            this.AppWindow.MoveAndResize(Screen.GetWindowSizeAndPos(this, Screen.MIN_WIDTH, Screen.MIN_HEIGHT));
             shortcutDictionary = CreateDictionary.InitList();
-        }
-
-        private RectInt32 GetWindowSizeAndPos(double widthPercentage, double heightPercentage)
-        {
-            var hWnd = WindowNative.GetWindowHandle(this);
-            var windowId = Win32Interop.GetWindowIdFromWindow(hWnd);
-            var displayArea = DisplayArea.GetFromWindowId(windowId, DisplayAreaFallback.Primary);
-            var workArea = displayArea.WorkArea;
-
-            int windowWidth = (int)(workArea.Width * widthPercentage);
-            int windowHeight = (int)(workArea.Height * heightPercentage);
-
-            int windowX = (workArea.Width - windowWidth) / 2;
-            int windowY = (workArea.Height - windowHeight) / 2;
-
-            return new RectInt32(windowX, windowY, windowWidth, windowHeight);
+            searchList = CreateDictionary.InitSearch(shortcutDictionary);
         }
         private void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            shortcutsList.Visibility = Visibility.Visible;
+            // Reset and restart the timer
+            searchDelayTimer.Stop();
+            searchDelayTimer.Start();
+        }
 
-            ObservableCollection<Section> sections = new ObservableCollection<Section>();
+        private void SearchDelayTimer_Tick(object sender, object e)
+        {
+            // Stop the timer
+            searchDelayTimer.Stop();
+
+            // Now perform the search
             string searchQuery = searchTextBox.Text;
-            List<ListItem> searchList = new List<ListItem>();
-
             ObservableCollection<Section> display = new ObservableCollection<Section>();
 
-            // Populate the ListView with the key-action pairs
-            foreach (var section in shortcutDictionary)
-            {
-                ObservableCollection<ListItem> items = new ObservableCollection<ListItem>();
-
-                foreach (var keyAction in section.Value.Data)
-                {
-                    ListItem newItem = new ListItem { Prefix = $"{keyAction.Key}: ", Suffix = $"{keyAction.Value.action}", Action = $"{keyAction.Value.function}" };
-                    items.Add(newItem);
-                    searchList.Add(newItem);
-                }
-
-                sections.Add(new Section { Name = section.Key, Items = items });
-            }
             List<ListItem> results = Search.FuzzySearch(searchList, searchQuery);
-            if (string.IsNullOrWhiteSpace(searchQuery) || !results.Any())
+            if (!string.IsNullOrWhiteSpace(searchQuery) && results.Any())
             {
-                shortcutsList.ItemsSource = display;
+                display.Add(new Section { Name = "Search Results", Items = new ObservableCollection<ListItem>(results) });
+                ResultsBorderBar.Visibility = Visibility.Visible;
             }
             else
             {
-                display.Add(new Section { Name = "Search Results", Items = new ObservableCollection<ListItem>(results) });
-                shortcutsList.ItemsSource = display;
+                this.AppWindow.MoveAndResize(Screen.GetWindowSizeAndPos(this, Screen.MIN_WIDTH, Screen.MIN_HEIGHT));
+                ResultsBorderBar.Visibility = Visibility.Collapsed;
             }
+
+            shortcutsList.ItemsSource = display;
         }
 
         private void ListView_KeyDown(object sender, KeyRoutedEventArgs e)
@@ -172,14 +161,37 @@ namespace Key_Wizard
 
             // Get display information
             var workArea = DisplayArea.Primary.WorkArea;
+            double screenAspectRatio = (double)workArea.Width / workArea.Height;
 
-            // Ensure window doesn't exceed screen bounds
-            var maxWidth = workArea.Width * MAX_WIDTH; // 10px margin on each side
-            var maxHeight = workArea.Height * MAX_HEIGHT;
+            // Calculate base max and min dimensions
+            var maxWidth = workArea.Width * Screen.MAX_WIDTH;
+            var maxHeight = workArea.Height * Screen.MAX_HEIGHT;
+            var minWidth = workArea.Width * Screen.MIN_WIDTH;
+            var minHeight = workArea.Height * Screen.MIN_HEIGHT;
 
-            contentWidth = (int)Math.Min(contentWidth, maxWidth);
-            contentHeight = (int)Math.Min(contentHeight, maxHeight);
+            // Adjust for aspect ratio
+            var (adjustedMaxWidth, adjustedMaxHeight) = Screen.AdjustForAspectRatio(
+                (int)maxWidth,
+                (int)maxHeight,
+                screenAspectRatio,
+                Screen.MAX_WIDTH,
+                Screen.MAX_HEIGHT);
 
+            var (adjustedMinWidth, adjustedMinHeight) = Screen.AdjustForAspectRatio(
+                (int)minWidth,
+                (int)minHeight,
+                screenAspectRatio,
+                Screen.MIN_WIDTH,
+                Screen.MIN_HEIGHT);
+
+            // Apply constraints
+            contentWidth = Math.Min(contentWidth, adjustedMaxWidth);
+            contentHeight = Math.Min(contentHeight, adjustedMaxHeight);
+
+            contentWidth = Math.Max(contentWidth, adjustedMinWidth);
+            contentHeight = Math.Max(contentHeight, adjustedMinHeight);
+
+            // Center the window
             this.AppWindow.MoveAndResize(new RectInt32(
                 (workArea.Width - contentWidth) / 2,
                 (workArea.Height - contentHeight) / 2,
@@ -217,6 +229,22 @@ namespace Key_Wizard
             {
                 Debug.WriteLine($"Speech Recognition Error: {ex.Message}");
                 searchTextBox.Text = "Speech Recognition not supported.";
+            }
+        }
+
+        private void MainGrid_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Escape)
+            {
+                this.Close(); // Close the app when ESC is pressed
+            }
+        }
+
+        private void Window_Activated(object sender, WindowActivatedEventArgs e)
+        {
+            if (e.WindowActivationState == WindowActivationState.Deactivated)
+            {
+                this.Close(); // Close the app when focus is lost
             }
         }
     }

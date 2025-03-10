@@ -62,6 +62,23 @@ namespace Key_Wizard.startup
             //}
             return sections;
         }
+
+        public static List<ListItem> InitSearch (Dictionary<string, CreateSections> shortcutDictionary)
+        {
+            List<ListItem> searchList = new List<ListItem>();
+            // Populate the ListView with the key-action pairs
+            foreach (var section in shortcutDictionary)
+            {
+                String sectionName = section.Key.Replace('_', ' ');
+
+                foreach (var keyAction in section.Value.Data)
+                {
+                    ListItem newItem = new ListItem { Section = $"{sectionName}  ", Prefix = $"{keyAction.Key}: ", Suffix = $"{keyAction.Value.action}", Action = $"{keyAction.Value.function}" };
+                    searchList.Add(newItem);
+                }
+            }
+            return searchList;
+        }
     }
 
     internal class CreateSections

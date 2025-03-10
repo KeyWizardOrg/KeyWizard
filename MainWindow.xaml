@@ -6,76 +6,131 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Title="Microsoft Key Wizard">
+    Title="Microsoft Key Wizard"
+    Activated="Window_Activated">
 
-    <Grid x:Name="MainGrid" HorizontalAlignment="Stretch" Margin="10" TabFocusNavigation="Cycle">
+    <Window.SystemBackdrop>
+        <MicaBackdrop />
+    </Window.SystemBackdrop>
+
+    <Grid x:Name="MainGrid" 
+          HorizontalAlignment="Stretch" 
+          VerticalAlignment="Stretch" 
+          Margin="0" 
+          TabFocusNavigation="Cycle" 
+          CornerRadius="{StaticResource OverlayCornerRadius}" 
+          KeyDown="MainGrid_KeyDown">
+
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
+            <RowDefinition Height="Auto" x:Name="SearchRowDefinition"/>
+            <RowDefinition Height="1*" x:Name="ResultsRowDefinition"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" HorizontalAlignment="Stretch">
-
+        <!-- Search Box -->
+        <Grid Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <TextBox x:Name="searchTextBox"
-                    PlaceholderText="KeyWizard"
+                    PlaceholderText="Key Wizard"
                     HorizontalAlignment="Stretch"
-                    VerticalAlignment="Center"
-                    Margin="0,0,5,0"
+                    VerticalAlignment="Stretch"
+                    Margin="0,0,0,0"
+                    Padding="36,16,0,0"
+                    FontSize="16"
+                    Background="Transparent"
                     TextWrapping="Wrap"
-                    TextChanged="searchTextBox_TextChanged"/>
-            <Button x:Name="Listen"
-                Content="🎤"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Margin="0,0,5,0"
-                Click="VoiceInput"/>
+                    TextChanged="searchTextBox_TextChanged">
+                <TextBox.Style>
+                    <Style TargetType="TextBox" BasedOn="{StaticResource DefaultTextBoxStyle}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="TextBox">
+                                    <Grid>
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal"/>
+                                                <VisualState x:Name="Focused">
+                                                    <Storyboard/>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                        <ScrollViewer x:Name="ContentElement"
+                                                    Padding="{TemplateBinding Padding}"
+                                                    Background="{TemplateBinding Background}"
+                                                    BorderThickness="0"
+                                                    IsTabStop="False"/>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
+            <FontIcon
+                    Glyph="&#xE71E;"
+                    FontFamily="Segoe MDL2 Assets"
+                    FontSize="16"
+                    Margin="8,16,0,0"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Left"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
         </Grid>
 
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-            <ListView x:Name="shortcutsList"
-                      Margin="5"
-                      Visibility="Collapsed"
-                      SelectionMode="None"
-                      XYFocusKeyboardNavigation="Enabled"
-                      SizeChanged="shortcutsList_SizeChanged">
+        <!-- Results Area -->
+        <Grid Grid.Row="1">
+            <!-- Top border line -->
+            <Rectangle Height="1"
+                       x:Name="ResultsBorderBar"
+                       Visibility="Collapsed"
+                       Fill="{ThemeResource SystemControlForegroundBaseMediumLowBrush}"
+                       HorizontalAlignment="Stretch"
+                       VerticalAlignment="Top"
+                       Margin="0,8,0,0"/>
 
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="local:Section">
-                        <StackPanel Margin="0,10">
-                            <!-- Section Header -->
-                            <TextBlock Text="{x:Bind Name}"
-                                       FontWeight="SemiBold"
-                                       FontSize="10"
-                                       Margin="0,0,0,5"/>
-
-                            <!-- Section Items List -->
-                            <ListView ItemsSource="{x:Bind Items}"
-                                      SelectionMode="Single"
-                                      KeyDown="ListView_KeyDown"
-                                      IsItemClickEnabled="True"
-                                      ItemClick="ListView_ItemClick">
-                                <ListView.ItemTemplate>
-                                    <DataTemplate x:DataType="local:ListItem">
-                                        <TextBlock Margin="10,5" >
-                                            <Run Text="{x:Bind Prefix}" FontWeight="Bold"/>
-                                            <Run Text="{x:Bind Suffix}"/>
-                                        </TextBlock>
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
-
-                                <!-- Remove selection highlight -->
-                                <ListView.ItemContainerStyle>
-                                    <Style TargetType="ListViewItem">
-                                        <Setter Property="Background" Value="Transparent"/>
-                                        <Setter Property="BorderBrush" Value="Transparent"/>
-                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                    </Style>
-                                </ListView.ItemContainerStyle>
-                            </ListView>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </ScrollViewer>
+            <!-- Results List -->
+            <ScrollViewer VerticalScrollBarVisibility="Auto" 
+                        Margin="0,16,0,4" 
+                        VerticalAlignment="Stretch">
+                <ListView x:Name="shortcutsList"
+                        Margin="8,4,8,8"
+                        SelectionMode="None"
+                        XYFocusKeyboardNavigation="Enabled"
+                        SizeChanged="shortcutsList_SizeChanged"
+                        BorderThickness="0">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="local:Section">
+                            <StackPanel Margin="0,0,0,0">
+                                <TextBlock Text="{x:Bind Name}"
+                                        FontWeight="SemiBold"
+                                        FontSize="12"
+                                        Margin="0,0,0,4"/>
+                                <ListView ItemsSource="{x:Bind Items}"
+                                        SelectionMode="Single"
+                                        KeyDown="ListView_KeyDown"
+                                        IsItemClickEnabled="True"
+                                        ItemClick="ListView_ItemClick"
+                                        BorderThickness="0">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate x:DataType="local:ListItem">
+                                            <TextBlock Margin="0,0,0,0">
+                                                <Run Text="{x:Bind Section}" FontWeight="Normal"/>
+                                                <Run Text="{x:Bind Prefix}" FontWeight="ExtraBold"/>
+                                                <Run Text="{x:Bind Suffix}"/>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                    <ListView.ItemContainerStyle>
+                                        <Style TargetType="ListViewItem">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Setter Property="BorderBrush" Value="Transparent"/>
+                                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                            <Setter Property="Margin" Value="0"/>
+                                        </Style>
+                                    </ListView.ItemContainerStyle>
+                                </ListView>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollViewer>
+        </Grid>
     </Grid>
 </Window>
