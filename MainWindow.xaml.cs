@@ -229,8 +229,8 @@ namespace Key_Wizard
             {
                 Debug.WriteLine($"Speech Recognition Error: {ex.Message}");
                 searchTextBox.Text = "Speech Recognition not supported.";
-	    }
-	}
+            }
+        }
 
         private void MainGrid_KeyDown(object sender, KeyRoutedEventArgs e)
         {
