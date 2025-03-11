@@ -207,6 +207,19 @@ namespace Key_Wizard
         }
         private async void VoiceInput(object sender, RoutedEventArgs e)
         {
+
+            //ListenIcon.Glyph = "\xEC71";
+
+            if (ListenIcon.Glyph == "\xEC71")
+            {
+                ListenIcon.Glyph = "\xE720";
+            }
+            else
+            {
+               ListenIcon.Glyph = "\xEC71";
+            }
+
+            /*
             try
             {
                 using (SpeechRecognizer speechRecognizer = new SpeechRecognizer())
@@ -236,6 +249,7 @@ namespace Key_Wizard
                 Debug.WriteLine($"Speech Recognition Error: {ex.Message}");
                 searchTextBox.Text = "Speech Recognition not supported.";
             }
+            */
         }
 
         private void MainGrid_KeyDown(object sender, KeyRoutedEventArgs e)
