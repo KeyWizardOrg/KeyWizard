@@ -27,6 +27,7 @@ namespace Key_Wizard.shortcuts
 
         private MainWindow mainWindow;
         private const uint GW_HWNDNEXT = 2;
+
         public Shortcuts(MainWindow mainWindow)
         {
             this.mainWindow = mainWindow;
@@ -61,13 +62,9 @@ namespace Key_Wizard.shortcuts
         }
 
         // Text Editing 
-        public void Backspace()
-        {
-            Keys.Press(Keys.BACKSPACE);
-        }
-
         public void ctrlA()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.A);
             Keys.Release(Keys.A);
@@ -76,6 +73,7 @@ namespace Key_Wizard.shortcuts
 
         public void ctrlB()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.B);
             Keys.Release(Keys.B);
@@ -84,6 +82,7 @@ namespace Key_Wizard.shortcuts
 
         public void ctrlBackspace()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.BACKSPACE);
             Keys.Release(Keys.BACKSPACE);
@@ -92,6 +91,7 @@ namespace Key_Wizard.shortcuts
 
         public void ctrlC()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.C);
             Keys.Release(Keys.C);
@@ -100,6 +100,7 @@ namespace Key_Wizard.shortcuts
 
         public void ctrlInsert()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.INSERT);
             Keys.Release(Keys.INSERT);
@@ -108,6 +109,7 @@ namespace Key_Wizard.shortcuts
 
         public void ctrlDel()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.DELETE);
             Keys.Release(Keys.DELETE);
@@ -116,6 +118,7 @@ namespace Key_Wizard.shortcuts
 
         public void ctrlDown()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.DOWN);
             Keys.Release(Keys.DOWN);
@@ -124,6 +127,7 @@ namespace Key_Wizard.shortcuts
 
         public void ctrlEnd()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.END);
             Keys.Release(Keys.END);
@@ -132,6 +136,7 @@ namespace Key_Wizard.shortcuts
 
         public void ctrlF()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.F);
             Keys.Release(Keys.F);
@@ -140,6 +145,7 @@ namespace Key_Wizard.shortcuts
 
         public void ctrlH()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.H);
             Keys.Release(Keys.H);
@@ -148,6 +154,7 @@ namespace Key_Wizard.shortcuts
 
         public void ctrlHome()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.HOME);
             Keys.Release(Keys.HOME);
@@ -156,6 +163,7 @@ namespace Key_Wizard.shortcuts
 
         public void ctrlI()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.I);
             Keys.Release(Keys.I);
@@ -164,6 +172,7 @@ namespace Key_Wizard.shortcuts
 
         public void ctrlLeft()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.LEFT);
             Keys.Release(Keys.LEFT);
@@ -172,6 +181,7 @@ namespace Key_Wizard.shortcuts
 
         public void ctrlRight()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.RIGHT);
             Keys.Release(Keys.RIGHT);
@@ -180,6 +190,7 @@ namespace Key_Wizard.shortcuts
 
         public void ctrlShiftV()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.SHIFT);
             Keys.Press(Keys.V);
@@ -190,6 +201,7 @@ namespace Key_Wizard.shortcuts
 
         public void ctrlU()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.U);
             Keys.Release(Keys.U);
@@ -198,6 +210,7 @@ namespace Key_Wizard.shortcuts
 
         public void ctrlUp()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.UP);
             Keys.Release(Keys.UP);
@@ -206,6 +219,7 @@ namespace Key_Wizard.shortcuts
 
         public void ctrlV()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.V);
             Keys.Release(Keys.V);
@@ -214,6 +228,7 @@ namespace Key_Wizard.shortcuts
 
         public void shiftIns()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.SHIFT);
             Keys.Press(Keys.INSERT);
             Keys.Release(Keys.INSERT);
@@ -222,6 +237,7 @@ namespace Key_Wizard.shortcuts
 
         public void ctrlX()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.X);
             Keys.Release(Keys.X);
@@ -230,6 +246,7 @@ namespace Key_Wizard.shortcuts
 
         public void ctrlY()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.Y);
             Keys.Release(Keys.Y);
@@ -238,10 +255,83 @@ namespace Key_Wizard.shortcuts
 
         public void ctrlZ()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.Z);
             Keys.Release(Keys.Z);
             Keys.Release(Keys.CTRL);
+        }
+
+        public void shiftCtrlDown()
+        {
+            FocusWindowBehind();
+            Keys.Press(Keys.SHIFT);
+            Keys.Press(Keys.CTRL);
+            Keys.Press(Keys.DOWN);
+            Keys.Release(Keys.DOWN);
+            Keys.Release(Keys.CTRL);
+            Keys.Release(Keys.SHIFT);
+        }
+
+        public void shiftCtrlEnd()
+        {
+            FocusWindowBehind();
+            Keys.Press(Keys.SHIFT);
+            Keys.Press(Keys.CTRL);
+            Keys.Press(Keys.END);
+            Keys.Release(Keys.END);
+            Keys.Release(Keys.CTRL);
+            Keys.Release(Keys.SHIFT);
+        }
+
+        public void shiftCtrlHome()
+        {
+            FocusWindowBehind();
+            Keys.Press(Keys.SHIFT);
+            Keys.Press(Keys.CTRL);
+            Keys.Press(Keys.HOME);
+            Keys.Release(Keys.HOME);
+            Keys.Release(Keys.CTRL);
+            Keys.Release(Keys.SHIFT);
+        }
+
+        public void shiftCtrlLeft()
+        {
+            FocusWindowBehind();
+            Keys.Press(Keys.SHIFT);
+            Keys.Press(Keys.CTRL);
+            Keys.Press(Keys.LEFT);
+            Keys.Release(Keys.LEFT);
+            Keys.Release(Keys.CTRL);
+            Keys.Release(Keys.SHIFT);
+        }
+
+        public void shiftCtrlRight()
+        {
+            FocusWindowBehind();
+            Keys.Press(Keys.SHIFT);
+            Keys.Press(Keys.CTRL);
+            Keys.Press(Keys.RIGHT);
+            Keys.Release(Keys.RIGHT);
+            Keys.Release(Keys.CTRL);
+            Keys.Release(Keys.SHIFT);
+        }
+
+        public void shiftCtrlUp()
+        {
+            FocusWindowBehind();
+            Keys.Press(Keys.SHIFT);
+            Keys.Press(Keys.CTRL);
+            Keys.Press(Keys.UP);
+            Keys.Release(Keys.UP);
+            Keys.Release(Keys.CTRL);
+            Keys.Release(Keys.SHIFT);
+        }
+
+        // Functions without FocusWindowBehind()
+        public void Backspace()
+        {
+            Keys.Press(Keys.BACKSPACE);
         }
 
         public void del()
@@ -297,66 +387,6 @@ namespace Key_Wizard.shortcuts
         public void rightArrow()
         {
             Keys.Press(Keys.RIGHT);
-        }
-
-        public void shiftCtrlDown()
-        {
-            Keys.Press(Keys.SHIFT);
-            Keys.Press(Keys.CTRL);
-            Keys.Press(Keys.DOWN);
-            Keys.Release(Keys.DOWN);
-            Keys.Release(Keys.CTRL);
-            Keys.Release(Keys.SHIFT);
-        }
-
-        public void shiftCtrlEnd()
-        {
-            Keys.Press(Keys.SHIFT);
-            Keys.Press(Keys.CTRL);
-            Keys.Press(Keys.END);
-            Keys.Release(Keys.END);
-            Keys.Release(Keys.CTRL);
-            Keys.Release(Keys.SHIFT);
-        }
-
-        public void shiftCtrlHome()
-        {
-            Keys.Press(Keys.SHIFT);
-            Keys.Press(Keys.CTRL);
-            Keys.Press(Keys.HOME);
-            Keys.Release(Keys.HOME);
-            Keys.Release(Keys.CTRL);
-            Keys.Release(Keys.SHIFT);
-        }
-
-        public void shiftCtrlLeft()
-        {
-            Keys.Press(Keys.SHIFT);
-            Keys.Press(Keys.CTRL);
-            Keys.Press(Keys.LEFT);
-            Keys.Release(Keys.LEFT);
-            Keys.Release(Keys.CTRL);
-            Keys.Release(Keys.SHIFT);
-        }
-
-        public void shiftCtrlRight()
-        {
-            Keys.Press(Keys.SHIFT);
-            Keys.Press(Keys.CTRL);
-            Keys.Press(Keys.RIGHT);
-            Keys.Release(Keys.RIGHT);
-            Keys.Release(Keys.CTRL);
-            Keys.Release(Keys.SHIFT);
-        }
-
-        public void shiftCtrlUp()
-        {
-            Keys.Press(Keys.SHIFT);
-            Keys.Press(Keys.CTRL);
-            Keys.Press(Keys.UP);
-            Keys.Release(Keys.UP);
-            Keys.Release(Keys.CTRL);
-            Keys.Release(Keys.SHIFT);
         }
 
         public void shiftDown()
@@ -432,10 +462,10 @@ namespace Key_Wizard.shortcuts
         {
             Keys.Press(Keys.UP);
         }
-
         // Desktop
         public void altA()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.ALT);
             Keys.Press(Keys.A);
             Keys.Release(Keys.A);
@@ -449,6 +479,7 @@ namespace Key_Wizard.shortcuts
 
         public void altF4()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.ALT);
             Keys.Press(Keys.F4);
             Keys.Release(Keys.F4);
@@ -457,6 +488,7 @@ namespace Key_Wizard.shortcuts
 
         public void altF8()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.ALT);
             Keys.Press(Keys.F8);
             Keys.Release(Keys.F8);
@@ -465,6 +497,7 @@ namespace Key_Wizard.shortcuts
 
         public void altLeft()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.ALT);
             Keys.Press(Keys.LEFT);
             Keys.Release(Keys.LEFT);
@@ -473,6 +506,7 @@ namespace Key_Wizard.shortcuts
 
         public void altPageDown()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.ALT);
             Keys.Press(Keys.PAGEDOWN);
             Keys.Release(Keys.PAGEDOWN);
@@ -481,6 +515,7 @@ namespace Key_Wizard.shortcuts
 
         public void altPageUp()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.ALT);
             Keys.Press(Keys.PAGEUP);
             Keys.Release(Keys.PAGEUP);
@@ -489,6 +524,7 @@ namespace Key_Wizard.shortcuts
 
         public void altPrtScn()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.ALT);
             Keys.Press(Keys.PRTSCR);
             Keys.Release(Keys.PRTSCR);
@@ -497,6 +533,7 @@ namespace Key_Wizard.shortcuts
 
         public void altRight()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.ALT);
             Keys.Press(Keys.RIGHT);
             Keys.Release(Keys.RIGHT);
@@ -505,6 +542,7 @@ namespace Key_Wizard.shortcuts
 
         public void altShiftLeft()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.ALT);
             Keys.Press(Keys.SHIFT);
             Keys.Press(Keys.LEFT);
@@ -515,6 +553,7 @@ namespace Key_Wizard.shortcuts
 
         public void altShiftRight()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.ALT);
             Keys.Press(Keys.SHIFT);
             Keys.Press(Keys.RIGHT);
@@ -525,6 +564,7 @@ namespace Key_Wizard.shortcuts
 
         public void altSpace()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.ALT);
             Keys.Press(Keys.SPACEBAR);
             Keys.Release(Keys.SPACEBAR);
@@ -533,6 +573,7 @@ namespace Key_Wizard.shortcuts
 
         public void altTab()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.ALT);
             Keys.Press(Keys.TAB);
             Keys.Release(Keys.TAB);
@@ -547,6 +588,7 @@ namespace Key_Wizard.shortcuts
 
         public void ctrlAltDel()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.ALT);
             Keys.Press(Keys.ESC);
@@ -557,6 +599,7 @@ namespace Key_Wizard.shortcuts
 
         public void ctrlAltTab()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.ALT);
             Keys.Press(Keys.TAB);
@@ -567,6 +610,7 @@ namespace Key_Wizard.shortcuts
 
         public void ctrlEsc()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.ESC);
             Keys.Release(Keys.ESC);
@@ -575,6 +619,7 @@ namespace Key_Wizard.shortcuts
 
         public void ctrlF4()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.F4);
             Keys.Release(Keys.F4);
@@ -583,6 +628,7 @@ namespace Key_Wizard.shortcuts
 
         public void ctrlF5()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.F5);
             Keys.Release(Keys.F5);
@@ -591,6 +637,7 @@ namespace Key_Wizard.shortcuts
 
         public void ctrlR()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.R);
             Keys.Release(Keys.R);
@@ -599,13 +646,16 @@ namespace Key_Wizard.shortcuts
 
         public void ctrlShift()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.SHIFT);
             Keys.Release(Keys.SHIFT);
             Keys.Release(Keys.CTRL);
         }
+
         public void ctrlShiftLeft()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.SHIFT);
             Keys.Press(Keys.LEFT);
@@ -616,6 +666,7 @@ namespace Key_Wizard.shortcuts
 
         public void ctrlShiftRight()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.SHIFT);
             Keys.Press(Keys.RIGHT);
@@ -624,9 +675,9 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.CTRL);
         }
 
-
         public void ctrlShiftEsc()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.SHIFT);
             Keys.Press(Keys.ESC);
@@ -637,28 +688,12 @@ namespace Key_Wizard.shortcuts
 
         public void ctrlSpace()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.SPACEBAR);
             Keys.Release(Keys.SPACEBAR);
             Keys.Release(Keys.CTRL);
-            Keys.Release(Keys.CTRL);
         }
-
-        //public void ctrlY()
-        //{
-        //    Keys.Press(Keys.CTRL);
-        //    Keys.Press(Keys.Y);
-        //    Keys.Release(Keys.Y);
-        //    Keys.Release(Keys.CTRL);
-        //}
-
-        //public void ctrlZ()
-        //{
-        //    Keys.Press(Keys.CTRL);
-        //    Keys.Press(Keys.Z);
-        //    Keys.Release(Keys.Z);
-        //    Keys.Release(Keys.CTRL);
-        //}
 
         public void esc()
         {
@@ -696,9 +731,11 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.PRTSCR);
         }
 
+
         // Windows Keys 
         public void windowsKey()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Release(Keys.WIN);
         }
@@ -710,6 +747,7 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyAltB()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.ALT);
             Keys.Press(Keys.B);
@@ -720,6 +758,7 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyAltD()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.ALT);
             Keys.Press(Keys.D);
@@ -730,6 +769,7 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyAltDown()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.ALT);
             Keys.Press(Keys.DOWN);
@@ -740,6 +780,7 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyAltH()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.ALT);
             Keys.Press(Keys.H);
@@ -750,6 +791,7 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyAltK()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.ALT);
             Keys.Press(Keys.K);
@@ -760,6 +802,7 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyAltUp()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.ALT);
             Keys.Press(Keys.UP);
@@ -770,6 +813,7 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyComma()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.OEM_COMMA);
             Keys.Release(Keys.OEM_COMMA);
@@ -778,6 +822,7 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyCtrlC()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.C);
@@ -803,6 +848,7 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyCtrlShiftB()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.SHIFT);
@@ -815,6 +861,7 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyCtrlSpace()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.SPACEBAR);
@@ -825,6 +872,7 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyCtrlV()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.V);
@@ -835,6 +883,7 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyD()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.D);
             Keys.Release(Keys.D);
@@ -843,6 +892,7 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyDownArrow()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.DOWN);
             Keys.Release(Keys.DOWN);
@@ -856,6 +906,7 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyEsc()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.ESC);
             Keys.Release(Keys.ESC);
@@ -869,6 +920,7 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyForwardSlash()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.OEM_2);
             Keys.Release(Keys.OEM_2);
@@ -882,6 +934,7 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyH()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.H);
             Keys.Release(Keys.H);
@@ -890,6 +943,7 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyHome()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.HOME);
             Keys.Release(Keys.HOME);
@@ -904,6 +958,7 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyJ()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.J);
             Keys.Release(Keys.J);
@@ -917,6 +972,7 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyL()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.L);
             Keys.Release(Keys.L);
@@ -925,6 +981,7 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyLeft()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.LEFT);
             Keys.Release(Keys.LEFT);
@@ -933,6 +990,7 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyM()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.M);
             Keys.Release(Keys.M);
@@ -941,6 +999,7 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyMinus()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.OEM_MINUS);
             Keys.Release(Keys.OEM_MINUS);
@@ -949,6 +1008,7 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyN()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.N);
             Keys.Release(Keys.N);
@@ -957,6 +1017,7 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyO()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.O);
             Keys.Release(Keys.O);
@@ -970,6 +1031,7 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyPause()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.PAUSE);
             Keys.Release(Keys.PAUSE);
@@ -978,6 +1040,7 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyPeriod()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.OEM_PERIOD);
             Keys.Release(Keys.OEM_PERIOD);
@@ -986,6 +1049,7 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyPrtScn()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.PRTSCR);
             Keys.Release(Keys.PRTSCR);
@@ -994,6 +1058,7 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyQ()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.Q);
             Keys.Release(Keys.Q);
@@ -1008,6 +1073,7 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyRight()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.RIGHT);
             Keys.Release(Keys.RIGHT);
@@ -1016,6 +1082,7 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyS()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.S);
             Keys.Release(Keys.S);
@@ -1024,6 +1091,7 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyTab()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.TAB);
             Keys.Release(Keys.TAB);
@@ -1037,6 +1105,7 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyUp()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.UP);
             Keys.Release(Keys.UP);
@@ -1045,14 +1114,36 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyV()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.V);
             Keys.Release(Keys.V);
             Keys.Release(Keys.WIN);
         }
 
+        public void windowsKeyX()
+        {
+            FocusWindowBehind();
+            Keys.Press(Keys.WIN);
+            Keys.Press(Keys.X);
+            Keys.Release(Keys.X);
+            Keys.Release(Keys.WIN);
+        }
+
+        public void windowsKeyZ()
+        {
+            FocusWindowBehind();
+            Keys.Press(Keys.WIN);
+            Keys.Press(Keys.Z);
+            Keys.Release(Keys.Z);
+            Keys.Release(Keys.WIN);
+        }
+
+
+        // Command Prompt
         public void ctrlIns()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.INSERT);
             Keys.Release(Keys.INSERT);
@@ -1061,6 +1152,7 @@ namespace Key_Wizard.shortcuts
 
         public void ctrlM()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.M);
             Keys.Release(Keys.M);
@@ -1069,36 +1161,43 @@ namespace Key_Wizard.shortcuts
 
         public void altSelectionKey()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.ALT);
             // The actual selection key should be pressed manually after this function is called.
             Keys.Release(Keys.ALT);
         }
+
         public void arrowLeft()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.LEFT);
             Keys.Release(Keys.LEFT);
         }
 
         public void arrowRight()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.RIGHT);
             Keys.Release(Keys.RIGHT);
         }
 
         public void arrowUp()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.UP);
             Keys.Release(Keys.UP);
         }
 
         public void arrowDown()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.DOWN);
             Keys.Release(Keys.DOWN);
         }
 
         public void ctrlHomeMarkMode()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.HOME);
             Keys.Release(Keys.HOME);
@@ -1107,6 +1206,7 @@ namespace Key_Wizard.shortcuts
 
         public void ctrlEndMarkMode()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.END);
             Keys.Release(Keys.END);
@@ -1115,6 +1215,7 @@ namespace Key_Wizard.shortcuts
 
         public void ctrlHomeHistoryNav()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.HOME);
             Keys.Release(Keys.HOME);
@@ -1123,6 +1224,7 @@ namespace Key_Wizard.shortcuts
 
         public void ctrlEndHistoryNav()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.END);
             Keys.Release(Keys.END);
@@ -1156,14 +1258,10 @@ namespace Key_Wizard.shortcuts
 
         public void ctrl123()
         {
-            // This function would need additional logic to press a specific number key (e.g., 1, 2, 3).
-            // Example: Pressing "CTRL + 1"
-            // Keys.Press(Keys.CTRL);
-            // Keys.Press(Keys.D1);  // Replace with D2, D3, etc., for different numbers.
-            // Keys.Release(Keys.D1);
-            // Keys.Release(Keys.CTRL);
-
-            // Do we want?
+            Keys.Press(Keys.CTRL);
+            ShowNumberPad();
+            pressDesiredKey(NumberPadWindow.SelectedNumber);
+            Keys.Release(Keys.CTRL);
         }
 
         public void shiftTab()
@@ -1186,33 +1284,10 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.BACKSPACE);
         }
 
-        public void ArrowUp()
-        {
-            Keys.Press(Keys.UP);
-            Keys.Release(Keys.UP);
-        }
-
-        public void ArrowDown()
-        {
-            Keys.Press(Keys.DOWN);
-            Keys.Release(Keys.DOWN);
-        }
-
-        public void ArrowLeft()
-        {
-            Keys.Press(Keys.LEFT);
-            Keys.Release(Keys.LEFT);
-        }
-
-        public void ArrowRight()
-        {
-            Keys.Press(Keys.RIGHT);
-            Keys.Release(Keys.RIGHT);
-        }
-
         // File Explorer
         public void altD()
         {
+            FocusWindowBehind(); // Added where switching or focusing on windows might be needed
             Keys.Press(Keys.ALT);
             Keys.Press(Keys.D);
             Keys.Release(Keys.D);
@@ -1221,6 +1296,7 @@ namespace Key_Wizard.shortcuts
 
         public void altEnter()
         {
+            FocusWindowBehind(); // Added where switching or focusing on windows might be needed
             Keys.Press(Keys.ALT);
             Keys.Press(Keys.ENTER);
             Keys.Release(Keys.ENTER);
@@ -1236,6 +1312,7 @@ namespace Key_Wizard.shortcuts
 
         public void altP()
         {
+            FocusWindowBehind(); // Added where switching or focusing on windows might be needed
             Keys.Press(Keys.ALT);
             Keys.Press(Keys.P);
             Keys.Release(Keys.P);
@@ -1244,6 +1321,7 @@ namespace Key_Wizard.shortcuts
 
         public void altShiftP()
         {
+            FocusWindowBehind(); // Added where switching or focusing on windows might be needed
             Keys.Press(Keys.ALT);
             Keys.Press(Keys.SHIFT);
             Keys.Press(Keys.P);
@@ -1254,6 +1332,7 @@ namespace Key_Wizard.shortcuts
 
         public void altUp()
         {
+            FocusWindowBehind(); // Added where switching or focusing on windows might be needed
             Keys.Press(Keys.ALT);
             Keys.Press(Keys.UP);
             Keys.Release(Keys.UP);
@@ -1338,7 +1417,8 @@ namespace Key_Wizard.shortcuts
         {
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.SHIFT);
-            // Handle pressing a number key separately  // Need 1-3
+            ShowNumberPad();
+            pressDesiredKey(NumberPadWindow.SelectedNumber);
             Keys.Release(Keys.SHIFT);
             Keys.Release(Keys.CTRL);
         }
@@ -1431,8 +1511,19 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.SHIFT);
         }
 
+        // Multiple Desktops
+        public void windowsKeytab()
+        {
+            FocusWindowBehind();
+            Keys.Press(Keys.WIN);
+            Keys.Press(Keys.TAB);
+            Keys.Release(Keys.TAB);
+            Keys.Release(Keys.WIN);
+        }
+
         public void windowsKeyCtrlD()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.D);
@@ -1443,6 +1534,7 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyCtrlRight()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.RIGHT);
@@ -1453,6 +1545,7 @@ namespace Key_Wizard.shortcuts
 
         public void windowsKeyCtrlLeft()
         {
+            FocusWindowBehind();
             Keys.Press(Keys.WIN);
             Keys.Press(Keys.CTRL);
             Keys.Press(Keys.LEFT);
@@ -1460,6 +1553,7 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.CTRL);
             Keys.Release(Keys.WIN);
         }
+
 
         public void windowsKeyCtrlF4()
         {
@@ -1475,23 +1569,148 @@ namespace Key_Wizard.shortcuts
         }
 
         // Taskbar
-
-
-
-        // NEED TO ADD
-
-        // Settings 
-        public void arrowKeys()
+        public void altShiftUp()
         {
+            FocusWindowBehind();
+            Keys.Press(Keys.ALT);
+            Keys.Press(Keys.SHIFT);
             Keys.Press(Keys.UP);
             Keys.Release(Keys.UP);
+            Keys.Release(Keys.SHIFT);
+            Keys.Release(Keys.ALT);
+        }
+
+        public void altShiftDown()
+        {
+            FocusWindowBehind();
+            Keys.Press(Keys.ALT);
+            Keys.Press(Keys.SHIFT);
             Keys.Press(Keys.DOWN);
             Keys.Release(Keys.DOWN);
-            Keys.Press(Keys.LEFT);
-            Keys.Release(Keys.LEFT);
-            Keys.Press(Keys.RIGHT);
-            Keys.Release(Keys.RIGHT);
+            Keys.Release(Keys.SHIFT);
+            Keys.Release(Keys.ALT);
         }
+
+        public void windowsKeyAltEnter()
+        {
+            FocusWindowBehind();
+            Keys.Press(Keys.WIN);
+            Keys.Press(Keys.ALT);
+            Keys.Press(Keys.RETURN);
+            Keys.Release(Keys.RETURN);
+            Keys.Release(Keys.ALT);
+            Keys.Release(Keys.WIN);
+        }
+
+        public void windowsKeyAlt0_9()
+        {
+            FocusWindowBehind();
+            Keys.Press(Keys.WIN);
+            Keys.Press(Keys.ALT);
+            ShowNumberPad();
+            pressDesiredKey(NumberPadWindow.SelectedNumber);
+            Keys.Release(Keys.ALT);
+            Keys.Release(Keys.WIN);
+        }
+
+        public void windowsKeyB()
+        {
+            Keys.Press(Keys.WIN);
+            Keys.Press(Keys.B);
+            Keys.Release(Keys.B);
+            Keys.Release(Keys.WIN);
+        }
+
+        public void windowsKeyCtrl0_9()
+        {
+            FocusWindowBehind();
+            Keys.Press(Keys.WIN);
+            Keys.Press(Keys.CTRL);
+            ShowNumberPad();
+            pressDesiredKey(NumberPadWindow.SelectedNumber);
+            Keys.Release(Keys.CTRL);
+            Keys.Release(Keys.WIN);
+        }
+
+        public void windowsKeyCtrlShift0_9()
+        {
+            FocusWindowBehind();
+            Keys.Press(Keys.WIN);
+            Keys.Press(Keys.CTRL);
+            Keys.Press(Keys.SHIFT);
+            ShowNumberPad();
+            pressDesiredKey(NumberPadWindow.SelectedNumber);
+            Keys.Release(Keys.SHIFT);
+            Keys.Release(Keys.CTRL);
+            Keys.Release(Keys.WIN);
+        }
+
+        public void windowsKey0_9()
+        {
+            FocusWindowBehind();
+            Keys.Press(Keys.WIN);
+            ShowNumberPad();
+            pressDesiredKey(NumberPadWindow.SelectedNumber);
+            Keys.Release(Keys.WIN);
+        }
+
+        public void windowsKeyShift0_9()
+        {
+            FocusWindowBehind();
+            Keys.Press(Keys.WIN);
+            Keys.Press(Keys.SHIFT);
+            ShowNumberPad();
+            pressDesiredKey(NumberPadWindow.SelectedNumber);
+            Keys.Release(Keys.SHIFT);
+            Keys.Release(Keys.WIN);
+        }
+
+        public void windowsKeyT()
+        {
+            Keys.Press(Keys.WIN);
+            Keys.Press(Keys.T);
+            Keys.Release(Keys.T);
+            Keys.Release(Keys.WIN);
+        }
+
+        ////public void ctrlSelectGroupApp()
+        ////{
+        ////    Keys.Press(Keys.CTRL);
+        ////    Mouse.Click(); // Assuming this is selecting a grouped app on the taskbar
+        ////    Keys.Release(Keys.CTRL);
+        ////}
+
+        ////public void ctrlShiftSelectApp()
+        ////{
+        ////    Keys.Press(Keys.CTRL);
+        ////    Keys.Press(Keys.SHIFT);
+        ////    Mouse.Click(); // Click the app icon
+        ////    Keys.Release(Keys.SHIFT);
+        ////    Keys.Release(Keys.CTRL);
+        ////}
+
+        ////public void shiftRightClickApp()
+        ////{
+        ////    Keys.Press(Keys.SHIFT);
+        ////    Mouse.RightClick(); // Right-click the app icon
+        ////    Keys.Release(Keys.SHIFT);
+        ////}
+
+        ////public void rightClickGroupedTaskbar()
+        ////{
+        ////    Keys.Press(Keys.SHIFT);
+        ////    Mouse.RightClick(); // Right-click on a grouped app
+        ////    Keys.Release(Keys.SHIFT);
+        ////}
+
+        ////public void shiftSelectApp()
+        ////{
+        ////    Keys.Press(Keys.SHIFT);
+        ////    Mouse.Click(); // Click app icon to open another instance
+        ////    Keys.Release(Keys.SHIFT);
+        ////}
+
+        // Settings 
 
         public void enter()
         {
@@ -1499,5 +1718,76 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.ENTER);
         }
 
+        public void pressDesiredKey(int key)
+        {
+            if (key == 0)
+            {
+                Keys.Press(Keys.ZERO);
+                Keys.Release(Keys.ZERO);
+
+            }
+            else if (key == 1)
+            {
+                Keys.Press(Keys.ONE);
+                Keys.Release(Keys.ONE);
+            }
+            else if (key == 2)
+            {
+                Keys.Press(Keys.TWO);
+                Keys.Release(Keys.TWO);
+            }
+            else if (key == 3)
+            {
+                Keys.Press(Keys.THREE);
+                Keys.Release(Keys.THREE);
+            }
+            else if (key == 4)
+            {
+                Keys.Press(Keys.FOUR);
+                Keys.Release(Keys.FOUR);
+            }
+            else if (key == 5)
+            {
+                Keys.Press(Keys.FIVE);
+                Keys.Release(Keys.FIVE);
+            }
+            else if (key == 6)
+            {
+                Keys.Press(Keys.SIX);
+                Keys.Release(Keys.SIX);
+            }
+            else if (key == 7)
+            {
+                Keys.Press(Keys.SEVEN);
+                Keys.Release(Keys.SEVEN);
+            }
+            else if (key == 8)
+            {
+                Keys.Press(Keys.EIGHT);
+                Keys.Release(Keys.EIGHT);
+            }
+            else
+            {
+                Keys.Press(Keys.NINE);
+                Keys.Release(Keys.NINE);
+            }
+        }
+
+        private void ShowNumberPad()
+        {
+            Console.WriteLine("ShowNumberPad called");
+
+            try
+            {
+                var numberPadWindow = new NumberPadWindow();
+
+                numberPadWindow.Activate();
+                Console.WriteLine("Number Pad window shown.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error showing window: {ex.Message}");
+            }
+        }
     }
 }
