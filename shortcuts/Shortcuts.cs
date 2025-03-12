@@ -52,7 +52,6 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.C);
             Keys.Release(Keys.WIN);
         }
-
         public void CopilotKeyDisabled()
         {
             Keys.Press(Keys.WIN);
@@ -740,9 +739,10 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.WIN);
         }
 
-        public void windowsKeyA()
+        public int windowsKeyA()
         {
-            Process.Start("ms-actioncenter:");
+            var process = Process.Start("ms-actioncenter:");
+            return process.Id;
         }
 
         public void windowsKeyAltB()
@@ -831,19 +831,22 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.WIN);
         }
 
-        public void windowsKeyCtrlEnter()
+        public int windowsKeyCtrlEnter()
         {
-            Process.Start("Narrator.exe");
+            var process = Process.Start("Narrator.exe");
+            return process.Id;
         }
 
-        public void windowsKeyCtrlF()
+        public int windowsKeyCtrlF()
         {
-            Process.Start("control.exe", "/name Microsoft.NetworkAndSharingCenter");
+            var process = Process.Start("control.exe", "/name Microsoft.NetworkAndSharingCenter");
+            return process.Id;
         }
 
-        public void windowsKeyCtrlQ()
+        public int windowsKeyCtrlQ()
         {
-            Process.Start("quickassist:");
+            var process = Process.Start("quickassist:");
+            return process.Id;
         }
 
         public void windowsKeyCtrlShiftB()
@@ -899,9 +902,10 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.WIN);
         }
 
-        public void windowsKeyE()
+        public int windowsKeyE()
         {
-            Process.Start("explorer.exe");
+            var process = Process.Start("explorer.exe");
+            return process.Id;
         }
 
         public void windowsKeyEsc()
@@ -913,9 +917,10 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.WIN);
         }
 
-        public void windowsKeyF()
+        public int windowsKeyF()
         {
-            Process.Start("ms-feedback:");
+            var process = Process.Start("ms-feedback:");
+            return process.Id;
         }
 
         public void windowsKeyForwardSlash()
@@ -927,9 +932,10 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.WIN);
         }
 
-        public void windowsKeyG()
+        public int windowsKeyG()
         {
-            Process.Start("ms-gamebar:");
+            var process = Process.Start("ms-gamebar:");
+            return process.Id;
         }
 
         public void windowsKeyH()
@@ -965,9 +971,10 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.WIN);
         }
 
-        public void windowsKeyK()
+        public int windowsKeyK()
         {
-            Process.Start("ms-settings-connectabledevices:devicediscovery");
+            var process = Process.Start("ms-settings-connectabledevices:devicediscovery");
+            return process.Id;
         }
 
         public void windowsKeyL()
@@ -1024,9 +1031,10 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.WIN);
         }
 
-        public void windowsKeyP()
+        public int windowsKeyP()
         {
-            Process.Start("ms-settings-displays-topology:");
+            var process = Process.Start("ms-settings-displays-topology:");
+            return process.Id;
         }
 
         public void windowsKeyPause()
@@ -1098,9 +1106,10 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.WIN);
         }
 
-        public void windowsKeyU()
+        public int windowsKeyU()
         {
-            Process.Start("ms-settings:easeofaccess");
+            var process = Process.Start("ms-settings:easeofaccess");
+            return process.Id;
         }
 
         public void windowsKeyUp()
