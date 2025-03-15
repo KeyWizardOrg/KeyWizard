@@ -198,25 +198,50 @@ namespace Key_Wizard
             contentHeight = Math.Max(contentHeight, adjustedMinHeight);
 
             // Center the window
-            this.AppWindow.MoveAndResize(new RectInt32(
-                (workArea.Width - contentWidth) / 2,
-                (workArea.Height - contentHeight) / 2,
-                contentWidth,
-                contentHeight
-            ));
+             this.AppWindow.Resize(new SizeInt32(contentWidth, contentHeight));
+            //this.AppWindow.MoveAndResize(new RectInt32((workArea.Width - contentWidth) / 2,(workArea.Height - contentHeight) / 2,contentWidth,contentHeight
+            //));
         }
         private async void VoiceInput(object sender, RoutedEventArgs e)
         {
 
-            //ListenIcon.Glyph = "\xEC71";
-
-            if (ListenIcon.Glyph == "\xEC71")
+           if (ListenIcon.Glyph == "\xE720")
             {
-                ListenIcon.Glyph = "\xE720";
+                ListenIcon.Glyph = "\uF781";
+                searchTextBox.Text = null;
             }
             else
             {
-               ListenIcon.Glyph = "\xEC71";
+            ListenIcon.Glyph = "\xE720";
+                try
+                {
+                    using (SpeechRecognizer speechRecognizer = new SpeechRecognizer())
+                    {
+                        // Compile the recognizer
+                        await speechRecognizer.CompileConstraintsAsync();
+
+                        // Update UI to indicate listening
+                        searchTextBox.Text = "Listening...";
+
+                        // Start listening
+                        SpeechRecognitionResult result = await speechRecognizer.RecognizeAsync();
+
+                        if (result.Status == SpeechRecognitionResultStatus.Success)
+                        {
+                            searchTextBox.ClearUndoRedoHistory();
+                            searchTextBox.Text = result.Text;  // Update textbox with recognized text
+                        }
+                        else
+                        {
+                            searchTextBox.Text = "Could not recognize speech.";
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"Speech Recognition Error: {ex.Message}");
+                    searchTextBox.Text = "Speech Recognition not supported.";
+                }
             }
 
             /*
