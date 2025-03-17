@@ -21,9 +21,9 @@ build:
   stage: build
   script:
     - dotnet --version
-    - dotnet clean
-    - dotnet restore
-    - dotnet build --configuration $BUILD_CONFIG
+    - dotnet clean --configuration $BUILD_CONFIG -p:Platform="x64"
+    - dotnet restore --configuration $BUILD_CONFIG -p:Platform="x64"
+    - dotnet build --configuration $BUILD_CONFIG -p:Platform="x64"
   artifacts:
     paths:
       - "**/bin"
