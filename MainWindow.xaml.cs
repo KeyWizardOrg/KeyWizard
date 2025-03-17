@@ -1,118 +1,272 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
+using System.Runtime.InteropServices;
+using Key_Wizard.search;
+using Key_Wizard.shortcuts;
+using Key_Wizard.startup;
 using Microsoft.UI;
+using Microsoft.UI.Input;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Graphics;
-using System.Runtime.InteropServices;
-
+using Windows.Media.SpeechRecognition;
+using Windows.System;
+using WinRT.Interop;
 
 namespace Key_Wizard
 {
-    /// <summary>
-    /// Main Window of Key Wizard
-    /// ...
-    /// </summary>
+    public class ListItem
+    {
+        public string Section { get; set; }  // Section
+        public string Prefix { get; set; }  // Bold part
+        public string Suffix { get; set; }  // Normal part
+        public string Action { get; set; }  // Function to be triggered on click
+    }
+
+    public class Section
+    {
+        public string Name { get; set; }
+        public ObservableCollection<ListItem> Items { get; set; }
+    }
     public sealed partial class MainWindow : Window
     {
-        public Dictionary<string, Action> actions;
+        private Dictionary<string, CreateSections> shortcutDictionary;
+        private List<ListItem> searchList;
+        private DispatcherTimer searchDelayTimer;
+        private const int SEARCH_DELAY_MS = 300; // 300ms delay, adjust as needed
+
         [DllImport("kernel32.dll")]
         static extern bool AllocConsole();
 
-        [DllImport("user32.dll")]
-        static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, IntPtr dwExtraInfo);
-
-
-        private const int VK_TAB = 0x09;
-        private const int VK_MENU = 0x12; // Alt key
-        private const int KEYEVENTF_KEYUP = 0x0002;
-
         public MainWindow()
         {
+            // Uncomment the below line to spawn a console window
+            // AllocConsole();
+
             this.InitializeComponent();
-            ExtendsContentIntoTitleBar = true;
 
-            this.AppWindow.MoveAndResize(GetWindowSizeAndPos(0.3, 0.25));
+            // Initialize the search delay timer
+            searchDelayTimer = new DispatcherTimer();
+            searchDelayTimer.Interval = TimeSpan.FromMilliseconds(SEARCH_DELAY_MS);
+            searchDelayTimer.Tick += SearchDelayTimer_Tick;
 
-            actions = new Dictionary<string, Action>(StringComparer.OrdinalIgnoreCase)
-            {
-            {"Open the Run dialog box", runDialog},
-            {"Switch between open windows", altTab },
-            {"Capture a full screen screenshot", screenshot },
-            {"Open the Settings App", settings }
-            };
-            AllocConsole();
-        }
-
-        private RectInt32 GetWindowSizeAndPos(double widthPercentage, double heightPercentage)
-        {
-            // Get the window handle
-            var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
+            // Get the AppWindow for the current window
+            var hWnd = WindowNative.GetWindowHandle(this);
             var windowId = Win32Interop.GetWindowIdFromWindow(hWnd);
+            var appWindow = AppWindow.GetFromWindowId(windowId);
 
-            // Get the display area (screen resolution)
-            var displayArea = DisplayArea.GetFromWindowId(windowId, DisplayAreaFallback.Primary);
-            var workArea = displayArea.WorkArea;
+            // Hide the window from the taskbar and Alt+Tab
+            appWindow.IsShownInSwitchers = false;
 
-            // Calculate the window size based on the percentage
-            int windowWidth = (int)(workArea.Width * widthPercentage);
-            int windowHeight = (int)(workArea.Height * heightPercentage);
-
-            // Calculate the window position to center it on the screen
-            int windowX = (workArea.Width - windowWidth) / 2;
-            int windowY = (workArea.Height - windowHeight) / 2;
-            return new RectInt32(windowX, windowY, windowWidth, windowHeight);
-        }
-        
-        private void myButton_Click(object sender, RoutedEventArgs e)
-        {
-            shortcutsList.Visibility = Visibility.Visible;
-            myButton.Content = "Clicked";
-            string userInput = searchTextBox.Text;
-            
-            if (actions.TryGetValue(userInput, out Action action))
+            // Set the presenter to OverlappedPresenter and disable the maximize, minimize, and close buttons
+            if (appWindow != null)
             {
-                action();
+                var presenter = appWindow.Presenter as OverlappedPresenter;
+                if (presenter != null)
+                {
+                    presenter.IsMaximizable = false; // Disable the maximize button
+                    presenter.IsResizable = false;  // Disable resizing
+                    presenter.IsMinimizable = false; // Disable the minimize button
+                    presenter.SetBorderAndTitleBar(true, false);
+                 }
+            }
+
+            // Extend the client area into the title bar
+            this.ExtendsContentIntoTitleBar = true;
+            this.SetTitleBar(null); // Set to null to remove the default title bar
+
+            this.AppWindow.MoveAndResize(Screen.GetWindowSizeAndPos(this, Screen.MIN_WIDTH, Screen.MIN_HEIGHT));
+            shortcutDictionary = CreateDictionary.InitList();
+            searchList = CreateDictionary.InitSearch(shortcutDictionary);
+        }
+        private async void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            // Reset and restart the timer
+            searchDelayTimer.Stop();
+            searchDelayTimer.Start();
+        }
+
+        private void SearchDelayTimer_Tick(object sender, object e)
+        {
+            // Stop the timer
+            searchDelayTimer.Stop();
+
+            // Now perform the search
+            string searchQuery = searchTextBox.Text;
+            ObservableCollection<Section> display = new ObservableCollection<Section>();
+
+            List<ListItem> results = NewSearch.Search(searchList, searchQuery);
+            if (!string.IsNullOrWhiteSpace(searchQuery) && results.Any())
+            {
+                display.Add(new Section { Name = "Search Results", Items = new ObservableCollection<ListItem>(results) });
+                ResultsBorderBar.Visibility = Visibility.Visible;
             }
             else
             {
-                Console.WriteLine("Unknown command.");
+                this.AppWindow.MoveAndResize(Screen.GetWindowSizeAndPos(this, Screen.MIN_WIDTH, Screen.MIN_HEIGHT));
+                ResultsBorderBar.Visibility = Visibility.Collapsed;
             }
 
+            shortcutsList.ItemsSource = display;
         }
-        public void runDialog()
+        private void ListView_KeyDown(object sender, KeyRoutedEventArgs e)
         {
-            Process.Start("explorer.exe", "shell:::{2559a1f3-21d7-11d4-bdaf-00c04f60b9f0}");
+            if (e.Key == VirtualKey.Enter || e.Key == VirtualKey.Space)
+            {
+                var listView = (ListView)sender;
+                var item = (ListItem)listView.SelectedItem;
+                TriggerAction(item);
+            }
         }
-        public void altTab()
+
+        private void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            keybd_event(VK_MENU, 0, 0, IntPtr.Zero);  // Press Alt
-            keybd_event(VK_TAB, 0, 0, IntPtr.Zero);   // Press Tab
-            keybd_event(VK_TAB, 0, KEYEVENTF_KEYUP, IntPtr.Zero);  // Release Tab
-            keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, IntPtr.Zero); // Release Alt
+            var item = (ListItem)e.ClickedItem;
+            TriggerAction(item);
         }
-        public void screenshot()
+
+        private void TriggerAction(ListItem item)
         {
-            keybd_event(0x5B, 0, 0, IntPtr.Zero);     // Windows key down
-            keybd_event(0x2C, 0, 0, IntPtr.Zero);     // Print Screen
-            keybd_event(0x2C, 0, KEYEVENTF_KEYUP, IntPtr.Zero);
-            keybd_event(0x5B, 0, KEYEVENTF_KEYUP, IntPtr.Zero);
+            try
+            {
+                var shortcuts = new Shortcuts(this);
+
+                var methodInfo = typeof(Shortcuts).GetMethod(item.Action,
+                    System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+
+                if (methodInfo != null)
+                {
+                    methodInfo.Invoke(shortcuts, null);
+                    this.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                
+            }
+            // Right now there is no error handling for if the action doesn't exist as we do not want any
+            // errors during the demo. We will add some error handling once we have all the actions implemented.
         }
-        public void settings()
+
+
+        private void shortcutsList_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            Process.Start("explorer.exe", "ms-settings:");
+            // Force UI update
+            MainGrid.UpdateLayout();
+
+            // Calculate total content size
+            int contentWidth = this.AppWindow.Size.Width;
+            int contentHeight = (int)(searchTextBox.ActualHeight + searchTextBox.Margin.Top + searchTextBox.Margin.Bottom +
+                                      MainGrid.Margin.Top + MainGrid.Margin.Bottom + e.NewSize.Height);
+
+            // Get display information
+            var workArea = DisplayArea.Primary.WorkArea;
+            double screenAspectRatio = (double)workArea.Width / workArea.Height;
+
+            // Calculate base max and min dimensions
+            var maxWidth = workArea.Width * Screen.MAX_WIDTH;
+            var maxHeight = workArea.Height * Screen.MAX_HEIGHT;
+            var minWidth = workArea.Width * Screen.MIN_WIDTH;
+            var minHeight = workArea.Height * Screen.MIN_HEIGHT;
+
+            // Adjust for aspect ratio
+            var (adjustedMaxWidth, adjustedMaxHeight) = Screen.AdjustForAspectRatio(
+                (int)maxWidth,
+                (int)maxHeight,
+                screenAspectRatio,
+                Screen.MAX_WIDTH,
+                Screen.MAX_HEIGHT);
+
+            var (adjustedMinWidth, adjustedMinHeight) = Screen.AdjustForAspectRatio(
+                (int)minWidth,
+                (int)minHeight,
+                screenAspectRatio,
+                Screen.MIN_WIDTH,
+                Screen.MIN_HEIGHT);
+
+            // Apply constraints
+            contentWidth = Math.Min(contentWidth, adjustedMaxWidth);
+            contentHeight = Math.Min(contentHeight, adjustedMaxHeight);
+
+            contentWidth = Math.Max(contentWidth, adjustedMinWidth);
+            contentHeight = Math.Max(contentHeight, adjustedMinHeight);
+
+            // Center the window
+            this.AppWindow.MoveAndResize(new RectInt32(
+                (workArea.Width - contentWidth) / 2,
+                (workArea.Height - contentHeight) / 2,
+                contentWidth,
+                contentHeight
+            ));
+        }
+        private async void VoiceInput(object sender, RoutedEventArgs e)
+        {
+
+            //ListenIcon.Glyph = "\xEC71";
+
+            if (ListenIcon.Glyph == "\xEC71")
+            {
+                ListenIcon.Glyph = "\xE720";
+            }
+            else
+            {
+               ListenIcon.Glyph = "\xEC71";
+            }
+
+            /*
+            try
+            {
+                using (SpeechRecognizer speechRecognizer = new SpeechRecognizer())
+                {
+                    // Compile the recognizer
+                    await speechRecognizer.CompileConstraintsAsync();
+
+                    // Update UI to indicate listening
+                    searchTextBox.Text = "Listening...";
+
+                    // Start listening
+                    SpeechRecognitionResult result = await speechRecognizer.RecognizeAsync();
+
+                    if (result.Status == SpeechRecognitionResultStatus.Success)
+                    {
+                        searchTextBox.ClearUndoRedoHistory();
+                        searchTextBox.Text = result.Text;  // Update textbox with recognized text
+                    }
+                    else
+                    {
+                        searchTextBox.Text = "Could not recognize speech.";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Speech Recognition Error: {ex.Message}");
+                searchTextBox.Text = "Speech Recognition not supported.";
+            }
+            */
+        }
+
+        private void MainGrid_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Escape)
+            {
+                this.Close(); // Close the app when ESC is pressed
+            }
+        }
+
+        private void Window_Activated(object sender, WindowActivatedEventArgs e)
+        {
+            if (e.WindowActivationState == WindowActivationState.Deactivated)
+            {
+                this.Close(); // Close the app when focus is lost
+            }
         }
     }
 }
+

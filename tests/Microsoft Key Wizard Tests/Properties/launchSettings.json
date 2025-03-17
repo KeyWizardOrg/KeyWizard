@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Microsoft Key Wizard Tests (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Microsoft Key Wizard Tests (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
