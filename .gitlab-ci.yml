@@ -4,7 +4,7 @@ variables:
 
 default:
   tags:
-    - local
+    - windows
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}
