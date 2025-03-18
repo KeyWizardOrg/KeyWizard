@@ -73,7 +73,7 @@ namespace Key_Wizard.startup
 
                 foreach (var keyAction in section.Value.Data)
                 {
-                    ListItem newItem = new ListItem { Section = $"{sectionName}  ", Prefix = $"{keyAction.Key}: ", Suffix = $"{keyAction.Value.action}", Action = $"{keyAction.Value.function}" };
+                    ListItem newItem = new ListItem { Prefix = $"{keyAction.Value.action}: ", Suffix = $"{keyAction.Key}", Action = $"{keyAction.Value.function}" };
                     searchList.Add(newItem);
                 }
             }
