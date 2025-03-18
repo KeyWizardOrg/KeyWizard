@@ -120,10 +120,9 @@
                                         BorderThickness="0">
                                     <ListView.ItemTemplate>
                                         <DataTemplate x:DataType="local:ListItem">
-                                            <TextBlock Margin="0,0,0,0">
+                                            <TextBlock Margin="0,0,0,0" Loaded="TextBlock_Loaded">
                                                 <Run Text="{x:Bind Section}" FontWeight="Normal"/>
                                                 <Run Text="{x:Bind Prefix}" FontWeight="ExtraBold"/>
-                                                <Run Text="{x:Bind Suffix}"/>
                                             </TextBlock>
                                         </DataTemplate>
                                     </ListView.ItemTemplate>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Key_Wizard.search
@@ -33,7 +34,7 @@ namespace Key_Wizard.search
 
                 double distance = 1;
                 foreach (var currentQuery in queries)
-                {
+                {;
                     // carry out both algorithms on input query and suffix
                     var jaccard = JaccardSimilarity(currentQuery, target);
                     var damerau = DamerauLevenshteinDistance(currentQuery, target);
@@ -46,7 +47,7 @@ namespace Key_Wizard.search
                     {
                         distance = current;
                     }
-                }              
+                }
 
                 // only add result if distance is reasonable
                 if (distance < 0.8)
@@ -139,6 +140,7 @@ namespace Key_Wizard.search
 
             return 1 - jaccardIndex;
         }
+
     }
 }
 
