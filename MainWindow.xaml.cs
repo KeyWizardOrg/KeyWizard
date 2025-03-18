@@ -39,7 +39,7 @@ namespace Key_Wizard
         private Dictionary<string, CreateSections> shortcutDictionary;
         private List<ListItem> searchList;
         private DispatcherTimer searchDelayTimer;
-        private const int SEARCH_DELAY_MS = 300; // 300ms delay, adjust as needed
+        private const int SEARCH_DELAY_MS = 200; // 200ms delay, adjust as needed
 
         [DllImport("kernel32.dll")]
         static extern bool AllocConsole();
@@ -161,49 +161,14 @@ namespace Key_Wizard
             MainGrid.UpdateLayout();
 
             // Calculate total content size
-            int contentWidth = this.AppWindow.Size.Width;
-            int contentHeight = (int)(searchTextBox.ActualHeight + searchTextBox.Margin.Top + searchTextBox.Margin.Bottom +
-                                      MainGrid.Margin.Top + MainGrid.Margin.Bottom + e.NewSize.Height);
+            double contentWidth = this.AppWindow.Size.Width;
+            double contentHeight = searchTextBox.ActualHeight + searchTextBox.Margin.Top + searchTextBox.Margin.Bottom +
+                                   MainGrid.Margin.Top + MainGrid.Margin.Bottom + e.NewSize.Height;
 
             // Get display information
             var workArea = DisplayArea.Primary.WorkArea;
-            double screenAspectRatio = (double)workArea.Width / workArea.Height;
 
-            // Calculate base max and min dimensions
-            var maxWidth = workArea.Width * Screen.MAX_WIDTH;
-            var maxHeight = workArea.Height * Screen.MAX_HEIGHT;
-            var minWidth = workArea.Width * Screen.MIN_WIDTH;
-            var minHeight = workArea.Height * Screen.MIN_HEIGHT;
-
-            // Adjust for aspect ratio
-            var (adjustedMaxWidth, adjustedMaxHeight) = Screen.AdjustForAspectRatio(
-                (int)maxWidth,
-                (int)maxHeight,
-                screenAspectRatio,
-                Screen.MAX_WIDTH,
-                Screen.MAX_HEIGHT);
-
-            var (adjustedMinWidth, adjustedMinHeight) = Screen.AdjustForAspectRatio(
-                (int)minWidth,
-                (int)minHeight,
-                screenAspectRatio,
-                Screen.MIN_WIDTH,
-                Screen.MIN_HEIGHT);
-
-            // Apply constraints
-            contentWidth = Math.Min(contentWidth, adjustedMaxWidth);
-            contentHeight = Math.Min(contentHeight, adjustedMaxHeight);
-
-            contentWidth = Math.Max(contentWidth, adjustedMinWidth);
-            contentHeight = Math.Max(contentHeight, adjustedMinHeight);
-
-            // Center the window
-            this.AppWindow.MoveAndResize(new RectInt32(
-                (workArea.Width - contentWidth) / 2,
-                (workArea.Height - contentHeight) / 2,
-                contentWidth,
-                contentHeight
-            ));
+            this.AppWindow.MoveAndResize(Screen.GetWindowSizeAndPos(this, contentWidth / workArea.Width, contentHeight / workArea.Height));
         }
         private async void VoiceInput(object sender, RoutedEventArgs e)
         {
