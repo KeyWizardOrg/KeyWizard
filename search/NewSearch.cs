@@ -127,19 +127,49 @@ namespace Key_Wizard.search
          */
         private static double JaccardSimilarity(string a, string b)
         {
-            HashSet<char> set1 = new(a);
-            HashSet<char> set2 = new(b);
+            Dictionary<char, int> freqA = new();
+            foreach (char c in a)
+            {
+                if (freqA.ContainsKey(c))
+                    freqA[c]++;
+                else
+                    freqA[c] = 1;
+            }
 
-            HashSet<char> intersection = new(set1);
-            intersection.IntersectWith(set2);
+            Dictionary<char, int> freqB = new();
+            foreach (char c in b)
+            {
+                if (freqB.ContainsKey(c))
+                    freqB[c]++;
+                else
+                    freqB[c] = 1;
+            }
 
-            HashSet<char> union = new(set1);
-            union.UnionWith(set2);
+            int intersection = 0;
+            int union = 0;
 
-            double jaccardIndex = (double)intersection.Count / (1.2 * union.Count);
+            foreach (var pair in freqA)
+            {
+                if (freqB.ContainsKey(pair.Key))
+                {
+                    intersection += Math.Min(pair.Value, freqB[pair.Key]);
+                }
+                union += pair.Value;
+            }
+
+            foreach (var pair in freqB)
+            {
+                if (!freqA.ContainsKey(pair.Key))
+                {
+                    union += pair.Value;
+                }
+            }
+
+            double jaccardIndex = (double)intersection / union;
 
             return 1 - jaccardIndex;
         }
+
 
     }
 }
