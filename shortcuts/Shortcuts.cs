@@ -579,11 +579,11 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.ALT);
         }
 
-        public void altUnderlinedLetter()
-        {
-            Keys.Press(Keys.ALT);
-            Keys.Release(Keys.ALT); // Followed by the underlined letter manually
-        }
+        //public void altUnderlinedLetter()
+        //{
+        //    Keys.Press(Keys.ALT);
+        //    Keys.Release(Keys.ALT); // Followed by the underlined letter manually
+        //}
 
         public void ctrlAltDel()
         {
@@ -1168,13 +1168,13 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.CTRL);
         }
 
-        public void altSelectionKey()
-        {
-            FocusWindowBehind();
-            Keys.Press(Keys.ALT);
-            // The actual selection key should be pressed manually after this function is called.
-            Keys.Release(Keys.ALT);
-        }
+        //public void altSelectionKey()
+        //{
+        //    FocusWindowBehind();
+        //    Keys.Press(Keys.ALT);
+        //    // The actual selection key should be pressed manually after this function is called.
+        //    Keys.Release(Keys.ALT);
+        //}
 
         public void arrowLeft()
         {
@@ -1265,13 +1265,13 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.CTRL);
         }
 
-        public void ctrl123()
-        {
-            Keys.Press(Keys.CTRL);
-            ShowNumberPad();
-            pressDesiredKey(NumberPadWindow.SelectedNumber);
-            Keys.Release(Keys.CTRL);
-        }
+        //public void ctrl123()
+        //{
+        //    Keys.Press(Keys.CTRL);
+        //    ShowNumberPad();
+        //    pressDesiredKey(NumberPadWindow.SelectedNumber);
+        //    Keys.Release(Keys.CTRL);
+        //}
 
         public void shiftTab()
         {
@@ -1296,7 +1296,7 @@ namespace Key_Wizard.shortcuts
         // File Explorer
         public void altD()
         {
-            FocusWindowBehind(); // Added where switching or focusing on windows might be needed
+            FocusWindowBehind(); 
             Keys.Press(Keys.ALT);
             Keys.Press(Keys.D);
             Keys.Release(Keys.D);
@@ -1305,23 +1305,23 @@ namespace Key_Wizard.shortcuts
 
         public void altEnter()
         {
-            FocusWindowBehind(); // Added where switching or focusing on windows might be needed
+            FocusWindowBehind(); 
             Keys.Press(Keys.ALT);
             Keys.Press(Keys.ENTER);
             Keys.Release(Keys.ENTER);
             Keys.Release(Keys.ALT);
         }
 
-        public void altMouseDrag()
-        {
-            Keys.Press(Keys.ALT);
-            // Perform mouse drag operation separately
-            Keys.Release(Keys.ALT);
-        }
+        //public void altMouseDrag()
+        //{
+        //    Keys.Press(Keys.ALT);
+        //    // Perform mouse drag operation separately
+        //    Keys.Release(Keys.ALT);
+        //}
 
         public void altP()
         {
-            FocusWindowBehind(); // Added where switching or focusing on windows might be needed
+            FocusWindowBehind(); 
             Keys.Press(Keys.ALT);
             Keys.Press(Keys.P);
             Keys.Release(Keys.P);
@@ -1330,7 +1330,7 @@ namespace Key_Wizard.shortcuts
 
         public void altShiftP()
         {
-            FocusWindowBehind(); // Added where switching or focusing on windows might be needed
+            FocusWindowBehind(); 
             Keys.Press(Keys.ALT);
             Keys.Press(Keys.SHIFT);
             Keys.Press(Keys.P);
@@ -1341,7 +1341,7 @@ namespace Key_Wizard.shortcuts
 
         public void altUp()
         {
-            FocusWindowBehind(); // Added where switching or focusing on windows might be needed
+            FocusWindowBehind(); 
             Keys.Press(Keys.ALT);
             Keys.Press(Keys.UP);
             Keys.Release(Keys.UP);
@@ -1372,19 +1372,19 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.CTRL);
         }
 
-        public void ctrlMouseDrag()
-        {
-            Keys.Press(Keys.CTRL);
-            // Perform mouse drag operation separately
-            Keys.Release(Keys.CTRL);
-        }
+        //public void ctrlMouseDrag()
+        //{
+        //    Keys.Press(Keys.CTRL);
+        //    // Perform mouse drag operation separately
+        //    Keys.Release(Keys.CTRL);
+        //}
 
-        public void ctrlMouseScroll()
-        {
-            Keys.Press(Keys.CTRL);
-            // Handle mouse scroll action separately
-            Keys.Release(Keys.CTRL);
-        }
+        //public void ctrlMouseScroll()
+        //{
+        //    Keys.Press(Keys.CTRL);
+        //    // Handle mouse scroll action separately
+        //    Keys.Release(Keys.CTRL);
+        //}
 
         public void ctrlN()
         {
@@ -1422,15 +1422,15 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.CTRL);
         }
 
-        public void ctrlShift1To9()
-        {
-            Keys.Press(Keys.CTRL);
-            Keys.Press(Keys.SHIFT);
-            ShowNumberPad();
-            pressDesiredKey(NumberPadWindow.SelectedNumber);
-            Keys.Release(Keys.SHIFT);
-            Keys.Release(Keys.CTRL);
-        }
+        //public void ctrlShift1To9()
+        //{
+        //    Keys.Press(Keys.CTRL);
+        //    Keys.Press(Keys.SHIFT);
+        //    ShowNumberPad();
+        //    pressDesiredKey(NumberPadWindow.SelectedNumber);
+        //    Keys.Release(Keys.SHIFT);
+        //    Keys.Release(Keys.CTRL);
+        //}
 
         public void ctrlT()
         {
@@ -1506,19 +1506,19 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.SHIFT);
         }
 
-        public void shiftMouseDrag()
-        {
-            Keys.Press(Keys.SHIFT);
-            // Perform mouse drag operation separately
-            Keys.Release(Keys.SHIFT);
-        }
+        //public void shiftMouseDrag()
+        //{
+        //    Keys.Press(Keys.SHIFT);
+        //    // Perform mouse drag operation separately
+        //    Keys.Release(Keys.SHIFT);
+        //}
 
-        public void shiftMouseRightClick()
-        {
-            Keys.Press(Keys.SHIFT);
-            // Handle mouse right-click separately
-            Keys.Release(Keys.SHIFT);
-        }
+        //public void shiftMouseRightClick()
+        //{
+        //    Keys.Press(Keys.SHIFT);
+        //    // Handle mouse right-click separately
+        //    Keys.Release(Keys.SHIFT);
+        //}
 
         // Multiple Desktops
         public void windowsKeytab()
@@ -1611,16 +1611,16 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.WIN);
         }
 
-        public void windowsKeyAlt0_9()
-        {
-            FocusWindowBehind();
-            Keys.Press(Keys.WIN);
-            Keys.Press(Keys.ALT);
-            ShowNumberPad();
-            pressDesiredKey(NumberPadWindow.SelectedNumber);
-            Keys.Release(Keys.ALT);
-            Keys.Release(Keys.WIN);
-        }
+        //public void windowsKeyAlt0_9()
+        //{
+        //    FocusWindowBehind();
+        //    Keys.Press(Keys.WIN);
+        //    Keys.Press(Keys.ALT);
+        //    ShowNumberPad();
+        //    pressDesiredKey(NumberPadWindow.SelectedNumber);
+        //    Keys.Release(Keys.ALT);
+        //    Keys.Release(Keys.WIN);
+        //}
 
         public void windowsKeyB()
         {
@@ -1630,49 +1630,49 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.WIN);
         }
 
-        public void windowsKeyCtrl0_9()
-        {
-            FocusWindowBehind();
-            Keys.Press(Keys.WIN);
-            Keys.Press(Keys.CTRL);
-            ShowNumberPad();
-            pressDesiredKey(NumberPadWindow.SelectedNumber);
-            Keys.Release(Keys.CTRL);
-            Keys.Release(Keys.WIN);
-        }
+        //public void windowsKeyCtrl0_9()
+        //{
+        //    FocusWindowBehind();
+        //    Keys.Press(Keys.WIN);
+        //    Keys.Press(Keys.CTRL);
+        //    ShowNumberPad();
+        //    pressDesiredKey(NumberPadWindow.SelectedNumber);
+        //    Keys.Release(Keys.CTRL);
+        //    Keys.Release(Keys.WIN);
+        //}
 
-        public void windowsKeyCtrlShift0_9()
-        {
-            FocusWindowBehind();
-            Keys.Press(Keys.WIN);
-            Keys.Press(Keys.CTRL);
-            Keys.Press(Keys.SHIFT);
-            ShowNumberPad();
-            pressDesiredKey(NumberPadWindow.SelectedNumber);
-            Keys.Release(Keys.SHIFT);
-            Keys.Release(Keys.CTRL);
-            Keys.Release(Keys.WIN);
-        }
+        //public void windowsKeyCtrlShift0_9()
+        //{
+        //    FocusWindowBehind();
+        //    Keys.Press(Keys.WIN);
+        //    Keys.Press(Keys.CTRL);
+        //    Keys.Press(Keys.SHIFT);
+        //    ShowNumberPad();
+        //    pressDesiredKey(NumberPadWindow.SelectedNumber);
+        //    Keys.Release(Keys.SHIFT);
+        //    Keys.Release(Keys.CTRL);
+        //    Keys.Release(Keys.WIN);
+        //}
 
-        public void windowsKey0_9()
-        {
-            FocusWindowBehind();
-            Keys.Press(Keys.WIN);
-            ShowNumberPad();
-            pressDesiredKey(NumberPadWindow.SelectedNumber);
-            Keys.Release(Keys.WIN);
-        }
+        //public void windowsKey0_9()
+        //{
+        //    FocusWindowBehind();
+        //    Keys.Press(Keys.WIN);
+        //    ShowNumberPad();
+        //    pressDesiredKey(NumberPadWindow.SelectedNumber);
+        //    Keys.Release(Keys.WIN);
+        //}
 
-        public void windowsKeyShift0_9()
-        {
-            FocusWindowBehind();
-            Keys.Press(Keys.WIN);
-            Keys.Press(Keys.SHIFT);
-            ShowNumberPad();
-            pressDesiredKey(NumberPadWindow.SelectedNumber);
-            Keys.Release(Keys.SHIFT);
-            Keys.Release(Keys.WIN);
-        }
+        //public void windowsKeyShift0_9()
+        //{
+        //    FocusWindowBehind();
+        //    Keys.Press(Keys.WIN);
+        //    Keys.Press(Keys.SHIFT);
+        //    ShowNumberPad();
+        //    pressDesiredKey(NumberPadWindow.SelectedNumber);
+        //    Keys.Release(Keys.SHIFT);
+        //    Keys.Release(Keys.WIN);
+        //}
 
         public void windowsKeyT()
         {
@@ -1727,76 +1727,76 @@ namespace Key_Wizard.shortcuts
             Keys.Release(Keys.ENTER);
         }
 
-        public void pressDesiredKey(int key)
-        {
-            if (key == 0)
-            {
-                Keys.Press(Keys.ZERO);
-                Keys.Release(Keys.ZERO);
+    //    public void pressDesiredKey(int key)
+    //    {
+    //        if (key == 0)
+    //        {
+    //            Keys.Press(Keys.ZERO);
+    //            Keys.Release(Keys.ZERO);
 
-            }
-            else if (key == 1)
-            {
-                Keys.Press(Keys.ONE);
-                Keys.Release(Keys.ONE);
-            }
-            else if (key == 2)
-            {
-                Keys.Press(Keys.TWO);
-                Keys.Release(Keys.TWO);
-            }
-            else if (key == 3)
-            {
-                Keys.Press(Keys.THREE);
-                Keys.Release(Keys.THREE);
-            }
-            else if (key == 4)
-            {
-                Keys.Press(Keys.FOUR);
-                Keys.Release(Keys.FOUR);
-            }
-            else if (key == 5)
-            {
-                Keys.Press(Keys.FIVE);
-                Keys.Release(Keys.FIVE);
-            }
-            else if (key == 6)
-            {
-                Keys.Press(Keys.SIX);
-                Keys.Release(Keys.SIX);
-            }
-            else if (key == 7)
-            {
-                Keys.Press(Keys.SEVEN);
-                Keys.Release(Keys.SEVEN);
-            }
-            else if (key == 8)
-            {
-                Keys.Press(Keys.EIGHT);
-                Keys.Release(Keys.EIGHT);
-            }
-            else
-            {
-                Keys.Press(Keys.NINE);
-                Keys.Release(Keys.NINE);
-            }
-        }
+    //        }
+    //        else if (key == 1)
+    //        {
+    //            Keys.Press(Keys.ONE);
+    //            Keys.Release(Keys.ONE);
+    //        }
+    //        else if (key == 2)
+    //        {
+    //            Keys.Press(Keys.TWO);
+    //            Keys.Release(Keys.TWO);
+    //        }
+    //        else if (key == 3)
+    //        {
+    //            Keys.Press(Keys.THREE);
+    //            Keys.Release(Keys.THREE);
+    //        }
+    //        else if (key == 4)
+    //        {
+    //            Keys.Press(Keys.FOUR);
+    //            Keys.Release(Keys.FOUR);
+    //        }
+    //        else if (key == 5)
+    //        {
+    //            Keys.Press(Keys.FIVE);
+    //            Keys.Release(Keys.FIVE);
+    //        }
+    //        else if (key == 6)
+    //        {
+    //            Keys.Press(Keys.SIX);
+    //            Keys.Release(Keys.SIX);
+    //        }
+    //        else if (key == 7)
+    //        {
+    //            Keys.Press(Keys.SEVEN);
+    //            Keys.Release(Keys.SEVEN);
+    //        }
+    //        else if (key == 8)
+    //        {
+    //            Keys.Press(Keys.EIGHT);
+    //            Keys.Release(Keys.EIGHT);
+    //        }
+    //        else
+    //        {
+    //            Keys.Press(Keys.NINE);
+    //            Keys.Release(Keys.NINE);
+    //        }
+    //    }
 
-        private void ShowNumberPad()
-        {
-            Console.WriteLine("ShowNumberPad called");
+    //    private void ShowNumberPad()
+    //    {
+    //        Console.WriteLine("ShowNumberPad called");
 
-            try
-            {
-                var numberPadWindow = new NumberPadWindow();
+    //        try
+    //        {
+    //            var numberPadWindow = new NumberPadWindow();
 
-                numberPadWindow.Activate();
-                Console.WriteLine("Number Pad window shown.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error showing window: {ex.Message}");
-            }
-        }
+    //            numberPadWindow.Activate();
+    //            Console.WriteLine("Number Pad window shown.");
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            Console.WriteLine($"Error showing window: {ex.Message}");
+    //        }
+    //    }
     }
 }

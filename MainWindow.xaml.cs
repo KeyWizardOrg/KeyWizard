@@ -257,22 +257,22 @@ namespace Key_Wizard
         }
 
         // Numpad testing
-        private void ShowNumberPad()
-        {
-            Console.WriteLine("ShowNumberPad called");
+        //private void ShowNumberPad()
+        //{
+        //    Console.WriteLine("ShowNumberPad called");
 
-            try
-            {
-                var numberPadWindow = new NumberPadWindow();
+        //    try
+        //    {
+        //        var numberPadWindow = new NumberPadWindow();
 
-                numberPadWindow.Activate();
-                Console.WriteLine("Number Pad window shown.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error showing window: {ex.Message}");
-            }
-        }
+        //        numberPadWindow.Activate();
+        //        Console.WriteLine("Number Pad window shown.");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine($"Error showing window: {ex.Message}");
+        //    }
+        //}
     }
 }
 
