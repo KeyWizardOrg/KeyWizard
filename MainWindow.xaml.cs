@@ -5,14 +5,17 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using Key_Wizard.search;
 using Key_Wizard.shortcuts;
 using Key_Wizard.startup;
 using Microsoft.UI;
 using Microsoft.UI.Input;
+using Microsoft.UI.Text;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Documents;
 using Microsoft.UI.Xaml.Input;
 using Windows.Graphics;
 using Windows.Media.SpeechRecognition;
@@ -26,6 +29,7 @@ namespace Key_Wizard
         public string Section { get; set; }  // Section
         public string Prefix { get; set; }  // Bold part
         public string Suffix { get; set; }  // Normal part
+        public List<Run> HighlightedRuns { get; set; } // Highlighted search result
         public string Action { get; set; }  // Function to be triggered on click
     }
 
@@ -104,6 +108,7 @@ namespace Key_Wizard
             ObservableCollection<Section> display = new ObservableCollection<Section>();
 
             List<ListItem> results = NewSearch.Search(searchList, searchQuery);
+            results.ForEach((item) => item.HighlightedRuns = GenerateHighlightedSuffixes(searchQuery, item.Suffix));
             if (!string.IsNullOrWhiteSpace(searchQuery) && results.Any())
             {
                 display.Add(new Section { Name = "Search Results", Items = new ObservableCollection<ListItem>(results) });
@@ -200,15 +205,53 @@ namespace Key_Wizard
             contentHeight = Math.Max(contentHeight, adjustedMinHeight);
 
             // Center the window
-            this.AppWindow.MoveAndResize(new RectInt32(
-                (workArea.Width - contentWidth) / 2,
-                (workArea.Height - contentHeight) / 2,
-                contentWidth,
-                contentHeight
-            ));
+             this.AppWindow.Resize(new SizeInt32(contentWidth, contentHeight));
+            //this.AppWindow.MoveAndResize(new RectInt32((workArea.Width - contentWidth) / 2,(workArea.Height - contentHeight) / 2,contentWidth,contentHeight
+            //));
         }
         private async void VoiceInput(object sender, RoutedEventArgs e)
         {
+
+           if (ListenIcon.Glyph == "\xE720")
+            {
+                ListenIcon.Glyph = "\uF781";
+                searchTextBox.Text = null;
+            }
+            else
+            {
+            ListenIcon.Glyph = "\xE720";
+                try
+                {
+                    using (SpeechRecognizer speechRecognizer = new SpeechRecognizer())
+                    {
+                        // Compile the recognizer
+                        await speechRecognizer.CompileConstraintsAsync();
+
+                        // Update UI to indicate listening
+                        searchTextBox.Text = "Listening...";
+
+                        // Start listening
+                        SpeechRecognitionResult result = await speechRecognizer.RecognizeAsync();
+
+                        if (result.Status == SpeechRecognitionResultStatus.Success)
+                        {
+                            searchTextBox.ClearUndoRedoHistory();
+                            searchTextBox.Text = result.Text;  // Update textbox with recognized text
+                        }
+                        else
+                        {
+                            searchTextBox.Text = "Could not recognize speech.";
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"Speech Recognition Error: {ex.Message}");
+                    searchTextBox.Text = "Speech Recognition not supported.";
+                }
+            }
+
+            /*
             try
             {
                 using (SpeechRecognizer speechRecognizer = new SpeechRecognizer())
@@ -238,6 +281,7 @@ namespace Key_Wizard
                 Debug.WriteLine($"Speech Recognition Error: {ex.Message}");
                 searchTextBox.Text = "Speech Recognition not supported.";
             }
+            */
         }
 
         private void MainGrid_KeyDown(object sender, KeyRoutedEventArgs e)
@@ -273,6 +317,59 @@ namespace Key_Wizard
         //        Console.WriteLine($"Error showing window: {ex.Message}");
         //    }
         //}
+        
+        private List<Run> GenerateHighlightedSuffixes(string a, string b)
+        {
+            var runs = new List<Run>();
+
+            if (string.IsNullOrEmpty(a) || string.IsNullOrEmpty(b))
+            {
+                runs.Add(new Run { Text = b });
+                return runs;
+            }
+
+            string pattern = Regex.Escape(a);
+            var matches = Regex.Matches(b, pattern, RegexOptions.IgnoreCase);
+            int lastIndex = 0;
+
+            foreach (Match match in matches)
+            {
+                // text before the match
+                if (match.Index > lastIndex)
+                {
+                    runs.Add(new Run { Text = b.Substring(lastIndex, match.Index - lastIndex) });
+                }
+
+                // matched text
+                runs.Add(new Run
+                {
+                    Text = match.Value,
+                    FontWeight = Microsoft.UI.Text.FontWeights.Bold
+                });
+
+                lastIndex = match.Index + match.Length;
+            }
+
+           // text after the match
+            if (lastIndex < b.Length)
+            {
+                runs.Add(new Run { Text = b.Substring(lastIndex) });
+            }
+
+            return runs;
+        }
+
+        // Manually inject the suffixes into the text box
+        private void TextBlock_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (sender is TextBlock textBlock && textBlock.DataContext is ListItem listItem)
+            {
+                foreach (var run in listItem.HighlightedRuns)
+                {
+                    textBlock.Inlines.Add(run);
+                }
+            }
+        }
     }
 }
 

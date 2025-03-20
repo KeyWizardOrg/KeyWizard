@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Key_Wizard.search
@@ -25,18 +26,28 @@ namespace Key_Wizard.search
             var scores = new PriorityQueue<double, double>(new MaxHeapComparer());
 
             var querySizeFactor = (double) normalizedQuery.Length / 10;
+
+            var queries = SearchLib.ExtraQueries(normalizedQuery);
             foreach (var item in items)
             {
                 var target = SearchLib.NormalizeQuery(item.Suffix);
 
-                // carry out both algorithms on input query and suffix
-                var jaccard = JaccardSimilarity(normalizedQuery, target);
-                var damerau = DamerauLevenshteinDistance(normalizedQuery, target);
+                double distance = 1;
+                foreach (var currentQuery in queries)
+                {;
+                    // carry out both algorithms on input query and suffix
+                    var jaccard = JaccardSimilarity(currentQuery, target);
+                    var damerau = DamerauLevenshteinDistance(currentQuery, target);
 
-                // calculate value combining jaccard and damerau using weight
-                var weight = 0.5;
-                var distance = weight * jaccard + (1 - weight) * damerau;
-                distance = distance * querySizeFactor;
+                    // calculate value combining jaccard and damerau using weight
+                    var weight = 0.5;
+                    var current = weight * jaccard + (1 - weight) * damerau;
+                    current *= querySizeFactor;
+                    if (current < distance)
+                    {
+                        distance = current;
+                    }
+                }
 
                 // only add result if distance is reasonable
                 if (distance < 0.8)
@@ -116,19 +127,50 @@ namespace Key_Wizard.search
          */
         private static double JaccardSimilarity(string a, string b)
         {
-            HashSet<char> set1 = new(a);
-            HashSet<char> set2 = new(b);
+            Dictionary<char, int> freqA = new();
+            foreach (char c in a)
+            {
+                if (freqA.ContainsKey(c))
+                    freqA[c]++;
+                else
+                    freqA[c] = 1;
+            }
 
-            HashSet<char> intersection = new(set1);
-            intersection.IntersectWith(set2);
+            Dictionary<char, int> freqB = new();
+            foreach (char c in b)
+            {
+                if (freqB.ContainsKey(c))
+                    freqB[c]++;
+                else
+                    freqB[c] = 1;
+            }
 
-            HashSet<char> union = new(set1);
-            union.UnionWith(set2);
+            int intersection = 0;
+            int union = 0;
 
-            double jaccardIndex = (double)intersection.Count / (1.2 * union.Count);
+            foreach (var pair in freqA)
+            {
+                if (freqB.ContainsKey(pair.Key))
+                {
+                    intersection += Math.Min(pair.Value, freqB[pair.Key]);
+                }
+                union += pair.Value;
+            }
+
+            foreach (var pair in freqB)
+            {
+                if (!freqA.ContainsKey(pair.Key))
+                {
+                    union += pair.Value;
+                }
+            }
+
+            double jaccardIndex = (double)intersection / union;
 
             return 1 - jaccardIndex;
         }
+
+
     }
 }
 
