@@ -169,7 +169,6 @@
                                     <ListView.ItemTemplate>
                                         <DataTemplate x:DataType="local:ListItem">
                                             <TextBlock Margin="0,0,0,0" Loaded="TextBlock_Loaded">
-                                                <Run Text="{x:Bind Prefix}" FontWeight="SemiBold"/>
                                             </TextBlock>
                                         </DataTemplate>
                                     </ListView.ItemTemplate>

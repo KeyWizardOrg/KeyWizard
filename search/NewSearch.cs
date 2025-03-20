@@ -30,12 +30,12 @@ namespace Key_Wizard.search
             var queries = SearchLib.ExtraQueries(normalizedQuery);
             foreach (var item in items)
             {
-                var target = SearchLib.NormalizeQuery(item.Suffix);
+                var target = SearchLib.NormalizeQuery(item.Prefix);
 
                 double distance = 1;
                 foreach (var currentQuery in queries)
                 {;
-                    // carry out both algorithms on input query and suffix
+                    // carry out both algorithms on input query and prefix
                     var jaccard = JaccardSimilarity(currentQuery, target);
                     var damerau = DamerauLevenshteinDistance(currentQuery, target);
 

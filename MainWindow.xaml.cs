@@ -108,7 +108,7 @@ namespace Key_Wizard
             ObservableCollection<Section> display = new ObservableCollection<Section>();
 
             List<ListItem> results = NewSearch.Search(searchList, searchQuery);
-            results.ForEach((item) => item.HighlightedRuns = GenerateHighlightedSuffixes(searchQuery, item.Suffix));
+            results.ForEach((item) => item.HighlightedRuns = GenerateHighlightedPrefixes(searchQuery, item.Prefix));
             if (!string.IsNullOrWhiteSpace(searchQuery) && results.Any())
             {
                 display.Add(new Section { Name = "Search Results", Items = new ObservableCollection<ListItem>(results) });
@@ -286,7 +286,7 @@ namespace Key_Wizard
         //    }
         //}
         
-        private List<Run> GenerateHighlightedSuffixes(string a, string b)
+        private List<Run> GenerateHighlightedPrefixes(string a, string b)
         {
             var runs = new List<Run>();
 
@@ -332,10 +332,19 @@ namespace Key_Wizard
         {
             if (sender is TextBlock textBlock && textBlock.DataContext is ListItem listItem)
             {
+                textBlock.Inlines.Clear();
+
                 foreach (var run in listItem.HighlightedRuns)
                 {
                     textBlock.Inlines.Add(run);
                 }
+
+                var suffixRun = new Run
+                {
+                    Text = listItem.Suffix,
+                    FontWeight = Microsoft.UI.Text.FontWeights.SemiBold
+                };
+                textBlock.Inlines.Add(suffixRun);
             }
         }
     }
