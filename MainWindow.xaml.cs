@@ -51,7 +51,7 @@ namespace Key_Wizard
         public MainWindow()
         {
             // Uncomment the below line to spawn a console window
-            // AllocConsole();
+            //AllocConsole();
 
             this.InitializeComponent();
 
@@ -88,6 +88,8 @@ namespace Key_Wizard
             this.AppWindow.MoveAndResize(Screen.GetWindowSizeAndPos(this, Screen.MIN_WIDTH, Screen.MIN_HEIGHT));
             shortcutDictionary = CreateDictionary.InitList();
             searchList = CreateDictionary.InitSearch(shortcutDictionary);
+
+            //ShowNumberPad();
         }
         private async void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -298,6 +300,24 @@ namespace Key_Wizard
             }
         }
 
+        // Numpad testing
+        //private void ShowNumberPad()
+        //{
+        //    Console.WriteLine("ShowNumberPad called");
+
+        //    try
+        //    {
+        //        var numberPadWindow = new NumberPadWindow();
+
+        //        numberPadWindow.Activate();
+        //        Console.WriteLine("Number Pad window shown.");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine($"Error showing window: {ex.Message}");
+        //    }
+        //}
+        
         private List<Run> GenerateHighlightedSuffixes(string a, string b)
         {
             var runs = new List<Run>();
