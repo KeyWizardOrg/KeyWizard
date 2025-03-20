@@ -24,6 +24,19 @@ using WinRT.Interop;
 
 namespace Key_Wizard
 {
+    public class WindowHelper
+    {
+        private const int SW_MINIMIZE = 6;
+
+        [DllImport("user32.dll")]
+        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        public static void MinimizeWindow(Window window)
+        {
+            var hWnd = WindowNative.GetWindowHandle(window);
+            ShowWindow(hWnd, SW_MINIMIZE);
+        }
+    }
     public class ListItem
     {
         public string Section { get; set; }  // Section
@@ -150,16 +163,31 @@ namespace Key_Wizard
                 if (methodInfo != null)
                 {
                     methodInfo.Invoke(shortcuts, null);
-                    this.Close();
+
+                    // Force UI update
+                    MainGrid.UpdateLayout();
+
+                    // Calculate total content size
+                    double contentWidth = this.AppWindow.Size.Width;
+                    double contentHeight = 0.0;
+
+                    // Get display information
+                    var workArea = DisplayArea.Primary.WorkArea;
+
+                    this.AppWindow.MoveAndResize(Screen.GetWindowSizeAndPos(this, contentWidth / workArea.Width, contentHeight / workArea.Height));
+
+                    // Minimize instead of closing
+                    WindowHelper.MinimizeWindow(this);
+                    searchTextBox.Text = "";  
+                    searchTextBox.ClearUndoRedoHistory();
                 }
             }
             catch (Exception ex)
             {
-                
+                Debug.WriteLine($"Error triggering action: {ex.Message}");
             }
-            // Right now there is no error handling for if the action doesn't exist as we do not want any
-            // errors during the demo. We will add some error handling once we have all the actions implemented.
         }
+
 
 
         private void shortcutsList_SizeChanged(object sender, SizeChangedEventArgs e)
