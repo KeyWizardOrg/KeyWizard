@@ -1,4 +1,4 @@
-﻿<Window
+<Window
     x:Class="Key_Wizard.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -168,9 +168,7 @@
                                         BorderThickness="0">
                                     <ListView.ItemTemplate>
                                         <DataTemplate x:DataType="local:ListItem">
-                                            <TextBlock Margin="0,0,0,0">
-                                                <Run Text="{x:Bind Prefix}" FontWeight="Normal"/>
-                                                <Run Text="{x:Bind Suffix}" FontWeight="Bold"/>
+                                            <TextBlock Margin="0,0,0,0" Loaded="TextBlock_Loaded">
                                             </TextBlock>
                                         </DataTemplate>
                                     </ListView.ItemTemplate>

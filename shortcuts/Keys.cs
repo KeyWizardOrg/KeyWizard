@@ -56,6 +56,8 @@ namespace Key_Wizard.shortcuts
         public const int F10 = 0x79;
         public const int F11 = 0x7A;
         public const int F12 = 0x7B;
+        public const int RETURN = 0x0D;
+
 
         // Alphabet keys
         public const int A = 0x41;

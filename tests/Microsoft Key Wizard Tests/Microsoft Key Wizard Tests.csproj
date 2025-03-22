@@ -18,6 +18,12 @@
   <ItemGroup>
     <Page Remove="UnitTestApp.xaml" />
     <ApplicationDefinition Include="UnitTestApp.xaml" />
+    <COMReference Include="{215d64d2-031c-33c7-96e3-61794cd1ee61}">
+      <WrapperTool>tlbimp</WrapperTool>
+      <VersionMinor>4</VersionMinor>
+      <VersionMajor>2</VersionMajor>
+      <Guid>215d64d2-031c-33c7-96e3-61794cd1ee61</Guid>
+    </COMReference>
     <ProjectCapability Include="TestContainer" />
   </ItemGroup>
 
