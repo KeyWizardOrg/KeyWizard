@@ -1,16 +1,15 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Key_Wizard.search;
 using Key_Wizard.shortcuts;
 using Key_Wizard.startup;
 using Microsoft.UI;
-using Microsoft.UI.Input;
 using Microsoft.UI.Text;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
@@ -37,13 +36,14 @@ namespace Key_Wizard
             ShowWindow(hWnd, SW_MINIMIZE);
         }
     }
+
     public class ListItem
     {
-        public string Section { get; set; }  // Section
-        public string Prefix { get; set; }  // Bold part
-        public string Suffix { get; set; }  // Normal part
-        public List<Run> HighlightedRuns { get; set; } // Highlighted search result
-        public string Action { get; set; }  // Function to be triggered on click
+        public string Section { get; set; }
+        public string Prefix { get; set; }
+        public string Suffix { get; set; }
+        public List<Run> HighlightedRuns { get; set; }
+        public string Action { get; set; }
     }
 
     public class Section
@@ -51,72 +51,76 @@ namespace Key_Wizard
         public string Name { get; set; }
         public ObservableCollection<ListItem> Items { get; set; }
     }
+
     public sealed partial class MainWindow : Window
     {
         private Dictionary<string, CreateSections> shortcutDictionary;
         private List<ListItem> searchList;
         private DispatcherTimer searchDelayTimer;
-        private const int SEARCH_DELAY_MS = 200; // 200ms delay, adjust as needed
+        private const int SEARCH_DELAY_MS = 200;
+
+        private SpeechRecognizer _speechRecognizer;
+        private bool _isListening = false;
 
         [DllImport("kernel32.dll")]
         static extern bool AllocConsole();
 
         public MainWindow()
         {
-            // Uncomment the below line to spawn a console window
-            //AllocConsole();
-
             this.InitializeComponent();
-
-            // Initialize the search delay timer
             searchDelayTimer = new DispatcherTimer();
             searchDelayTimer.Interval = TimeSpan.FromMilliseconds(SEARCH_DELAY_MS);
             searchDelayTimer.Tick += SearchDelayTimer_Tick;
 
-            // Get the AppWindow for the current window
             var hWnd = WindowNative.GetWindowHandle(this);
             var windowId = Win32Interop.GetWindowIdFromWindow(hWnd);
             var appWindow = AppWindow.GetFromWindowId(windowId);
 
-            // Hide the window from the taskbar and Alt+Tab
             appWindow.IsShownInSwitchers = false;
 
-            // Set the presenter to OverlappedPresenter and disable the maximize, minimize, and close buttons
             if (appWindow != null)
             {
                 var presenter = appWindow.Presenter as OverlappedPresenter;
                 if (presenter != null)
                 {
-                    presenter.IsMaximizable = false; // Disable the maximize button
-                    presenter.IsResizable = false;  // Disable resizing
-                    presenter.IsMinimizable = false; // Disable the minimize button
+                    presenter.IsMaximizable = false;
+                    presenter.IsResizable = false;
+                    presenter.IsMinimizable = false;
                     presenter.SetBorderAndTitleBar(true, false);
-                 }
+                }
             }
 
-            // Extend the client area into the title bar
             this.ExtendsContentIntoTitleBar = true;
-            this.SetTitleBar(null); // Set to null to remove the default title bar
+            this.SetTitleBar(null);
 
             this.AppWindow.MoveAndResize(Screen.GetWindowSizeAndPos(this, Screen.MIN_WIDTH, Screen.MIN_HEIGHT));
             shortcutDictionary = CreateDictionary.InitList();
             searchList = CreateDictionary.InitSearch(shortcutDictionary);
 
-            //ShowNumberPad();
+            // Add event handler for Window.Closed
+            this.Closed += MainWindow_Closed;
         }
+
+        private async void MainWindow_Closed(object sender, WindowEventArgs e)
+        {
+            if (_isListening && _speechRecognizer != null)
+            {
+                await _speechRecognizer.StopRecognitionAsync();
+                _speechRecognizer.Dispose();
+                _speechRecognizer = null;
+                _isListening = false;
+            }
+        }
+
         private async void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            // Reset and restart the timer
             searchDelayTimer.Stop();
             searchDelayTimer.Start();
         }
 
         private void SearchDelayTimer_Tick(object sender, object e)
         {
-            // Stop the timer
             searchDelayTimer.Stop();
-
-            // Now perform the search
             string searchQuery = searchTextBox.Text;
             ObservableCollection<Section> display = new ObservableCollection<Section>();
 
@@ -135,6 +139,7 @@ namespace Key_Wizard
 
             shortcutsList.ItemsSource = display;
         }
+
         private void ListView_KeyDown(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key == VirtualKey.Enter || e.Key == VirtualKey.Space)
@@ -156,29 +161,20 @@ namespace Key_Wizard
             try
             {
                 var shortcuts = new Shortcuts(this);
-
                 var methodInfo = typeof(Shortcuts).GetMethod(item.Action,
                     System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
 
                 if (methodInfo != null)
                 {
                     methodInfo.Invoke(shortcuts, null);
-
-                    // Force UI update
                     MainGrid.UpdateLayout();
-
-                    // Calculate total content size
                     double contentWidth = this.AppWindow.Size.Width;
                     double contentHeight = 0.0;
-
-                    // Get display information
                     var workArea = DisplayArea.Primary.WorkArea;
 
                     this.AppWindow.MoveAndResize(Screen.GetWindowSizeAndPos(this, contentWidth / workArea.Width, contentHeight / workArea.Height));
-
-                    // Minimize instead of closing
                     WindowHelper.MinimizeWindow(this);
-                    searchTextBox.Text = "";  
+                    searchTextBox.Text = "";
                     searchTextBox.ClearUndoRedoHistory();
                 }
             }
@@ -188,103 +184,99 @@ namespace Key_Wizard
             }
         }
 
-
-
         private void shortcutsList_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            // Force UI update
             MainGrid.UpdateLayout();
-
-            // Calculate total content size
             double contentWidth = this.AppWindow.Size.Width;
             double contentHeight = searchTextBox.ActualHeight + searchTextBox.Margin.Top + searchTextBox.Margin.Bottom +
                                    MainGrid.Margin.Top + MainGrid.Margin.Bottom + e.NewSize.Height;
-
-            // Get display information
             var workArea = DisplayArea.Primary.WorkArea;
 
             this.AppWindow.MoveAndResize(Screen.GetWindowSizeAndPos(this, contentWidth / workArea.Width, contentHeight / workArea.Height));
         }
+
         private async void VoiceInput(object sender, RoutedEventArgs e)
         {
-
-           if (ListenIcon.Glyph == "\xE720")
+            if (_isListening)
             {
+                // Stop listening
                 ListenIcon.Glyph = "\uF781";
                 searchTextBox.Text = null;
+                _isListening = false;
+
+                if (_speechRecognizer != null)
+                {
+                    await _speechRecognizer.StopRecognitionAsync();
+                    _speechRecognizer.Dispose();
+                    _speechRecognizer = null;
+                }
             }
             else
             {
-            ListenIcon.Glyph = "\xE720";
-                try
-                {
-                    using (SpeechRecognizer speechRecognizer = new SpeechRecognizer())
-                    {
-                        // Compile the recognizer
-                        await speechRecognizer.CompileConstraintsAsync();
+                // Start listening
+                ListenIcon.Glyph = "\xE720";
+                searchTextBox.Text = "Listening...";
+                _isListening = true;
 
-                        // Update UI to indicate listening
-                        searchTextBox.Text = "Listening...";
-
-                        // Start listening
-                        SpeechRecognitionResult result = await speechRecognizer.RecognizeAsync();
-
-                        if (result.Status == SpeechRecognitionResultStatus.Success)
-                        {
-                            searchTextBox.ClearUndoRedoHistory();
-                            searchTextBox.Text = result.Text;  // Update textbox with recognized text
-                        }
-                        else
-                        {
-                            searchTextBox.Text = "Could not recognize speech.";
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine($"Speech Recognition Error: {ex.Message}");
-                    searchTextBox.Text = "Speech Recognition not supported.";
-                }
+                await StartSpeechRecognitionAsync();
             }
+        }
 
-            /*
+        private async Task StartSpeechRecognitionAsync()
+        {
             try
             {
-                using (SpeechRecognizer speechRecognizer = new SpeechRecognizer())
+                // Ensure the app is visible while listening
+                this.AppWindow.Show(true);
+
+                _speechRecognizer = new SpeechRecognizer();
+                await _speechRecognizer.CompileConstraintsAsync();
+
+                // Start recognition
+                SpeechRecognitionResult result = await _speechRecognizer.RecognizeAsync();
+
+                if (result.Status == SpeechRecognitionResultStatus.Success)
                 {
-                    // Compile the recognizer
-                    await speechRecognizer.CompileConstraintsAsync();
-
-                    // Update UI to indicate listening
-                    searchTextBox.Text = "Listening...";
-
-                    // Start listening
-                    SpeechRecognitionResult result = await speechRecognizer.RecognizeAsync();
-
-                    if (result.Status == SpeechRecognitionResultStatus.Success)
+                    searchTextBox.DispatcherQueue.TryEnqueue(() =>
                     {
                         searchTextBox.ClearUndoRedoHistory();
-                        searchTextBox.Text = result.Text;  // Update textbox with recognized text
-                    }
-                    else
+                        searchTextBox.Text = result.Text;
+                    });
+                }
+                else
+                {
+                    searchTextBox.DispatcherQueue.TryEnqueue(() =>
                     {
                         searchTextBox.Text = "Could not recognize speech.";
-                    }
+                    });
                 }
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Speech Recognition Error: {ex.Message}");
-                searchTextBox.Text = "Speech Recognition not supported.";
+                searchTextBox.DispatcherQueue.TryEnqueue(() =>
+                {
+                    searchTextBox.Text = "Speech Recognition not supported.";
+                });
             }
-            */
+            finally
+            {
+                _isListening = false;
+                ListenIcon.Glyph = "\uF781";
+
+                if (_speechRecognizer != null)
+                {
+                    _speechRecognizer.Dispose();
+                    _speechRecognizer = null;
+                }
+            }
         }
 
         private void MainGrid_KeyDown(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key == Windows.System.VirtualKey.Escape)
             {
-                this.Close(); // Close the app when ESC is pressed
+                this.Close();
             }
         }
 
@@ -292,28 +284,10 @@ namespace Key_Wizard
         {
             if (e.WindowActivationState == WindowActivationState.Deactivated)
             {
-                this.Close(); // Close the app when focus is lost
+                this.Close();
             }
         }
 
-        // Numpad testing
-        //private void ShowNumberPad()
-        //{
-        //    Console.WriteLine("ShowNumberPad called");
-
-        //    try
-        //    {
-        //        var numberPadWindow = new NumberPadWindow();
-
-        //        numberPadWindow.Activate();
-        //        Console.WriteLine("Number Pad window shown.");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"Error showing window: {ex.Message}");
-        //    }
-        //}
-        
         private List<Run> GenerateHighlightedPrefixes(string a, string b)
         {
             var runs = new List<Run>();
@@ -330,13 +304,11 @@ namespace Key_Wizard
 
             foreach (Match match in matches)
             {
-                // text before the match
                 if (match.Index > lastIndex)
                 {
                     runs.Add(new Run { Text = b.Substring(lastIndex, match.Index - lastIndex) });
                 }
 
-                // matched text
                 runs.Add(new Run
                 {
                     Text = match.Value,
@@ -346,7 +318,6 @@ namespace Key_Wizard
                 lastIndex = match.Index + match.Length;
             }
 
-           // text after the match
             if (lastIndex < b.Length)
             {
                 runs.Add(new Run { Text = b.Substring(lastIndex) });
@@ -355,7 +326,6 @@ namespace Key_Wizard
             return runs;
         }
 
-        // Manually inject the suffixes into the text box
         private void TextBlock_Loaded(object sender, RoutedEventArgs e)
         {
             if (sender is TextBlock textBlock && textBlock.DataContext is ListItem listItem)
@@ -377,4 +347,3 @@ namespace Key_Wizard
         }
     }
 }
-

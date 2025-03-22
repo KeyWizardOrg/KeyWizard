@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
 using Windows.ApplicationModel.Activation;
 
 namespace Key_Wizard
@@ -25,7 +23,6 @@ namespace Key_Wizard
         private const int VK_CONTROL = 0x11;
         private const int VK_MENU = 0x12; // Alt key
 
-        // ShowWindow command constants
         private const int SW_HIDE = 0;
         private const int SW_NORMAL = 1;
         private const int SW_SHOWMINIMIZED = 2;
@@ -35,11 +32,8 @@ namespace Key_Wizard
         private const uint SWP_NOSIZE = 0x0001;
         private const uint SWP_NOMOVE = 0x0002;
 
-        // Track the state of modifier keys
         private bool m_ctrlPressed = false;
         private bool m_altPressed = false;
-
-        // Add a flag to keep the application running
         private bool m_keepRunning = true;
 
         [DllImport("user32.dll", SetLastError = true)]
@@ -98,7 +92,6 @@ namespace Key_Wizard
             public IntPtr dwExtraInfo;
         }
 
-        // Store the original window position and size
         private int m_originalWidth;
         private int m_originalHeight;
         private int m_originalX;
@@ -109,8 +102,6 @@ namespace Key_Wizard
         {
             this.InitializeComponent();
             this.UnhandledException += OnUnhandledException;
-
-            // Add exit handler to clean up resources properly
             AppDomain.CurrentDomain.ProcessExit += OnProcessExit;
         }
 
@@ -119,24 +110,12 @@ namespace Key_Wizard
             Debug.WriteLine("OnLaunched called");
             m_window = new MainWindow();
             m_appWindow = GetAppWindow(m_window);
-
-            // Subscribe to the Closed event
             m_window.Closed += OnWindowClosed;
-
-            // Show window initially to get its dimensions
             m_window.Activate();
             Debug.WriteLine("Window activated");
-
-            // Set up the keyboard hook
             SetupKeyboardHook();
-
-            // Store the original window position and size before minimizing
             SaveWindowPosition();
-
-            // Hide the window after initialization
             HideWindow();
-
-            // Important: Keep a reference to this window to prevent GC
             GC.KeepAlive(m_window);
             GC.KeepAlive(m_hookProc);
         }
@@ -148,11 +127,8 @@ namespace Key_Wizard
                 m_hookProc = new HookProc(KeyboardHookProc);
                 string moduleName = Process.GetCurrentProcess().MainModule?.ModuleName ?? "";
                 IntPtr hInstance = GetModuleHandle(moduleName);
-
                 Debug.WriteLine($"Setting up keyboard hook with module: {moduleName}");
-
                 m_hookHandle = SetWindowsHookEx(WH_KEYBOARD_LL, m_hookProc, hInstance, 0);
-
                 if (m_hookHandle == IntPtr.Zero)
                 {
                     int errorCode = Marshal.GetLastWin32Error();
@@ -192,7 +168,7 @@ namespace Key_Wizard
         private void OnUnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
         {
             Debug.WriteLine($"Unhandled exception: {e.Message}");
-            e.Handled = true; // Prevent the app from crashing
+            e.Handled = true;
         }
 
         private void HideWindow()
@@ -202,10 +178,7 @@ namespace Key_Wizard
                 if (m_window != null)
                 {
                     IntPtr hwnd = GetWindowHandle();
-
-                    // Completely hide the window instead of minimizing
                     ShowWindow(hwnd, SW_HIDE);
-
                     Debug.WriteLine("Window hidden.");
                 }
             }
@@ -224,7 +197,6 @@ namespace Key_Wizard
                     int wParamInt = wParam.ToInt32();
                     KBDLLHOOKSTRUCT hookStruct = Marshal.PtrToStructure<KBDLLHOOKSTRUCT>(lParam);
 
-                    // Track modifier keys
                     if (hookStruct.vkCode == VK_CONTROL)
                     {
                         m_ctrlPressed = wParamInt == WM_KEYDOWN || wParamInt == WM_SYSKEYDOWN;
@@ -236,31 +208,25 @@ namespace Key_Wizard
                         Debug.WriteLine($"Alt key {(m_altPressed ? "pressed" : "released")}");
                     }
 
-                    // Check for Ctrl+Alt+K hotkey
                     if (m_ctrlPressed && m_altPressed && hookStruct.vkCode == VK_K &&
                         (wParamInt == WM_KEYDOWN || wParamInt == WM_SYSKEYDOWN))
                     {
                         Debug.WriteLine("Hotkey Ctrl+Alt+K detected!");
-
                         if (m_window != null && m_window.DispatcherQueue != null)
                         {
                             bool enqueued = m_window.DispatcherQueue.TryEnqueue(Microsoft.UI.Dispatching.DispatcherQueuePriority.High, () =>
                             {
                                 ShowAndActivateWindow();
                             });
-
                             Debug.WriteLine($"Enqueue result: {enqueued}");
                         }
                         else
                         {
                             Debug.WriteLine("Window or dispatcher is null!");
                         }
-
-                        // Don't process further to avoid K being typed
                         return new IntPtr(1);
                     }
 
-                    // Also check using GetAsyncKeyState as a fallback
                     bool ctrlDown = (GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0;
                     bool altDown = (GetAsyncKeyState(VK_MENU) & 0x8000) != 0;
                     bool kDown = (GetAsyncKeyState(VK_K) & 0x8000) != 0;
@@ -268,14 +234,12 @@ namespace Key_Wizard
                     if (ctrlDown && altDown && kDown && hookStruct.vkCode == VK_K)
                     {
                         Debug.WriteLine("Hotkey Ctrl+Alt+K detected via GetAsyncKeyState!");
-
                         if (m_window != null && m_window.DispatcherQueue != null)
                         {
                             bool enqueued = m_window.DispatcherQueue.TryEnqueue(Microsoft.UI.Dispatching.DispatcherQueuePriority.High, () =>
                             {
                                 ShowAndActivateWindow();
                             });
-
                             Debug.WriteLine($"Fallback enqueue result: {enqueued}");
                         }
                     }
@@ -285,8 +249,6 @@ namespace Key_Wizard
             {
                 Debug.WriteLine($"Error in keyboard hook: {ex.Message}");
             }
-
-            // Call the next hook in the chain
             return CallNextHookEx(m_hookHandle, nCode, wParam, lParam);
         }
 
@@ -298,17 +260,11 @@ namespace Key_Wizard
                 if (m_window != null)
                 {
                     IntPtr hwnd = GetWindowHandle();
-
-                    // Check if window is visible
                     bool isVisible = IsWindowVisible(hwnd);
                     Debug.WriteLine($"Window is currently {(isVisible ? "visible" : "hidden")}");
-
                     if (!isVisible)
                     {
-                        // Show the window with its original size and position
                         ShowWindow(hwnd, SW_SHOWNA);
-
-                        // Restore the original window position and size if we saved it
                         if (m_originalWidth > 0 && m_originalHeight > 0)
                         {
                             SetWindowPos(
@@ -323,15 +279,10 @@ namespace Key_Wizard
                             Debug.WriteLine($"Restored window to: X={m_originalX}, Y={m_originalY}, Width={m_originalWidth}, Height={m_originalHeight}");
                         }
                     }
-
-                    // Ensure the window is in normal state
                     ShowWindow(hwnd, SW_NORMAL);
-
-                    // Activate the window to bring it to the foreground
                     m_window.Activate();
                     BringWindowToTop(hwnd);
                     SetForegroundWindow(hwnd);
-
                     Debug.WriteLine("Window shown and activated.");
                 }
                 else
@@ -366,18 +317,10 @@ namespace Key_Wizard
         private void OnWindowClosed(object sender, WindowEventArgs args)
         {
             Debug.WriteLine("Window closed event - NOT unregistering hook");
-
-            // Important: Don't unregister the hook when the window is closed
-            // We want the hook to remain active so the hotkey still works
-
-            // Just hide the window instead
             HideWindow();
-
-            // Mark the event as handled to prevent default window closing behavior
             args.Handled = true;
         }
 
-        // Clean up the hook when the app is actually exiting
         private void OnProcessExit(object sender, EventArgs e)
         {
             CleanupHook();
