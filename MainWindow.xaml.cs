@@ -16,6 +16,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Documents;
 using Microsoft.UI.Xaml.Input;
+using Microsoft.UI.Xaml.Media;
 using Windows.Graphics;
 using Windows.Media.SpeechRecognition;
 using Windows.System;
@@ -123,12 +124,14 @@ namespace Key_Wizard
             searchDelayTimer.Stop();
             string searchQuery = searchTextBox.Text;
             ObservableCollection<Section> display = new ObservableCollection<Section>();
+            ObservableCollection<Section> keyDisplay = new ObservableCollection<Section>();
 
             List<ListItem> results = NewSearch.Search(searchList, searchQuery);
             results.ForEach((item) => item.HighlightedRuns = GenerateHighlightedPrefixes(searchQuery, item.Prefix));
             if (!string.IsNullOrWhiteSpace(searchQuery) && results.Any())
             {
                 display.Add(new Section { Name = "Search Results", Items = new ObservableCollection<ListItem>(results) });
+                keyDisplay.Add(new Section { Name = "", Items = new ObservableCollection<ListItem>(results) });
                 ResultsBorderBar.Visibility = Visibility.Visible;
             }
             else
@@ -136,8 +139,8 @@ namespace Key_Wizard
                 this.AppWindow.MoveAndResize(Screen.GetWindowSizeAndPos(this, Screen.MIN_WIDTH, Screen.MIN_HEIGHT));
                 ResultsBorderBar.Visibility = Visibility.Collapsed;
             }
-
             shortcutsList.ItemsSource = display;
+            keyList.ItemsSource = keyDisplay;
         }
 
         private void ListView_KeyDown(object sender, KeyRoutedEventArgs e)
@@ -221,6 +224,7 @@ namespace Key_Wizard
                 await StartSpeechRecognitionAsync();
             }
         }
+
 
         private async Task StartSpeechRecognitionAsync()
         {
@@ -330,20 +334,41 @@ namespace Key_Wizard
         {
             if (sender is TextBlock textBlock && textBlock.DataContext is ListItem listItem)
             {
-                textBlock.Inlines.Clear();
+                // Check which ListView contains this TextBlock
+                bool isInShortcutsList = IsInVisualTree(textBlock, shortcutsList);
+                bool isInKeyList = IsInVisualTree(textBlock, keyList);
 
-                foreach (var run in listItem.HighlightedRuns)
+                // Only add suffix if in the main list
+                if (isInShortcutsList)
                 {
-                    textBlock.Inlines.Add(run);
+                    textBlock.Inlines.Clear();
+                    foreach (var run in listItem.HighlightedRuns)
+                    {
+                        textBlock.Inlines.Add(run);
+                    }
                 }
-
-                var suffixRun = new Run
+                else if (isInKeyList)
                 {
-                    Text = listItem.Suffix,
-                    FontWeight = Microsoft.UI.Text.FontWeights.SemiBold
-                };
-                textBlock.Inlines.Add(suffixRun);
+                    textBlock.Inlines.Clear();
+                    textBlock.Inlines.Add(new Run
+                    {
+                        Text = listItem.Suffix,
+                        FontWeight = FontWeights.SemiBold
+                    });
+                }
             }
+        }
+
+        // Helper to check if an element exists in a specific ListView's visual tree
+        private bool IsInVisualTree(DependencyObject element, DependencyObject parent)
+        {
+            while (element != null)
+            {
+                if (element == parent)
+                    return true;
+                element = VisualTreeHelper.GetParent(element);
+            }
+            return false;
         }
     }
 }
