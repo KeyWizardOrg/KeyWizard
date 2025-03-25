@@ -14,17 +14,6 @@
     <SelfContained>true</SelfContained>
   </PropertyGroup>
 
-  <!-- 
-    NEW PropertyGroup (below) that ONLY runs if IsCIBuild == "true". 
-    It overrides UseWinUI and EnableMsixTooling to false, so CI won't attempt MSIX tasks.
-    Keep all existing lines & comments above exactly as they were.
-  -->
-  <PropertyGroup Condition="'$(IsCIBuild)'=='true'">
-    <UseWinUI>false</UseWinUI>
-    <EnableMsixTooling>false</EnableMsixTooling>
-    <PublishProfile></PublishProfile>
-  </PropertyGroup>
-
   <ItemGroup>
     <Compile Remove="tests\**" />
     <EmbeddedResource Remove="tests\**" />
@@ -54,11 +43,13 @@
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
   </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.250108002" />
     <PackageReference Include="MSTest.TestFramework" Version="3.7.3" />
   </ItemGroup>
+
   <ItemGroup>
     <None Update="App.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -86,4 +77,18 @@
   <ItemGroup>
     <PRIResource Remove="tests\**" />
   </ItemGroup>
+
+  <!--
+    NEW: When IsCIBuild=true, we disable all WinUI/MSIX packaging + PRI generation.
+    This ensures no "ExpandPriContent" task is invoked on CI.
+  -->
+  <PropertyGroup Condition="'$(IsCIBuild)'=='true'">
+    <UseWinUI>false</UseWinUI>
+    <EnableMsixTooling>false</EnableMsixTooling>
+    <PublishProfile></PublishProfile>
+    <EnableAssemblyPriGeneration>false</EnableAssemblyPriGeneration>
+    <WindowsPackageType>None</WindowsPackageType>
+    <DisableMsixProjectCapabilityAddedByProject>true</DisableMsixProjectCapabilityAddedByProject>
+    <DisableHasPackageAndPublishMenuAddedByProject>true</DisableHasPackageAndPublishMenuAddedByProject>
+  </PropertyGroup>
 </Project>
