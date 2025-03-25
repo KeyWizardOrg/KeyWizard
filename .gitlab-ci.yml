@@ -20,10 +20,9 @@ stages:
 build:
   stage: build
   script:
-    - dotnet --version
     - dotnet clean --configuration $BUILD_CONFIG -p:Platform="x64"
     - dotnet restore -p:Platform="x64"
-    - dotnet build --configuration $BUILD_CONFIG -p:Platform="x64"
+    - dotnet build --configuration $BUILD_CONFIG -p:Platform="x64" -p:IsCIBuild=true
 
   artifacts:
     paths:
