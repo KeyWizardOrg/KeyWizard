@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
@@ -11,8 +11,20 @@
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
     <Nullable>enable</Nullable>
-	<SelfContained>true</SelfContained>
+    <SelfContained>true</SelfContained>
   </PropertyGroup>
+
+  <!-- 
+    NEW PropertyGroup (below) that ONLY runs if IsCIBuild == "true". 
+    It overrides UseWinUI and EnableMsixTooling to false, so CI won't attempt MSIX tasks.
+    Keep all existing lines & comments above exactly as they were.
+  -->
+  <PropertyGroup Condition="'$(IsCIBuild)'=='true'">
+    <UseWinUI>false</UseWinUI>
+    <EnableMsixTooling>false</EnableMsixTooling>
+    <PublishProfile></PublishProfile>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="tests\**" />
     <EmbeddedResource Remove="tests\**" />
