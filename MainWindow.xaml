@@ -46,7 +46,7 @@
                       HorizontalAlignment="Center"
                       Foreground="{ThemeResource SystemAccentColor}"/>
 
-            <!-- TextBox -->
+                <!-- TextBox -->
             <TextBox Grid.Column="1"
                      x:Name="searchTextBox"
                      PlaceholderText="Key Wizard"
@@ -99,36 +99,36 @@
                     Background="Transparent"
                     BorderBrush="Transparent"
                     Click="VoiceInput">
-                            <Button.Style>
-                                <Style TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="Button">
-                                                <Grid x:Name="RootGrid" Background="{TemplateBinding Background}">
-                                                    <VisualStateManager.VisualStateGroups>
-                                                        <VisualStateGroup x:Name="CommonStates">
-                                                            <VisualState x:Name="Normal"/>
-                                                            <VisualState x:Name="PointerOver">
-                                                                <!-- Empty state to prevent hover color change -->
-                                                            </VisualState>
-                                                            <VisualState x:Name="Pressed">
-                                                                <!-- You can customize the pressed state if needed -->
-                                                            </VisualState>
-                                                        </VisualStateGroup>
-                                                    </VisualStateManager.VisualStateGroups>
-                                                    <ContentPresenter x:Name="ContentPresenter"
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Grid x:Name="RootGrid" Background="{TemplateBinding Background}">
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal"/>
+                                                <VisualState x:Name="PointerOver">
+                                                    <!-- Empty state to prevent hover color change -->
+                                                </VisualState>
+                                                <VisualState x:Name="Pressed">
+                                                    <!-- You can customize the pressed state if needed -->
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                        <ContentPresenter x:Name="ContentPresenter"
                                                         Content="{TemplateBinding Content}"
                                                         ContentTemplate="{TemplateBinding ContentTemplate}"
                                                         HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                         VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                                         Padding="{TemplateBinding Padding}"/>
-                                                </Grid>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Style>
-                            </Button.Style>
-                            <FontIcon x:Name="ListenIcon" 
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+                <FontIcon x:Name="ListenIcon"
                          Glyph="&#xF781;" 
                          Foreground="{ThemeResource SystemAccentColor}"
                          HorizontalAlignment="Center"
@@ -147,44 +147,88 @@
             <ScrollViewer VerticalScrollBarVisibility="Auto" 
                         Margin="0,8,0,4" 
                         VerticalAlignment="Stretch">
-                <ListView x:Name="shortcutsList"
-                        Margin="8,4,8,8"
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <ListView x:Name="shortcutsList"
+                        Margin="8,4,0,8"
                         SelectionMode="None"
                         XYFocusKeyboardNavigation="Enabled"
                         SizeChanged="shortcutsList_SizeChanged"
                         BorderThickness="0">
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="local:Section">
-                            <StackPanel Margin="0,0,0,0">
-                                <TextBlock Text="{x:Bind Name}"
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="local:Section">
+                                <StackPanel Margin="0,0,0,0">
+                                    <TextBlock Text="{x:Bind Name}"
                                         FontWeight="SemiBold"
-                                        FontSize="12"
+                                        FontSize="14"
                                         Margin="0,0,0,4"/>
-                                <ListView ItemsSource="{x:Bind Items}"
-                                        SelectionMode="Single"
-                                        KeyDown="ListView_KeyDown"
-                                        IsItemClickEnabled="True"
-                                        ItemClick="ListView_ItemClick"
-                                        BorderThickness="0">
-                                    <ListView.ItemTemplate>
-                                        <DataTemplate x:DataType="local:ListItem">
-                                            <TextBlock Margin="0,0,0,0" Loaded="TextBlock_Loaded">
-                                            </TextBlock>
-                                        </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                    <ListView.ItemContainerStyle>
-                                        <Style TargetType="ListViewItem">
-                                            <Setter Property="Background" Value="Transparent"/>
-                                            <Setter Property="BorderBrush" Value="Transparent"/>
-                                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                            <Setter Property="Margin" Value="0"/>
-                                        </Style>
-                                    </ListView.ItemContainerStyle>
-                                </ListView>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                                    <ListView ItemsSource="{x:Bind Shortcuts}"
+                                              SelectionMode="Single"
+                                              KeyDown="ListView_KeyDown"
+                                              IsItemClickEnabled="True"
+                                              ItemClick="ListView_ItemClick"
+                                              BorderThickness="0">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate x:DataType="local:Shortcut">
+                                                <TextBlock Margin="0,0,0,0" Loaded="TextBlock_Loaded" FontSize="14">
+                                                </TextBlock>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                        <ListView.ItemContainerStyle>
+                                            <Style TargetType="ListViewItem">
+                                                <Setter Property="Background" Value="Transparent"/>
+                                                <Setter Property="BorderBrush" Value="Transparent"/>
+                                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                                <Setter Property="Margin" Value="0"/>
+                                            </Style>
+                                        </ListView.ItemContainerStyle>
+                                    </ListView>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                    <!-- Key Combination ListView -->
+                    <ListView Grid.Column="1"
+                    x:Name="keyList"
+                    Margin="0,4,8,8"
+                    SelectionMode="None"
+                    BorderThickness="0">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="local:Section">
+                                <StackPanel Margin="0,0,0,0">
+                                    <TextBlock Text="{x:Bind Name}"
+                                    FontWeight="SemiBold"
+                                    FontSize="14"
+                                    Margin="0,0,0,4"/>
+                                    <ListView ItemsSource="{x:Bind Shortcuts}"
+                                    SelectionMode="Single"
+                                    KeyDown="ListView_KeyDown"
+                                    IsItemClickEnabled="True"
+                                    ItemClick="ListView_ItemClick"
+                                    BorderThickness="0">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate x:DataType="local:Shortcut">
+                                                <TextBlock Margin="0,0,0,0" Loaded="TextBlock_Loaded" FontSize="16"/>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                        <ListView.ItemContainerStyle>
+                                            <Style TargetType="ListViewItem">
+                                                <Setter Property="Background" Value="Transparent"/>
+                                                <Setter Property="BorderBrush" Value="Transparent"/>
+                                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                                <Setter Property="Margin" Value="0"/>
+                                            </Style>
+                                        </ListView.ItemContainerStyle>
+                                    </ListView>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
             </ScrollViewer>
         </Grid>
     </Grid>

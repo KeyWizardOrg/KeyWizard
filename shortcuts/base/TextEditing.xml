@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<category title="Text Editing">
+	<shortcut description="Delete character to the left">
+		<key>BACKSPACE</key>
+	</shortcut>
+	<shortcut description="Select all text">
+		<key>CTRL</key>
+		<key>A</key>
+	</shortcut>
+	<shortcut description="Bold selected text">
+		<key>CTRL</key>
+		<key>B</key>
+	</shortcut>
+	<shortcut description="Delete word to the left">
+		<key>CTRL</key>
+		<key>BACKSPACE</key>
+	</shortcut>
+	<shortcut description="Copy selected text">
+		<key>CTRL</key>
+		<key>C</key>
+	</shortcut>
+	<shortcut description="Copy selected text">
+		<key>CTRL</key>
+		<key>INSERT</key>
+	</shortcut>
+	<shortcut description="Delete word to the right">
+		<key>CTRL</key>
+		<key>DEL</key>
+	</shortcut>
+	<shortcut description="Move to next paragraph">
+		<key>CTRL</key>
+		<key>DOWN</key>
+	</shortcut>
+	<shortcut description="Move to end of document">
+		<key>CTRL</key>
+		<key>END</key>
+	</shortcut>
+	<shortcut description="Find text">
+		<key>CTRL</key>
+		<key>F</key>
+	</shortcut>
+	<shortcut description="Find and replace text">
+		<key>CTRL</key>
+		<key>H</key>
+	</shortcut>
+	<shortcut description="Move to start of document">
+		<key>CTRL</key>
+		<key>HOME</key>
+	</shortcut>
+	<shortcut description="Italicize selected text">
+		<key>CTRL</key>
+		<key>I</key>
+	</shortcut>
+	<shortcut description="Move to previous word">
+		<key>CTRL</key>
+		<key>LEFT</key>
+	</shortcut>
+	<shortcut description="Move to next word">
+		<key>CTRL</key>
+		<key>RIGHT</key>
+	</shortcut>
+	<shortcut description="Paste as plain text">
+		<key>CTRL</key>
+		<key>SHIFT</key>
+		<key>V</key>
+	</shortcut>
+	<shortcut description="Underline selected text">
+		<key>CTRL</key>
+		<key>U</key>
+	</shortcut>
+	<shortcut description="Move to previous paragraph">
+		<key>CTRL</key>
+		<key>UP</key>
+	</shortcut>
+	<shortcut description="Paste from clipboard">
+		<key>CTRL</key>
+		<key>V</key>
+	</shortcut>
+	<shortcut description="Paste from clipboard">
+		<key>SHIFT</key>
+		<key>INSERT</key>
+	</shortcut>
+	<shortcut description="Cut selected text">
+		<key>CTRL</key>
+		<key>X</key>
+	</shortcut>
+	<shortcut description="Redo last action">
+		<key>CTRL</key>
+		<key>Y</key>
+	</shortcut>
+	<shortcut description="Undo last action">
+		<key>CTRL</key>
+		<key>Z</key>
+	</shortcut>
+	<shortcut description="Delete character to the right">
+		<key>DEL</key>
+	</shortcut>
+	<shortcut description="Delete character to the right">
+		<key>DELETE</key>
+	</shortcut>
+	<shortcut description="Move to next line">
+		<key>DOWN</key>
+	</shortcut>
+	<shortcut description="Move to end of line">
+		<key>END</key>
+	</shortcut>
+	<shortcut description="Move to start of line">
+		<key>HOME</key>
+	</shortcut>
+	<shortcut description="Move to previous character">
+		<key>LEFT</key>
+	</shortcut>
+	<shortcut description="Move forward one page">
+		<key>PAGE DOWN</key>
+	</shortcut>
+	<shortcut description="Move forward one page">
+		<key>PGDN</key>
+	</shortcut>
+	<shortcut description="Move backward one page">
+		<key>PAGE UP</key>
+	</shortcut>
+	<shortcut description="Move backward one page">
+		<key>PGUP</key>
+	</shortcut>
+	<shortcut description="Move to next character">
+		<key>RIGHT</key>
+	</shortcut>
+	<shortcut description="Select next paragraph">
+		<key>SHIFT</key>
+		<key>CTRL</key>
+		<key>DOWN</key>
+	</shortcut>
+	<shortcut description="Select to end of document">
+		<key>SHIFT</key>
+		<key>CTRL</key>
+		<key>END</key>
+	</shortcut>
+	<shortcut description="Select to start of document">
+		<key>SHIFT</key>
+		<key>CTRL</key>
+		<key>HOME</key>
+	</shortcut>
+	<shortcut description="Select previous word">
+		<key>SHIFT</key>
+		<key>CTRL</key>
+		<key>LEFT</key>
+	</shortcut>
+	<shortcut description="Select next word">
+		<key>SHIFT</key>
+		<key>CTRL</key>
+		<key>RIGHT</key>
+	</shortcut>
+	<shortcut description="Select previous paragraph">
+		<key>SHIFT</key>
+		<key>CTRL</key>
+		<key>UP</key>
+	</shortcut>
+	<shortcut description="Select next line">
+		<key>SHIFT</key>
+		<key>DOWN</key>
+	</shortcut>
+	<shortcut description="Select to end of line">
+		<key>SHIFT</key>
+		<key>END</key>
+	</shortcut>
+	<shortcut description="Select to start of line">
+		<key>SHIFT</key>
+		<key>HOME</key>
+	</shortcut>
+	<shortcut description="Select previous character">
+		<key>SHIFT</key>
+		<key>LEFT</key>
+	</shortcut>
+	<shortcut description="Select forward one page">
+		<key>SHIFT</key>
+		<key>PAGE DOWN</key>
+	</shortcut>
+	<shortcut description="Select backward one page">
+		<key>SHIFT</key>
+		<key>PAGE UP</key>
+	</shortcut>
+	<shortcut description="Select next character">
+		<key>SHIFT</key>
+		<key>RIGHT</key>
+	</shortcut>
+	<shortcut description="Select previous line">
+		<key>SHIFT</key>
+		<key>UP</key>
+	</shortcut>
+	<shortcut description="Indent cursor one tab stop">
+		<key>TAB</key>
+	</shortcut>
+	<shortcut description="Move to previous line">
+		<key>UP</key>
+	</shortcut>
+</category>

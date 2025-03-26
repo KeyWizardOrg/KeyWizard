@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<category title="File Explorer">
+	<shortcut description="Select address bar">
+		<key>ALT</key>
+		<key>D</key>
+	</shortcut>
+	<shortcut description="Show properties for selected item">
+		<key>ALT</key>
+		<key>ENTER</key>
+	</shortcut>
+	<shortcut description="Previous folder">
+		<key>ALT</key>
+		<key>LEFT</key>
+	</shortcut>
+	<shortcut description="Previous folder">
+		<key>BACKSPACE</key>
+	</shortcut>
+	<shortcut description="Toggle preview pane">
+		<key>ALT</key>
+		<key>P</key>
+	</shortcut>
+	<shortcut description="Next folder">
+		<key>ALT</key>
+		<key>RIGHT</key>
+	</shortcut>
+	<shortcut description="Toggle details pane">
+		<key>ALT</key>
+		<key>SHIFT</key>
+		<key>P</key>
+	</shortcut>
+	<shortcut description="Up one level">
+		<key>ALT</key>
+		<key>UP</key>
+	</shortcut>
+	<shortcut description="Select multiple items">
+		<key>CTRL</key>
+		<key>ARROW</key>
+		<key>SPACEBAR</key>
+	</shortcut>
+	<shortcut description="Delete item to Recycle Bin">
+		<key>CTRL</key>
+		<key>D</key>
+	</shortcut>
+	<shortcut description="Delete item to Recycle Bin">
+		<key>DELETE</key>
+	</shortcut>
+	<shortcut description="Select search box">
+		<key>CTRL</key>
+		<key>E</key>
+	</shortcut>
+	<shortcut description="Select search box">
+		<key>CTRL</key>
+		<key>F</key>
+	</shortcut>
+	<shortcut description="Focus address bar">
+		<key>CTRL</key>
+		<key>L</key>
+	</shortcut>
+	<shortcut description="Open new window">
+		<key>CTRL</key>
+		<key>N</key>
+	</shortcut>
+	<shortcut description="Move to tab number">
+		<key>CTRL</key>
+	</shortcut>
+	<shortcut description="Resize columns to fit text">
+		<key>CTRL</key>
+		<key>PLUS</key>
+	</shortcut>
+	<shortcut description="Expand all folders in navigation pane">
+		<key>CTRL</key>
+		<key>SHIFT</key>
+		<key>E</key>
+	</shortcut>
+	<shortcut description="Create new folder">
+		<key>CTRL</key>
+		<key>SHIFT</key>
+		<key>N</key>
+	</shortcut>
+	<shortcut description="Change view style">
+		<key>CTRL</key>
+		<key>SHIFT</key>
+	</shortcut>
+	<shortcut description="Previous tab">
+		<key>CTRL</key>
+		<key>SHIFT</key>
+		<key>TAB</key>
+	</shortcut>
+	<shortcut description="Open new tab">
+		<key>CTRL</key>
+		<key>T</key>
+	</shortcut>
+	<shortcut description="Close active tab">
+		<key>CTRL</key>
+		<key>W</key>
+	</shortcut>
+	<shortcut description="Next tab">
+		<key>CTRL</key>
+		<key>TAB</key>
+	</shortcut>
+	<shortcut description="Scroll to bottom">
+		<key>END</key>
+	</shortcut>
+	<shortcut description="Rename item">
+		<key>F2</key>
+	</shortcut>
+	<shortcut description="Search for file or folder">
+		<key>F3</key>
+	</shortcut>
+	<shortcut description="Select address bar">
+		<key>F4</key>
+	</shortcut>
+	<shortcut description="Refresh window">
+		<key>F5</key>
+	</shortcut>
+	<shortcut description="Cycle through elements">
+		<key>F6</key>
+	</shortcut>
+	<shortcut description="Maximize or minimize window">
+		<key>F11</key>
+	</shortcut>
+	<shortcut description="Scroll to top">
+		<key>HOME</key>
+	</shortcut>
+	<shortcut description="Collapse selection or select parent folder">
+		<key>LEFT</key>
+	</shortcut>
+	<shortcut description="Expand selection or select first subfolder">
+		<key>RIGHT</key>
+	</shortcut>
+	<shortcut description="Select multiple items">
+		<key>SHIFT</key>
+		<key>ARROW</key>
+	</shortcut>
+	<shortcut description="Permanently delete item">
+		<key>SHIFT</key>
+		<key>DELETE</key>
+	</shortcut>
+	<shortcut description="Show context menu for item">
+		<key>SHIFT</key>
+		<key>F10</key>
+	</shortcut>
+	<shortcut description="Open File Explorer">
+		<key>WINDOWS</key>
+		<key>E</key>
+	</shortcut>
+</category>
