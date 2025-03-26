@@ -14,12 +14,15 @@ namespace Key_Wizard.startup
     {
         public static Dictionary<string, List<Shortcut>> Read()
         {
-            string baseXml = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "shortcuts\\base");
-            string[] xmlFiles = Directory.GetFiles(baseXml, "*.xml");
+            string baseXml = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "shortcuts\\base");
+            string[] baseXmlFiles = Directory.GetFiles(baseXml, "*.xml");
+
+            string customXml = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Key Wizard");
+            string[] customXmlFiles = Directory.GetFiles(customXml, "*.xml");
 
             var dictionary = new Dictionary<string, List<Shortcut>>();
             
-            foreach (var file in xmlFiles)
+            foreach (var file in baseXmlFiles.Concat(customXmlFiles).ToArray())
             {
                 XDocument doc = XDocument.Load(file);
 
