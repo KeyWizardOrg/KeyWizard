@@ -1,0 +1,449 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<category title="Windows">
+	<shortcut description="Open or close Start menu">
+		<key>WINDOWS</key>
+	</shortcut>
+	<shortcut description="Open action center">
+		<key>WINDOWS</key>
+		<key>A</key>
+	</shortcut>
+	<shortcut description="Toggle HDR on or off">
+		<key>WINDOWS</key>
+		<key>ALT</key>
+		<key>B</key>
+	</shortcut>
+	<shortcut description="Show or hide date and time">
+		<key>WINDOWS</key>
+		<key>ALT</key>
+		<key>D</key>
+	</shortcut>
+	<shortcut description="Snap window to bottom half">
+		<key>WINDOWS</key>
+		<key>ALT</key>
+		<key>DOWN</key>
+	</shortcut>
+	<shortcut description="Focus on voice typing keyboard">
+		<key>WINDOWS</key>
+		<key>ALT</key>
+		<key>H</key>
+	</shortcut>
+	<shortcut description="Mute or unmute microphone">
+		<key>WINDOWS</key>
+		<key>ALT</key>
+		<key>K</key>
+	</shortcut>
+	<shortcut description="Snap window to top half">
+		<key>WINDOWS</key>
+		<key>ALT</key>
+		<key>UP</key>
+	</shortcut>
+	<shortcut description="Peek at desktop">
+		<key>WINDOWS</key>
+		<key>COMMA</key>
+	</shortcut>
+	<shortcut description="Toggle color filters">
+		<key>WINDOWS</key>
+		<key>CTRL</key>
+		<key>C</key>
+	</shortcut>
+	<shortcut description="Open Narrator">
+		<key>WINDOWS</key>
+		<key>CTRL</key>
+		<key>ENTER</key>
+	</shortcut>
+	<shortcut description="Search for network devices">
+		<key>WINDOWS</key>
+		<key>CTRL</key>
+		<key>F</key>
+	</shortcut>
+	<shortcut description="Open Quick Assist">
+		<key>WINDOWS</key>
+		<key>CTRL</key>
+		<key>Q</key>
+	</shortcut>
+	<shortcut description="Wake up device">
+		<key>WINDOWS</key>
+		<key>CTRL</key>
+		<key>SHIFT</key>
+		<key>B</key>
+	</shortcut>
+	<shortcut description="Change input option">
+		<key>WINDOWS</key>
+		<key>CTRL</key>
+		<key>SPACE</key>
+	</shortcut>
+	<shortcut description="Open sound settings">
+		<key>WINDOWS</key>
+		<key>CTRL</key>
+		<key>V</key>
+	</shortcut>
+	<shortcut description="Show or hide desktop">
+		<key>WINDOWS</key>
+		<key>D</key>
+	</shortcut>
+	<shortcut description="Minimize active window">
+		<key>WINDOWS</key>
+		<key>DOWN</key>
+	</shortcut>
+	<shortcut description="Open File Explorer">
+		<key>WINDOWS</key>
+		<key>E</key>
+	</shortcut>
+	<shortcut description="Close Magnifier">
+		<key>WINDOWS</key>
+		<key>ESC</key>
+	</shortcut>
+	<shortcut description="Open Feedback Hub">
+		<key>WINDOWS</key>
+		<key>F</key>
+	</shortcut>
+	<shortcut description="Start IME reconversion">
+		<key>WINDOWS</key>
+		<key>FORWARD SLASH</key>
+	</shortcut>
+	<shortcut description="Open Game Bar">
+		<key>WINDOWS</key>
+		<key>G</key>
+	</shortcut>
+	<shortcut description="Open voice dictation">
+		<key>WINDOWS</key>
+		<key>H</key>
+	</shortcut>
+	<shortcut description="Minimize or restore all windows">
+		<key>WINDOWS</key>
+		<key>HOME</key>
+	</shortcut>
+	<shortcut description="Open Settings">
+		<key>WINDOWS</key>
+		<key>I</key>
+	</shortcut>
+	<shortcut description="Focus on Windows tip">
+		<key>WINDOWS</key>
+		<key>J</key>
+	</shortcut>
+	<shortcut description="Open Cast">
+		<key>WINDOWS</key>
+		<key>K</key>
+	</shortcut>
+	<shortcut description="Lock computer">
+		<key>WINDOWS</key>
+		<key>L</key>
+	</shortcut>
+	<shortcut description="Snap window to left">
+		<key>WINDOWS</key>
+		<key>LEFT</key>
+	</shortcut>
+	<shortcut description="Minimize all windows">
+		<key>WINDOWS</key>
+		<key>M</key>
+	</shortcut>
+	<shortcut description="Zoom out in Magnifier">
+		<key>WINDOWS</key>
+		<key>MINUS</key>
+	</shortcut>
+	<shortcut description="Open notification center">
+		<key>WINDOWS</key>
+		<key>N</key>
+	</shortcut>
+	<shortcut description="Lock device orientation">
+		<key>WINDOWS</key>
+		<key>O</key>
+	</shortcut>
+	<shortcut description="Open project settings">
+		<key>WINDOWS</key>
+		<key>P</key>
+	</shortcut>
+	<shortcut description="Open System About">
+		<key>WINDOWS</key>
+		<key>PAUSE</key>
+	</shortcut>
+	<shortcut description="Open emoji panel">
+		<key>WINDOWS</key>
+		<key>PERIOD</key>
+	</shortcut>
+	<shortcut description="Open emoji panel">
+		<key>WINDOWS</key>
+		<key>SEMICOLON</key>
+	</shortcut>
+	<shortcut description="Zoom in with Magnifier">
+		<key>WINDOWS</key>
+		<key>PLUS</key>
+	</shortcut>
+	<shortcut description="Capture full screen screenshot">
+		<key>WINDOWS</key>
+		<key>PRTSCN</key>
+	</shortcut>
+	<shortcut description="Open search">
+		<key>WINDOWS</key>
+		<key>Q</key>
+	</shortcut>
+	<shortcut description="Open Run dialog">
+		<key>WINDOWS</key>
+		<key>R</key>
+	</shortcut>
+	<shortcut description="Snap window to right">
+		<key>WINDOWS</key>
+		<key>RIGHT</key>
+	</shortcut>
+	<shortcut description="Open search">
+		<key>WINDOWS</key>
+		<key>S</key>
+	</shortcut>
+	<shortcut description="Restore snapped or maximized window">
+		<key>WINDOWS</key>
+		<key>SHIFT</key>
+		<key>DOWN</key>
+	</shortcut>
+	<shortcut description="Full screen UWP app">
+		<key>WINDOWS</key>
+		<key>SHIFT</key>
+		<key>ENTER</key>
+	</shortcut>
+	<shortcut description="Move window to left monitor">
+		<key>WINDOWS</key>
+		<key>SHIFT</key>
+		<key>LEFT</key>
+	</shortcut>
+	<shortcut description="Restore minimized windows">
+		<key>WINDOWS</key>
+		<key>SHIFT</key>
+		<key>M</key>
+	</shortcut>
+	<shortcut description="Record screen region">
+		<key>WINDOWS</key>
+		<key>SHIFT</key>
+		<key>R</key>
+	</shortcut>
+	<shortcut description="Move window to right monitor">
+		<key>WINDOWS</key>
+		<key>SHIFT</key>
+		<key>RIGHT</key>
+	</shortcut>
+	<shortcut description="Capture screen region">
+		<key>WINDOWS</key>
+		<key>SHIFT</key>
+		<key>S</key>
+	</shortcut>
+	<shortcut description="Switch input backward">
+		<key>WINDOWS</key>
+		<key>SHIFT</key>
+		<key>SPACE</key>
+	</shortcut>
+	<shortcut description="Stretch window to top and bottom">
+		<key>WINDOWS</key>
+		<key>SHIFT</key>
+		<key>UP</key>
+	</shortcut>
+	<shortcut description="Cycle through notifications">
+		<key>WINDOWS</key>
+		<key>SHIFT</key>
+		<key>V</key>
+	</shortcut>
+	<shortcut description="Switch input forward">
+		<key>WINDOWS</key>
+		<key>SPACE</key>
+	</shortcut>
+	<shortcut description="Open Task View">
+		<key>WINDOWS</key>
+		<key>TAB</key>
+	</shortcut>
+	<shortcut description="Open Accessibility settings">
+		<key>WINDOWS</key>
+		<key>U</key>
+	</shortcut>
+	<shortcut description="Maximize active window">
+		<key>WINDOWS</key>
+		<key>UP</key>
+	</shortcut>
+	<shortcut description="Open clipboard history">
+		<key>WINDOWS</key>
+		<key>V</key>
+	</shortcut>
+	<shortcut description="Open Widgets">
+		<key>WINDOWS</key>
+		<key>W</key>
+	</shortcut>
+	<shortcut description="Open Quick Link menu">
+		<key>WINDOWS</key>
+		<key>X</key>
+	</shortcut>
+	<shortcut description="Switch input between Mixed Reality and desktop">
+		<key>WINDOWS</key>
+		<key>Y</key>
+	</shortcut>
+	<shortcut description="Open snap layouts">
+		<key>WINDOWS</key>
+		<key>Z</key>
+	</shortcut>
+	<shortcut description="Focus first icon in Suggested actions">
+		<key>ALT</key>
+		<key>A</key>
+	</shortcut>
+	<shortcut description="Cycle through windows in order opened">
+		<key>ALT</key>
+		<key>ESC</key>
+	</shortcut>
+	<shortcut description="Close active window or prompt shutdown">
+		<key>ALT</key>
+		<key>F4</key>
+	</shortcut>
+	<shortcut description="Show password on sign-in screen">
+		<key>ALT</key>
+		<key>F8</key>
+	</shortcut>
+	<shortcut description="Go back">
+		<key>ALT</key>
+		<key>LEFT</key>
+	</shortcut>
+	<shortcut description="Move down one screen">
+		<key>ALT</key>
+		<key>PAGE DOWN</key>
+	</shortcut>
+	<shortcut description="Move up one screen">
+		<key>ALT</key>
+		<key>PAGE UP</key>
+	</shortcut>
+	<shortcut description="Screenshot active window to clipboard">
+		<key>ALT</key>
+		<key>PRTSCN</key>
+	</shortcut>
+	<shortcut description="Go forward">
+		<key>ALT</key>
+		<key>RIGHT</key>
+	</shortcut>
+	<shortcut description="Move group/tile left on Start menu">
+		<key>ALT</key>
+		<key>SHIFT</key>
+		<key>LEFT</key>
+	</shortcut>
+	<shortcut description="Move group/tile right on Start menu">
+		<key>ALT</key>
+		<key>SHIFT</key>
+		<key>RIGHT</key>
+	</shortcut>
+	<shortcut description="Open context menu for active window">
+		<key>ALT</key>
+		<key>SPACEBAR</key>
+	</shortcut>
+	<shortcut description="Switch between open windows">
+		<key>ALT</key>
+		<key>TAB</key>
+	</shortcut>
+	<shortcut description="Perform action with underlined letter">
+		<key>ALT</key>
+		<key>UNDERLINED LETTER</key>
+	</shortcut>
+	<shortcut description="Select all items in window">
+		<key>CTRL</key>
+		<key>A</key>
+	</shortcut>
+	<shortcut description="Open security screen">
+		<key>CTRL</key>
+		<key>ALT</key>
+		<key>DEL</key>
+	</shortcut>
+	<shortcut description="View thumbnails of open apps">
+		<key>CTRL</key>
+		<key>ALT</key>
+		<key>TAB</key>
+	</shortcut>
+	<shortcut description="Open Start menu">
+		<key>CTRL</key>
+		<key>ESC</key>
+	</shortcut>
+	<shortcut description="Close active document">
+		<key>CTRL</key>
+		<key>F4</key>
+	</shortcut>
+	<shortcut description="Refresh window">
+		<key>CTRL</key>
+		<key>F5</key>
+	</shortcut>
+	<shortcut description="Refresh window">
+		<key>CTRL</key>
+		<key>R</key>
+	</shortcut>
+	<shortcut description="Switch keyboard layout">
+		<key>CTRL</key>
+		<key>SHIFT</key>
+	</shortcut>
+	<shortcut description="Select words backward">
+		<key>CTRL</key>
+		<key>SHIFT</key>
+		<key>LEFT</key>
+	</shortcut>
+	<shortcut description="Select words forward">
+		<key>CTRL</key>
+		<key>SHIFT</key>
+		<key>RIGHT</key>
+	</shortcut>
+	<shortcut description="Open Task Manager">
+		<key>CTRL</key>
+		<key>SHIFT</key>
+		<key>ESC</key>
+	</shortcut>
+	<shortcut description="Toggle Chinese IME">
+		<key>CTRL</key>
+		<key>SPACEBAR</key>
+	</shortcut>
+	<shortcut description="Redo action">
+		<key>CTRL</key>
+		<key>Y</key>
+	</shortcut>
+	<shortcut description="Undo action">
+		<key>CTRL</key>
+		<key>Z</key>
+	</shortcut>
+	<shortcut description="Stop or dismiss dialog">
+		<key>ESC</key>
+	</shortcut>
+	<shortcut description="Stop or dismiss dialog">
+		<key>ESCAPE</key>
+	</shortcut>
+	<shortcut description="Refresh active window">
+		<key>F5</key>
+	</shortcut>
+	<shortcut description="Cycle through elements">
+		<key>F6</key>
+	</shortcut>
+	<shortcut description="Activate menu bar">
+		<key>F10</key>
+	</shortcut>
+	<shortcut description="Capture screen region to clipboard">
+		<key>PRTSC</key>
+	</shortcut>
+	<shortcut description="Open Copilot">
+		<key>F23</key>
+	</shortcut>
+	<shortcut description="Open Task view">
+		<key>WINDOWS</key>
+		<key>TAB</key>
+	</shortcut>
+	<shortcut description="Create new desktop">
+		<key>WINDOWS</key>
+		<key>D</key>
+	</shortcut>
+	<shortcut description="Switch to desktop on right">
+		<key>WINDOWS</key>
+		<key>CTRL</key>
+		<key>RIGHT</key>
+	</shortcut>
+	<shortcut description="Switch to desktop on left">
+		<key>WINDOWS</key>
+		<key>CTRL</key>
+		<key>LEFT</key>
+	</shortcut>
+	<shortcut description="Close current desktop">
+		<key>WINDOWS</key>
+		<key>CTRL</key>
+		<key>F4</key>
+	</shortcut>
+	<shortcut description="Focus on notification area">
+		<key>WINDOWS</key>
+		<key>B</key>
+	</shortcut>
+	<shortcut description="Cycle through taskbar apps">
+		<key>WINDOWS</key>
+		<key>T</key>
+	</shortcut>
+</category>
