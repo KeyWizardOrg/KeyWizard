@@ -159,7 +159,7 @@
                         SizeChanged="shortcutsList_SizeChanged"
                         BorderThickness="0">
                         <ListView.ItemTemplate>
-                            <DataTemplate x:DataType="local:Section">
+                            <DataTemplate x:DataType="local:Category">
                                 <StackPanel Margin="0,0,0,0">
                                     <TextBlock Text="{x:Bind Name}"
                                         FontWeight="SemiBold"
@@ -198,7 +198,7 @@
                     SelectionMode="None"
                     BorderThickness="0">
                         <ListView.ItemTemplate>
-                            <DataTemplate x:DataType="local:Section">
+                            <DataTemplate x:DataType="local:Category">
                                 <StackPanel Margin="0,0,0,0">
                                     <TextBlock Text="{x:Bind Name}"
                                     FontWeight="SemiBold"

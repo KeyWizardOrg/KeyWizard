@@ -39,15 +39,9 @@ namespace Key_Wizard
         }
     }
 
-    public class Section
-    {
-        public string Name { get; set; }
-        public ObservableCollection<Shortcut> Shortcuts { get; set; }
-    }
-
     public sealed partial class MainWindow : Window
     {
-        private Dictionary<string, List<Shortcut>> shortcutDictionary;
+        private List<Category> categories;
         private List<Shortcut> searchList;
         private DispatcherTimer searchDelayTimer;
         private const int SEARCH_DELAY_MS = 200;
@@ -88,8 +82,8 @@ namespace Key_Wizard
             // Add event handler for Window.Closed
             this.Closed += MainWindow_Closed;
 
-            shortcutDictionary = LoadShortcuts.Read();
-            searchList = shortcutDictionary.Values.SelectMany(list => list).ToList();
+            this.categories = LoadShortcuts.Read();
+            this.searchList = categories.SelectMany(category => category.Shortcuts).ToList();
         }
 
         private async void MainWindow_Closed(object sender, WindowEventArgs e)
@@ -113,15 +107,15 @@ namespace Key_Wizard
         {
             searchDelayTimer.Stop();
             string searchQuery = searchTextBox.Text;
-            ObservableCollection<Section> display = new ObservableCollection<Section>();
-            ObservableCollection<Section> keyDisplay = new ObservableCollection<Section>();
+            ObservableCollection<Category> display = new ObservableCollection<Category>();
+            ObservableCollection<Category> keyDisplay = new ObservableCollection<Category>();
 
             List<Shortcut> results = Search.Do(searchList, searchQuery);
             results.ForEach((shortcut) => shortcut.SearchResults = GenerateSearchResults(searchQuery, shortcut.Description));
             if (!string.IsNullOrWhiteSpace(searchQuery) && results.Any())
             {
-                display.Add(new Section { Name = "Search Results", Shortcuts = new ObservableCollection<Shortcut>(results) });
-                keyDisplay.Add(new Section { Name = "", Shortcuts = new ObservableCollection<Shortcut>(results) });
+                display.Add(new Category { Name = "Search Results", Shortcuts = new ObservableCollection<Shortcut>(results) });
+                keyDisplay.Add(new Category { Name = "", Shortcuts = new ObservableCollection<Shortcut>(results) });
                 ResultsBorderBar.Visibility = Visibility.Visible;
             }
             else

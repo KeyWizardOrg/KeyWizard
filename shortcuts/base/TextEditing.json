@@ -1,0 +1,205 @@
+{
+    "Name": "Text Editing",
+    "Shortcuts": [
+        {
+            "Description": "Delete character to the left",
+            "Keys": [ "BACKSPACE" ]
+        },
+        {
+            "Description": "Select all text",
+            "Keys": [ "CTRL", "A" ]
+        },
+        {
+            "Description": "Bold selected text",
+            "Keys": [ "CTRL", "B" ]
+        },
+        {
+            "Description": "Delete word to the left",
+            "Keys": [ "CTRL", "BACKSPACE" ]
+        },
+        {
+            "Description": "Copy selected text",
+            "Keys": [ "CTRL", "C" ]
+        },
+        {
+            "Description": "Copy selected text",
+            "Keys": [ "CTRL", "INSERT" ]
+        },
+        {
+            "Description": "Delete word to the right",
+            "Keys": [ "CTRL", "DEL" ]
+        },
+        {
+            "Description": "Move to next paragraph",
+            "Keys": [ "CTRL", "DOWN" ]
+        },
+        {
+            "Description": "Move to end of document",
+            "Keys": [ "CTRL", "END" ]
+        },
+        {
+            "Description": "Find text",
+            "Keys": [ "CTRL", "F" ]
+        },
+        {
+            "Description": "Find and replace text",
+            "Keys": [ "CTRL", "H" ]
+        },
+        {
+            "Description": "Move to start of document",
+            "Keys": [ "CTRL", "HOME" ]
+        },
+        {
+            "Description": "Italicize selected text",
+            "Keys": [ "CTRL", "I" ]
+        },
+        {
+            "Description": "Move to previous word",
+            "Keys": [ "CTRL", "LEFT" ]
+        },
+        {
+            "Description": "Move to next word",
+            "Keys": [ "CTRL", "RIGHT" ]
+        },
+        {
+            "Description": "Paste as plain text",
+            "Keys": [ "CTRL", "SHIFT", "V" ]
+        },
+        {
+            "Description": "Underline selected text",
+            "Keys": [ "CTRL", "U" ]
+        },
+        {
+            "Description": "Move to previous paragraph",
+            "Keys": [ "CTRL", "UP" ]
+        },
+        {
+            "Description": "Paste from clipboard",
+            "Keys": [ "CTRL", "V" ]
+        },
+        {
+            "Description": "Paste from clipboard",
+            "Keys": [ "SHIFT", "INSERT" ]
+        },
+        {
+            "Description": "Cut selected text",
+            "Keys": [ "CTRL", "X" ]
+        },
+        {
+            "Description": "Redo last action",
+            "Keys": [ "CTRL", "Y" ]
+        },
+        {
+            "Description": "Undo last action",
+            "Keys": [ "CTRL", "Z" ]
+        },
+        {
+            "Description": "Delete character to the right",
+            "Keys": [ "DEL" ]
+        },
+        {
+            "Description": "Delete character to the right",
+            "Keys": [ "DELETE" ]
+        },
+        {
+            "Description": "Move to next line",
+            "Keys": [ "DOWN" ]
+        },
+        {
+            "Description": "Move to end of line",
+            "Keys": [ "END" ]
+        },
+        {
+            "Description": "Move to start of line",
+            "Keys": [ "HOME" ]
+        },
+        {
+            "Description": "Move to previous character",
+            "Keys": [ "LEFT" ]
+        },
+        {
+            "Description": "Move forward one page",
+            "Keys": [ "PAGE DOWN" ]
+        },
+        {
+            "Description": "Move forward one page",
+            "Keys": [ "PGDN" ]
+        },
+        {
+            "Description": "Move backward one page",
+            "Keys": [ "PAGE UP" ]
+        },
+        {
+            "Description": "Move backward one page",
+            "Keys": [ "PGUP" ]
+        },
+        {
+            "Description": "Move to next character",
+            "Keys": [ "RIGHT" ]
+        },
+        {
+            "Description": "Select next paragraph",
+            "Keys": [ "SHIFT", "CTRL", "DOWN" ]
+        },
+        {
+            "Description": "Select to end of document",
+            "Keys": [ "SHIFT", "CTRL", "END" ]
+        },
+        {
+            "Description": "Select to start of document",
+            "Keys": [ "SHIFT", "CTRL", "HOME" ]
+        },
+        {
+            "Description": "Select previous word",
+            "Keys": [ "SHIFT", "CTRL", "LEFT" ]
+        },
+        {
+            "Description": "Select next word",
+            "Keys": [ "SHIFT", "CTRL", "RIGHT" ]
+        },
+        {
+            "Description": "Select previous paragraph",
+            "Keys": [ "SHIFT", "CTRL", "UP" ]
+        },
+        {
+            "Description": "Select next line",
+            "Keys": [ "SHIFT", "DOWN" ]
+        },
+        {
+            "Description": "Select to end of line",
+            "Keys": [ "SHIFT", "END" ]
+        },
+        {
+            "Description": "Select to start of line",
+            "Keys": [ "SHIFT", "HOME" ]
+        },
+        {
+            "Description": "Select previous character",
+            "Keys": [ "SHIFT", "LEFT" ]
+        },
+        {
+            "Description": "Select forward one page",
+            "Keys": [ "SHIFT", "PAGE DOWN" ]
+        },
+        {
+            "Description": "Select backward one page",
+            "Keys": [ "SHIFT", "PAGE UP" ]
+        },
+        {
+            "Description": "Select next character",
+            "Keys": [ "SHIFT", "RIGHT" ]
+        },
+        {
+            "Description": "Select previous line",
+            "Keys": [ "SHIFT", "UP" ]
+        },
+        {
+            "Description": "Indent cursor one tab stop",
+            "Keys": [ "TAB" ]
+        },
+        {
+            "Description": "Move to previous line",
+            "Keys": [ "UP" ]
+        }
+    ]
+}

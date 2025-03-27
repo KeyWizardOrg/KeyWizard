@@ -48,16 +48,16 @@
     <PackageReference Include="MSTest.TestFramework" Version="3.7.3" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="shortcuts\base\CommandPrompt.xml">
+    <None Update="shortcuts\base\CommandPrompt.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="shortcuts\base\FileExplorer.xml">
+    <None Update="shortcuts\base\FileExplorer.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="shortcuts\base\TextEditing.xml">
+    <None Update="shortcuts\base\TextEditing.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="shortcuts\base\Windows.xml">
+    <None Update="shortcuts\base\Windows.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
