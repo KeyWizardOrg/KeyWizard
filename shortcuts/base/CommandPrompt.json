@@ -1,0 +1,62 @@
+﻿{
+    "Name": "Command Prompt",
+    "Shortcuts": [
+        {
+            "Description": "Enter Mark mode",
+            "Keys": [ "CTRL", "M" ]
+        },
+        {
+            "Description": "Begin block selection",
+            "Keys": [ "ALT", "SELECTION KEY" ]
+        },
+        {
+            "Description": "Move cursor left",
+            "Keys": [ "LEFT" ]
+        },
+        {
+            "Description": "Move cursor right",
+            "Keys": [ "RIGHT" ]
+        },
+        {
+            "Description": "Move cursor up",
+            "Keys": [ "UP" ]
+        },
+        {
+            "Description": "Move cursor down",
+            "Keys": [ "DOWN" ]
+        },
+        {
+            "Description": "Move cursor up one page",
+            "Keys": [ "PAGE UP" ]
+        },
+        {
+            "Description": "Move cursor down one page",
+            "Keys": [ "PAGE DOWN" ]
+        },
+        {
+            "Description": "Move to start of buffer (Mark mode)",
+            "Keys": [ "CTRL", "HOME" ]
+        },
+        {
+            "Description": "Move to end of buffer (Mark mode)",
+            "Keys": [ "CTRL", "END" ]
+        },
+        {
+            "Description": "Move up one line in history",
+            "Keys": [ "CTRL", "UP" ]
+        },
+        {
+            "Description": "Move down one line in history",
+            "Keys": [ "CTRL", "DOWN" ]
+        },
+        {
+            "Description": "Move viewport to top",
+            "Keys": [ "CTRL", "HOME" ]
+        },
+        {
+            "Description": "Move viewport to command line",
+            "Keys": [ "CTRL", "END" ]
+        }
+    ]
+}
+

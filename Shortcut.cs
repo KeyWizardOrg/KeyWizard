@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +10,6 @@ namespace Key_Wizard
 {
     public class Shortcut
     {
-        public string Category { get; }
         public string Description { get; }
         public List<string> Keys { get; }
 
@@ -17,9 +17,8 @@ namespace Key_Wizard
 
         public List<Run>? SearchResults { get; set; }
 
-        public Shortcut(string Category, string Description, List<string> Keys)
+        public Shortcut(string Description, List<string> Keys)
         {
-            this.Category = Category;
             this.Description = Description;
             this.Keys = Keys;
             this.KeysConcatenation = ConcatenateList(this.Keys);
@@ -36,5 +35,11 @@ namespace Key_Wizard
             c.Remove(c.Length - 2, 2);
             return c.ToString();
         } 
+    }
+
+    public class Category
+    {
+        public string Name { get; set; }
+        public ObservableCollection<Shortcut> Shortcuts { get; set; }
     }
 }
