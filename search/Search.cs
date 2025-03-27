@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Microsoft.UI.Xaml.Documents;
 
 namespace Key_Wizard.search
 {
@@ -25,7 +26,7 @@ namespace Key_Wizard.search
             // save scores in separate max-heap, this is the most elegant solution bc C# data structures suck
             var scores = new PriorityQueue<double, double>(new MaxHeapComparer());
 
-            var querySizeFactor = (double) normalizedQuery.Length / 10;
+            var querySizeFactor = (double)normalizedQuery.Length / 10;
 
             var queries = SearchLib.ExtraQueries(normalizedQuery);
             foreach (var item in items)
@@ -34,7 +35,14 @@ namespace Key_Wizard.search
 
                 double distance = 1;
                 foreach (var currentQuery in queries)
-                {;
+                {
+                    // if query is part o
+                    if (target.Contains(currentQuery))
+                    {
+                        distance = 0.1 + 0.0001 * target.Length;
+                        break;
+                    }
+
                     // carry out both algorithms on input query and prefix
                     var jaccard = JaccardSimilarity(currentQuery, target);
                     var damerau = DamerauLevenshteinDistance(currentQuery, target);
@@ -78,11 +86,12 @@ namespace Key_Wizard.search
             return resultsList;
         }
 
+
         /**
          * Determine the number of changes necessary to travel from a to b.
          * https://en.wikipedia.org/wiki/Damerau-Levenshtein_distance
          */
-        private static double DamerauLevenshteinDistance(String a, String b)
+        private static double DamerauLevenshteinDistance(string a, string b)
         {
             var d = new double[a.Length + 1, b.Length + 1];
 
