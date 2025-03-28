@@ -22,6 +22,7 @@
 
         <Grid Grid.Row="0" HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
+<<<<<<< Updated upstream
                 <ColumnDefinition Width="3*"/>
                 <!-- 75% -->
                 <ColumnDefinition Width="1*"/>
@@ -32,6 +33,141 @@
                     Grid.Column="0"
                     PlaceholderText="KeyWizard"
                     HorizontalAlignment="Stretch"
+=======
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <!-- NEW: Clear button -->
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Replace the existing FontIcon with this Button -->
+            <Button Grid.Column="0"
+                x:Name="SearchButton"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Margin="16,0,0,0"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                Click="SearchButton_Click">
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Grid x:Name="RootGrid" Background="{TemplateBinding Background}">
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal"/>
+                                                <VisualState x:Name="PointerOver">
+                                                    <Storyboard>
+                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="SearchIcon" 
+                                                                                   Storyboard.TargetProperty="Foreground">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightAltAccentBrush}"/>
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Pressed">
+                                                    <Storyboard>
+                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="SearchIcon" 
+                                                                                   Storyboard.TargetProperty="Foreground">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightAccentBrush}"/>
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+
+                                        <FontIcon x:Name="SearchIcon"
+                                            Glyph="&#xE71E;"
+                                            FontFamily="Segoe MDL2 Assets"
+                                            FontSize="16"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"
+                                            Foreground="{ThemeResource SystemAccentColor}"/>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <!-- TextBox -->
+            <TextBox Grid.Column="1"
+                     x:Name="searchTextBox"
+                     PlaceholderText="Search by voice with Windows + ALT + V"
+                     PlaceholderForeground="{ThemeResource SystemControlForegroundBaseMediumLowBrush}"
+                     HorizontalAlignment="Stretch"
+                     VerticalAlignment="Center"
+                     FontSize="16"
+                     Padding="8,4"
+                     Background="Transparent"
+                     TextWrapping="Wrap"
+                     HorizontalContentAlignment="Center"
+                     VerticalContentAlignment="Center"
+                     TextChanged="searchTextBox_TextChanged"
+                     BorderThickness="0">
+                <TextBox.Style>
+                    <Style TargetType="TextBox" BasedOn="{StaticResource DefaultTextBoxStyle}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="TextBox">
+                                    <Grid>
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal"/>
+                                                <VisualState x:Name="Focused">
+                                                    <Storyboard/>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                        <!-- Add Placeholder Text -->
+                                        <TextBlock x:Name="PlaceholderTextContentPresenter"
+                                                   Text="{TemplateBinding PlaceholderText}"
+                                                   Foreground="{TemplateBinding PlaceholderForeground}"
+                                                   IsHitTestVisible="False"
+                                                   Margin="{TemplateBinding Padding}"
+                                                   TextWrapping="{TemplateBinding TextWrapping}"
+                                                   TextAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                   Visibility="Collapsed"/> 
+                                        <ScrollViewer x:Name="ContentElement"
+                                                    Padding="{TemplateBinding Padding}"
+                                                    Background="{TemplateBinding Background}"
+                                                    BorderThickness="0"
+                                                    IsTabStop="False"
+                                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                    HorizontalScrollBarVisibility="Disabled"
+                                                    VerticalScrollBarVisibility="Disabled"/>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
+
+            <Button Grid.Column="2"
+            x:Name="ClearSearchButton"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Margin="0,0,4,0"
+            Background="Transparent"
+            BorderBrush="Transparent"
+            Visibility="Collapsed"
+            Click="ClearSearchButton_Click">
+                <FontIcon Glyph="&#xE711;" 
+                  FontFamily="Segoe MDL2 Assets"
+                  FontSize="12"
+                  Foreground="{ThemeResource SystemAccentColor}"/>
+            </Button>
+
+            <Button Grid.Column="3"
+                    x:Name="Listen"
+                    HorizontalAlignment="Center"
+>>>>>>> Stashed changes
                     VerticalAlignment="Center"
                     Margin="0,0,5,0"/>
 
