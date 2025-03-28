@@ -1,0 +1,421 @@
+{
+    "Name": "Windows",
+    "Shortcuts": [
+        {
+            "Description": "Open or close Start menu",
+            "Keys": [ "WINDOWS" ]
+        },
+        {
+            "Description": "Activate voice input",
+            "Keys": [ "WINDOWS", "ALT", "V" ]
+        },
+        {
+            "Description": "Open action center",
+            "Keys": [ "WINDOWS", "A" ]
+        },
+        {
+            "Description": "Toggle HDR on or off",
+            "Keys": [ "WINDOWS", "ALT", "B" ]
+        },
+        {
+            "Description": "Show or hide date and time",
+            "Keys": [ "WINDOWS", "ALT", "D" ]
+        },
+        {
+            "Description": "Snap window to bottom half",
+            "Keys": [ "WINDOWS", "ALT", "DOWN" ]
+        },
+        {
+            "Description": "Focus on voice typing keyboard",
+            "Keys": [ "WINDOWS", "ALT", "H" ]
+        },
+        {
+            "Description": "Mute or unmute microphone",
+            "Keys": [ "WINDOWS", "ALT", "K" ]
+        },
+        {
+            "Description": "Snap window to top half",
+            "Keys": [ "WINDOWS", "ALT", "UP" ]
+        },
+        {
+            "Description": "Peek at desktop",
+            "Keys": [ "WINDOWS", "COMMA" ]
+        },
+        {
+            "Description": "Toggle color filters",
+            "Keys": [ "WINDOWS", "CTRL", "C" ]
+        },
+        {
+            "Description": "Open Narrator",
+            "Keys": [ "WINDOWS", "CTRL", "ENTER" ]
+        },
+        {
+            "Description": "Search for network devices",
+            "Keys": [ "WINDOWS", "CTRL", "F" ]
+        },
+        {
+            "Description": "Open Quick Assist",
+            "Keys": [ "WINDOWS", "CTRL", "Q" ]
+        },
+        {
+            "Description": "Wake up device",
+            "Keys": [ "WINDOWS", "CTRL", "SHIFT", "B" ]
+        },
+        {
+            "Description": "Change input option",
+            "Keys": [ "WINDOWS", "CTRL", "SPACE" ]
+        },
+        {
+            "Description": "Open sound settings",
+            "Keys": [ "WINDOWS", "CTRL", "V" ]
+        },
+        {
+            "Description": "Show or hide desktop",
+            "Keys": [ "WINDOWS", "D" ]
+        },
+        {
+            "Description": "Minimize active window",
+            "Keys": [ "WINDOWS", "DOWN" ]
+        },
+        {
+            "Description": "Open File Explorer",
+            "Keys": [ "WINDOWS", "E" ]
+        },
+        {
+            "Description": "Close Magnifier",
+            "Keys": [ "WINDOWS", "ESC" ]
+        },
+        {
+            "Description": "Open Feedback Hub",
+            "Keys": [ "WINDOWS", "F" ]
+        },
+        {
+            "Description": "Start IME reconversion",
+            "Keys": [ "WINDOWS", "FORWARD SLASH" ]
+        },
+        {
+            "Description": "Open Game Bar",
+            "Keys": [ "WINDOWS", "G" ]
+        },
+        {
+            "Description": "Open voice dictation",
+            "Keys": [ "WINDOWS", "H" ]
+        },
+        {
+            "Description": "Minimize or restore all windows",
+            "Keys": [ "WINDOWS", "HOME" ]
+        },
+        {
+            "Description": "Open Settings",
+            "Keys": [ "WINDOWS", "I" ]
+        },
+        {
+            "Description": "Focus on Windows tip",
+            "Keys": [ "WINDOWS", "J" ]
+        },
+        {
+            "Description": "Open Cast",
+            "Keys": [ "WINDOWS", "K" ]
+        },
+        {
+            "Description": "Lock computer",
+            "Keys": [ "WINDOWS", "L" ]
+        },
+        {
+            "Description": "Snap window to left",
+            "Keys": [ "WINDOWS", "LEFT" ]
+        },
+        {
+            "Description": "Minimize all windows",
+            "Keys": [ "WINDOWS", "M" ]
+        },
+        {
+            "Description": "Zoom out in Magnifier",
+            "Keys": [ "WINDOWS", "MINUS" ]
+        },
+        {
+            "Description": "Open notification center",
+            "Keys": [ "WINDOWS", "N" ]
+        },
+        {
+            "Description": "Lock device orientation",
+            "Keys": [ "WINDOWS", "O" ]
+        },
+        {
+            "Description": "Open project settings",
+            "Keys": [ "WINDOWS", "P" ]
+        },
+        {
+            "Description": "Open System About",
+            "Keys": [ "WINDOWS", "PAUSE" ]
+        },
+        {
+            "Description": "Open emoji panel",
+            "Keys": [ "WINDOWS", "PERIOD" ]
+        },
+        {
+            "Description": "Open emoji panel",
+            "Keys": [ "WINDOWS", "SEMICOLON" ]
+        },
+        {
+            "Description": "Zoom in with Magnifier",
+            "Keys": [ "WINDOWS", "PLUS" ]
+        },
+        {
+            "Description": "Capture full screen screenshot",
+            "Keys": [ "WINDOWS", "PRTSCN" ]
+        },
+        {
+            "Description": "Open search",
+            "Keys": [ "WINDOWS", "Q" ]
+        },
+        {
+            "Description": "Open Run dialog",
+            "Keys": [ "WINDOWS", "R" ]
+        },
+        {
+            "Description": "Snap window to right",
+            "Keys": [ "WINDOWS", "RIGHT" ]
+        },
+        {
+            "Description": "Open search",
+            "Keys": [ "WINDOWS", "S" ]
+        },
+        {
+            "Description": "Restore snapped or maximized window",
+            "Keys": [ "WINDOWS", "SHIFT", "DOWN" ]
+        },
+        {
+            "Description": "Full screen UWP app",
+            "Keys": [ "WINDOWS", "SHIFT", "ENTER" ]
+        },
+        {
+            "Description": "Move window to left monitor",
+            "Keys": [ "WINDOWS", "SHIFT", "LEFT" ]
+        },
+        {
+            "Description": "Restore minimized windows",
+            "Keys": [ "WINDOWS", "SHIFT", "M" ]
+        },
+        {
+            "Description": "Record screen region",
+            "Keys": [ "WINDOWS", "SHIFT", "R" ]
+        },
+        {
+            "Description": "Move window to right monitor",
+            "Keys": [ "WINDOWS", "SHIFT", "RIGHT" ]
+        },
+        {
+            "Description": "Capture screen region",
+            "Keys": [ "WINDOWS", "SHIFT", "S" ]
+        },
+        {
+            "Description": "Switch input backward",
+            "Keys": [ "WINDOWS", "SHIFT", "SPACE" ]
+        },
+        {
+            "Description": "Stretch window to top and bottom",
+            "Keys": [ "WINDOWS", "SHIFT", "UP" ]
+        },
+        {
+            "Description": "Cycle through notifications",
+            "Keys": [ "WINDOWS", "SHIFT", "V" ]
+        },
+        {
+            "Description": "Switch input forward",
+            "Keys": [ "WINDOWS", "SPACE" ]
+        },
+        {
+            "Description": "Open Task View",
+            "Keys": [ "WINDOWS", "TAB" ]
+        },
+        {
+            "Description": "Open Accessibility settings",
+            "Keys": [ "WINDOWS", "U" ]
+        },
+        {
+            "Description": "Maximize active window",
+            "Keys": [ "WINDOWS", "UP" ]
+        },
+        {
+            "Description": "Open clipboard history",
+            "Keys": [ "WINDOWS", "V" ]
+        },
+        {
+            "Description": "Open Widgets",
+            "Keys": [ "WINDOWS", "W" ]
+        },
+        {
+            "Description": "Open Quick Link menu",
+            "Keys": [ "WINDOWS", "X" ]
+        },
+        {
+            "Description": "Switch input between Mixed Reality and desktop",
+            "Keys": [ "WINDOWS", "Y" ]
+        },
+        {
+            "Description": "Open snap layouts",
+            "Keys": [ "WINDOWS", "Z" ]
+        },
+        {
+            "Description": "Focus first icon in Suggested actions",
+            "Keys": [ "ALT", "A" ]
+        },
+        {
+            "Description": "Cycle through windows in order opened",
+            "Keys": [ "ALT", "ESC" ]
+        },
+        {
+            "Description": "Close active window or prompt shutdown",
+            "Keys": [ "ALT", "F4" ]
+        },
+        {
+            "Description": "Show password on sign-in screen",
+            "Keys": [ "ALT", "F8" ]
+        },
+        {
+            "Description": "Go back",
+            "Keys": [ "ALT", "LEFT" ]
+        },
+        {
+            "Description": "Move down one screen",
+            "Keys": [ "ALT", "PAGE DOWN" ]
+        },
+        {
+            "Description": "Move up one screen",
+            "Keys": [ "ALT", "PAGE UP" ]
+        },
+        {
+            "Description": "Screenshot active window to clipboard",
+            "Keys": [ "ALT", "PRTSCN" ]
+        },
+        {
+            "Description": "Go forward",
+            "Keys": [ "ALT", "RIGHT" ]
+        },
+        {
+            "Description": "Open context menu for active window",
+            "Keys": [ "ALT", "SPACEBAR" ]
+        },
+        {
+            "Description": "Switch between open windows",
+            "Keys": [ "ALT", "TAB" ]
+        },
+        {
+            "Description": "Perform action with underlined letter",
+            "Keys": [ "ALT", "UNDERLINED LETTER" ]
+        },
+        {
+            "Description": "Select all items in window",
+            "Keys": [ "CTRL", "A" ]
+        },
+        {
+            "Description": "Open security screen",
+            "Keys": [ "CTRL", "ALT", "DEL" ]
+        },
+        {
+            "Description": "View thumbnails of open apps",
+            "Keys": [ "CTRL", "ALT", "TAB" ]
+        },
+        {
+            "Description": "Close active document",
+            "Keys": [ "CTRL", "F4" ]
+        },
+        {
+            "Description": "Refresh window",
+            "Keys": [ "CTRL", "F5" ]
+        },
+        {
+            "Description": "Refresh window",
+            "Keys": [ "CTRL", "R" ]
+        },
+        {
+            "Description": "Switch keyboard layout",
+            "Keys": [ "CTRL", "SHIFT" ]
+        },
+        {
+            "Description": "Select words backward",
+            "Keys": [ "CTRL", "SHIFT", "LEFT" ]
+        },
+        {
+            "Description": "Select words forward",
+            "Keys": [ "CTRL", "SHIFT", "RIGHT" ]
+        },
+        {
+            "Description": "Open Task Manager",
+            "Keys": [ "CTRL", "SHIFT", "ESC" ]
+        },
+        {
+            "Description": "Toggle Chinese IME",
+            "Keys": [ "CTRL", "SPACEBAR" ]
+        },
+        {
+            "Description": "Redo action",
+            "Keys": [ "CTRL", "Y" ]
+        },
+        {
+            "Description": "Undo action",
+            "Keys": [ "CTRL", "Z" ]
+        },
+        {
+            "Description": "Stop or dismiss dialog",
+            "Keys": [ "ESC" ]
+        },
+        {
+            "Description": "Stop or dismiss dialog",
+            "Keys": [ "ESCAPE" ]
+        },
+        {
+            "Description": "Refresh active window",
+            "Keys": [ "F5" ]
+        },
+        {
+            "Description": "Cycle through elements",
+            "Keys": [ "F6" ]
+        },
+        {
+            "Description": "Activate menu bar",
+            "Keys": [ "F10" ]
+        },
+        {
+            "Description": "Capture screen region to clipboard",
+            "Keys": [ "PRTSC" ]
+        },
+        {
+            "Description": "Open Copilot",
+            "Keys": [ "F23" ]
+        },
+        {
+            "Description": "Open Task view",
+            "Keys": [ "WINDOWS", "TAB" ]
+        },
+        {
+            "Description": "Create new desktop",
+            "Keys": [ "WINDOWS", "D" ]
+        },
+        {
+            "Description": "Switch to desktop on right",
+            "Keys": [ "WINDOWS", "CTRL", "RIGHT" ]
+        },
+        {
+            "Description": "Switch to desktop on left",
+            "Keys": [ "WINDOWS", "CTRL", "LEFT" ]
+        },
+        {
+            "Description": "Close current desktop",
+            "Keys": [ "WINDOWS", "CTRL", "F4" ]
+        },
+        {
+            "Description": "Focus on notification area",
+            "Keys": [ "WINDOWS", "B" ]
+        },
+        {
+            "Description": "Cycle through taskbar apps",
+            "Keys": [ "WINDOWS", "T" ]
+        },
+        {
+            "Description": "Start presentation",
+            "Keys": [ "F5" ]
+        }
+    ]
+}
