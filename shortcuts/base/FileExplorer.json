@@ -1,0 +1,157 @@
+{
+    "Name": "File Explorer",
+    "Shortcuts": [
+        {
+            "Description": "Select address bar",
+            "Keys": [ "ALT", "D" ]
+        },
+        {
+            "Description": "Show properties for selected item",
+            "Keys": [ "ALT", "ENTER" ]
+        },
+        {
+            "Description": "Previous folder",
+            "Keys": [ "ALT", "LEFT" ]
+        },
+        {
+            "Description": "Previous folder",
+            "Keys": [ "BACKSPACE" ]
+        },
+        {
+            "Description": "Toggle preview pane",
+            "Keys": [ "ALT", "P" ]
+        },
+        {
+            "Description": "Next folder",
+            "Keys": [ "ALT", "RIGHT" ]
+        },
+        {
+            "Description": "Toggle details pane",
+            "Keys": [ "ALT", "SHIFT", "P" ]
+        },
+        {
+            "Description": "Up one level",
+            "Keys": [ "ALT", "UP" ]
+        },
+        {
+            "Description": "Select multiple items",
+            "Keys": [ "CTRL", "ARROW", "SPACEBAR" ]
+        },
+        {
+            "Description": "Delete item to Recycle Bin",
+            "Keys": [ "CTRL", "D" ]
+        },
+        {
+            "Description": "Delete item to Recycle Bin",
+            "Keys": [ "DELETE" ]
+        },
+        {
+            "Description": "Select search box",
+            "Keys": [ "CTRL", "E" ]
+        },
+        {
+            "Description": "Select search box",
+            "Keys": [ "CTRL", "F" ]
+        },
+        {
+            "Description": "Focus address bar",
+            "Keys": [ "CTRL", "L" ]
+        },
+        {
+            "Description": "Open new window",
+            "Keys": [ "CTRL", "N" ]
+        },
+        {
+            "Description": "Move to tab number",
+            "Keys": [ "CTRL" ]
+        },
+        {
+            "Description": "Resize columns to fit text",
+            "Keys": [ "CTRL", "PLUS" ]
+        },
+        {
+            "Description": "Expand all folders in navigation pane",
+            "Keys": [ "CTRL", "SHIFT", "E" ]
+        },
+        {
+            "Description": "Create new folder",
+            "Keys": [ "CTRL", "SHIFT", "N" ]
+        },
+        {
+            "Description": "Change view style",
+            "Keys": [ "CTRL", "SHIFT" ]
+        },
+        {
+            "Description": "Previous tab",
+            "Keys": [ "CTRL", "SHIFT", "TAB" ]
+        },
+        {
+            "Description": "Open new tab",
+            "Keys": [ "CTRL", "T" ]
+        },
+        {
+            "Description": "Close active tab",
+            "Keys": [ "CTRL", "W" ]
+        },
+        {
+            "Description": "Next tab",
+            "Keys": [ "CTRL", "TAB" ]
+        },
+        {
+            "Description": "Scroll to bottom",
+            "Keys": [ "END" ]
+        },
+        {
+            "Description": "Rename item",
+            "Keys": [ "F2" ]
+        },
+        {
+            "Description": "Search for file or folder",
+            "Keys": [ "F3" ]
+        },
+        {
+            "Description": "Select address bar",
+            "Keys": [ "F4" ]
+        },
+        {
+            "Description": "Refresh window",
+            "Keys": [ "F5" ]
+        },
+        {
+            "Description": "Cycle through elements",
+            "Keys": [ "F6" ]
+        },
+        {
+            "Description": "Maximize or minimize window",
+            "Keys": [ "F11" ]
+        },
+        {
+            "Description": "Scroll to top",
+            "Keys": [ "HOME" ]
+        },
+        {
+            "Description": "Collapse selection or select parent folder",
+            "Keys": [ "LEFT" ]
+        },
+        {
+            "Description": "Expand selection or select first subfolder",
+            "Keys": [ "RIGHT" ]
+        },
+        {
+            "Description": "Select multiple items",
+            "Keys": [ "SHIFT", "ARROW" ]
+        },
+        {
+            "Description": "Permanently delete item",
+            "Keys": [ "SHIFT", "DELETE" ]
+        },
+        {
+            "Description": "Show context menu for item",
+            "Keys": [ "SHIFT", "F10" ]
+        },
+        {
+            "Description": "Open File Explorer",
+            "Keys": [ "WINDOWS", "E" ]
+        }
+    ]
+}

@@ -1,16 +1,16 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Key_Wizard.search;
 using Key_Wizard.shortcuts;
 using Key_Wizard.startup;
 using Microsoft.UI;
-using Microsoft.UI.Input;
 using Microsoft.UI.Text;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
@@ -25,96 +25,97 @@ using WinRT.Interop;
 
 namespace Key_Wizard
 {
-    public class ListItem
+    public class WindowHelper
     {
-        public string Section { get; set; }  // Section
-        public string Prefix { get; set; }  // Bold part
-        public string Suffix { get; set; }  // Normal part
-        public List<Run> HighlightedRuns { get; set; } // Highlighted search result
-        public string Action { get; set; }  // Function to be triggered on click
+        private const int SW_MINIMIZE = 6;
+
+        [DllImport("user32.dll")]
+        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        public static void MinimizeWindow(Window window)
+        {
+            var hWnd = WindowNative.GetWindowHandle(window);
+            ShowWindow(hWnd, SW_MINIMIZE);
+        }
     }
 
-    public class Section
-    {
-        public string Name { get; set; }
-        public ObservableCollection<ListItem> Items { get; set; }
-    }
     public sealed partial class MainWindow : Window
     {
-        private Dictionary<string, CreateSections> shortcutDictionary;
-        private List<ListItem> searchList;
+        private List<Category> categories;
+        private List<Shortcut> searchList;
         private DispatcherTimer searchDelayTimer;
-        private const int SEARCH_DELAY_MS = 200; // 200ms delay, adjust as needed
+        private const int SEARCH_DELAY_MS = 200;
 
-        [DllImport("kernel32.dll")]
-        static extern bool AllocConsole();
+        private SpeechRecognizer _speechRecognizer;
+        private bool _isListening = false;
 
         public MainWindow()
         {
-            // Uncomment the below line to spawn a console window
-            //AllocConsole();
-
             this.InitializeComponent();
-
-            // Initialize the search delay timer
             searchDelayTimer = new DispatcherTimer();
             searchDelayTimer.Interval = TimeSpan.FromMilliseconds(SEARCH_DELAY_MS);
             searchDelayTimer.Tick += SearchDelayTimer_Tick;
 
-            // Get the AppWindow for the current window
             var hWnd = WindowNative.GetWindowHandle(this);
             var windowId = Win32Interop.GetWindowIdFromWindow(hWnd);
             var appWindow = AppWindow.GetFromWindowId(windowId);
 
-            // Hide the window from the taskbar and Alt+Tab
             appWindow.IsShownInSwitchers = false;
 
-            // Set the presenter to OverlappedPresenter and disable the maximize, minimize, and close buttons
             if (appWindow != null)
             {
                 var presenter = appWindow.Presenter as OverlappedPresenter;
                 if (presenter != null)
                 {
-                    presenter.IsMaximizable = false; // Disable the maximize button
-                    presenter.IsResizable = false;  // Disable resizing
-                    presenter.IsMinimizable = false; // Disable the minimize button
+                    presenter.IsMaximizable = false;
+                    presenter.IsResizable = false;
+                    presenter.IsMinimizable = false;
                     presenter.SetBorderAndTitleBar(true, false);
-                 }
+                }
             }
 
-            // Extend the client area into the title bar
             this.ExtendsContentIntoTitleBar = true;
-            this.SetTitleBar(null); // Set to null to remove the default title bar
+            this.SetTitleBar(null);
 
             this.AppWindow.MoveAndResize(Screen.GetWindowSizeAndPos(this, Screen.MIN_WIDTH, Screen.MIN_HEIGHT));
-            shortcutDictionary = CreateDictionary.InitList();
-            searchList = CreateDictionary.InitSearch(shortcutDictionary);
 
-            //ShowNumberPad();
+            // Add event handler for Window.Closed
+            this.Closed += MainWindow_Closed;
+
+            this.categories = LoadShortcuts.Read();
+            this.searchList = categories.SelectMany(category => category.Shortcuts).ToList();
         }
+
+        private async void MainWindow_Closed(object sender, WindowEventArgs e)
+        {
+            if (_isListening && _speechRecognizer != null)
+            {
+                await _speechRecognizer.StopRecognitionAsync();
+                _speechRecognizer.Dispose();
+                _speechRecognizer = null;
+                _isListening = false;
+            }
+        }
+
         private async void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            // Reset and restart the timer
             searchDelayTimer.Stop();
             searchDelayTimer.Start();
         }
 
         private void SearchDelayTimer_Tick(object sender, object e)
         {
-            // Stop the timer
             searchDelayTimer.Stop();
-
-            // Now perform the search
             string searchQuery = searchTextBox.Text;
-            ObservableCollection<Section> display = new ObservableCollection<Section>();
-            ObservableCollection<Section> keyDisplay = new ObservableCollection<Section>();
+            ObservableCollection<Category> display = new ObservableCollection<Category>();
+            ObservableCollection<Category> keyDisplay = new ObservableCollection<Category>();
 
-            List<ListItem> results = NewSearch.Search(searchList, searchQuery);
-            results.ForEach((item) => item.HighlightedRuns = GenerateHighlightedPrefixes(searchQuery, item.Prefix));
+            List<Shortcut> results = Search.Do(searchList, searchQuery);
+            results.ForEach((shortcut) => shortcut.SearchResults = GenerateSearchResults(searchQuery, shortcut.Description));
             if (!string.IsNullOrWhiteSpace(searchQuery) && results.Any())
             {
-                display.Add(new Section { Name = "Search Results", Items = new ObservableCollection<ListItem>(results) });
-                keyDisplay.Add(new Section { Name = "", Items = new ObservableCollection<ListItem>(results) });
+                display.Add(new Category { Name = "Search Results", Shortcuts = new ObservableCollection<Shortcut>(results) });
+                keyDisplay.Add(new Category { Name = "", Shortcuts = new ObservableCollection<Shortcut>(results) });
                 ResultsBorderBar.Visibility = Visibility.Visible;
             }
             else
@@ -125,145 +126,154 @@ namespace Key_Wizard
             shortcutsList.ItemsSource = display;
             keyList.ItemsSource = keyDisplay;
         }
+
         private void ListView_KeyDown(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key == VirtualKey.Enter || e.Key == VirtualKey.Space)
             {
                 var listView = (ListView)sender;
-                var item = (ListItem)listView.SelectedItem;
+                var item = (Shortcut)listView.SelectedItem;
                 TriggerAction(item);
             }
         }
 
         private void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var item = (ListItem)e.ClickedItem;
+            var item = (Shortcut)e.ClickedItem;
             TriggerAction(item);
         }
 
-        private void TriggerAction(ListItem item)
+        private void TriggerAction(Shortcut shortcut)
         {
-            try
+            List<byte> keys = [];
+            foreach (var key in shortcut.Keys)
             {
-                var shortcuts = new Shortcuts(this);
-
-                var methodInfo = typeof(Shortcuts).GetMethod(item.Action,
-                    System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
-
-                if (methodInfo != null)
+                var fieldInfo = typeof(Keys).GetField(key, BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
+                if (fieldInfo == null)
                 {
-                    methodInfo.Invoke(shortcuts, null);
-                    this.Close();
+                    Debug.WriteLine("ERROR: Provided key does not exist.");
+                    // TODO: Better error handling here
+                } else
+                {
+                    MainGrid.UpdateLayout();
+                    double contentWidth = this.AppWindow.Size.Width;
+                    double contentHeight = 0.0;
+                    var workArea = DisplayArea.Primary.WorkArea;
+
+                    this.AppWindow.MoveAndResize(Screen.GetWindowSizeAndPos(this, contentWidth / workArea.Width, contentHeight / workArea.Height));
+                    WindowHelper.MinimizeWindow(this);
+                    searchTextBox.Text = "";
+                    searchTextBox.ClearUndoRedoHistory();
+
+                    keys.Add((byte)fieldInfo.GetValue(null));
                 }
             }
-            catch (Exception ex)
-            {
-                
-            }
-            // Right now there is no error handling for if the action doesn't exist as we do not want any
-            // errors during the demo. We will add some error handling once we have all the actions implemented.
-        }
 
+            foreach (var key in keys)
+            {
+                Keys.Press(key);
+            }
+            keys.Reverse();
+            foreach (var key in keys)
+            {
+                Keys.Release(key);
+            }
+        }
 
         private void shortcutsList_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            // Force UI update
             MainGrid.UpdateLayout();
-
-            // Calculate total content size
             double contentWidth = this.AppWindow.Size.Width;
             double contentHeight = searchTextBox.ActualHeight + searchTextBox.Margin.Top + searchTextBox.Margin.Bottom +
                                    MainGrid.Margin.Top + MainGrid.Margin.Bottom + e.NewSize.Height;
-
-            // Get display information
             var workArea = DisplayArea.Primary.WorkArea;
 
             this.AppWindow.MoveAndResize(Screen.GetWindowSizeAndPos(this, contentWidth / workArea.Width, contentHeight / workArea.Height));
         }
+
         private async void VoiceInput(object sender, RoutedEventArgs e)
         {
-            searchTextBox.IsReadOnly = false;
-            searchTextBox.Focus(FocusState.Programmatic);
-
-            if (ListenIcon.Glyph == "\xE720")
+            if (_isListening)
             {
+                // Stop listening
                 ListenIcon.Glyph = "\uF781";
                 searchTextBox.Text = null;
+                _isListening = false;
+
+                if (_speechRecognizer != null)
+                {
+                    await _speechRecognizer.StopRecognitionAsync();
+                    _speechRecognizer.Dispose();
+                    _speechRecognizer = null;
+                }
             }
             else
             {
-            ListenIcon.Glyph = "\xE720";
-                try
-                {
-                    using (SpeechRecognizer speechRecognizer = new SpeechRecognizer())
-                    {
-                        // Compile the recognizer
-                        await speechRecognizer.CompileConstraintsAsync();
+                // Start listening
+                ListenIcon.Glyph = "\xE720";
+                searchTextBox.Text = "Listening...";
+                _isListening = true;
 
-                        // Update UI to indicate listening
-                        searchTextBox.Text = "Listening...";
-
-                        // Start listening
-                        SpeechRecognitionResult result = await speechRecognizer.RecognizeAsync();
-
-                        if (result.Status == SpeechRecognitionResultStatus.Success)
-                        {
-                            searchTextBox.ClearUndoRedoHistory();
-                            searchTextBox.Text = result.Text;  // Update textbox with recognized text
-                        }
-                        else
-                        {
-                            searchTextBox.Text = "Could not recognize speech.";
-                            searchTextBox.IsReadOnly = true;
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine($"Speech Recognition Error: {ex.Message}");
-                    searchTextBox.Text = "Speech Recognition not supported.";
-                    searchTextBox.IsReadOnly = true;
-                }
+                await StartSpeechRecognitionAsync();
             }
+        }
 
-            /*
+
+        private async Task StartSpeechRecognitionAsync()
+        {
             try
             {
-                using (SpeechRecognizer speechRecognizer = new SpeechRecognizer())
+                // Ensure the app is visible while listening
+                this.AppWindow.Show(true);
+
+                _speechRecognizer = new SpeechRecognizer();
+                await _speechRecognizer.CompileConstraintsAsync();
+
+                // Start recognition
+                SpeechRecognitionResult result = await _speechRecognizer.RecognizeAsync();
+
+                if (result.Status == SpeechRecognitionResultStatus.Success)
                 {
-                    // Compile the recognizer
-                    await speechRecognizer.CompileConstraintsAsync();
-
-                    // Update UI to indicate listening
-                    searchTextBox.Text = "Listening...";
-
-                    // Start listening
-                    SpeechRecognitionResult result = await speechRecognizer.RecognizeAsync();
-
-                    if (result.Status == SpeechRecognitionResultStatus.Success)
+                    searchTextBox.DispatcherQueue.TryEnqueue(() =>
                     {
                         searchTextBox.ClearUndoRedoHistory();
-                        searchTextBox.Text = result.Text;  // Update textbox with recognized text
-                    }
-                    else
+                        searchTextBox.Text = result.Text;
+                    });
+                }
+                else
+                {
+                    searchTextBox.DispatcherQueue.TryEnqueue(() =>
                     {
                         searchTextBox.Text = "Could not recognize speech.";
-                    }
+                    });
                 }
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Speech Recognition Error: {ex.Message}");
-                searchTextBox.Text = "Speech Recognition not supported.";
+                searchTextBox.DispatcherQueue.TryEnqueue(() =>
+                {
+                    searchTextBox.Text = "Speech Recognition not supported.";
+                });
             }
-            */
+            finally
+            {
+                _isListening = false;
+                ListenIcon.Glyph = "\uF781";
+
+                if (_speechRecognizer != null)
+                {
+                    _speechRecognizer.Dispose();
+                    _speechRecognizer = null;
+                }
+            }
         }
 
         private void MainGrid_KeyDown(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key == Windows.System.VirtualKey.Escape)
             {
-                this.Close(); // Close the app when ESC is pressed
+                this.Close();
             }
         }
 
@@ -271,29 +281,11 @@ namespace Key_Wizard
         {
             if (e.WindowActivationState == WindowActivationState.Deactivated)
             {
-                this.Close(); // Close the app when focus is lost
+                this.Close();
             }
         }
 
-        // Numpad testing
-        //private void ShowNumberPad()
-        //{
-        //    Console.WriteLine("ShowNumberPad called");
-
-        //    try
-        //    {
-        //        var numberPadWindow = new NumberPadWindow();
-
-        //        numberPadWindow.Activate();
-        //        Console.WriteLine("Number Pad window shown.");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"Error showing window: {ex.Message}");
-        //    }
-        //}
-        
-        private List<Run> GenerateHighlightedPrefixes(string a, string b)
+        private List<Run> GenerateSearchResults(string a, string b)
         {
             var runs = new List<Run>();
 
@@ -309,13 +301,11 @@ namespace Key_Wizard
 
             foreach (Match match in matches)
             {
-                // text before the match
                 if (match.Index > lastIndex)
                 {
                     runs.Add(new Run { Text = b.Substring(lastIndex, match.Index - lastIndex) });
                 }
 
-                // matched text
                 runs.Add(new Run
                 {
                     Text = match.Value,
@@ -325,7 +315,6 @@ namespace Key_Wizard
                 lastIndex = match.Index + match.Length;
             }
 
-           // text after the match
             if (lastIndex < b.Length)
             {
                 runs.Add(new Run { Text = b.Substring(lastIndex) });
@@ -334,10 +323,9 @@ namespace Key_Wizard
             return runs;
         }
 
-        // Manually inject the suffixes into the text box
         private void TextBlock_Loaded(object sender, RoutedEventArgs e)
         {
-            if (sender is TextBlock textBlock && textBlock.DataContext is ListItem listItem)
+            if (sender is TextBlock textBlock && textBlock.DataContext is Shortcut shortcut)
             {
                 // Check which ListView contains this TextBlock
                 bool isInShortcutsList = IsInVisualTree(textBlock, shortcutsList);
@@ -347,7 +335,7 @@ namespace Key_Wizard
                 if (isInShortcutsList)
                 {
                     textBlock.Inlines.Clear();
-                    foreach (var run in listItem.HighlightedRuns)
+                    foreach (var run in shortcut.SearchResults)
                     {
                         textBlock.Inlines.Add(run);
                     }
@@ -357,7 +345,7 @@ namespace Key_Wizard
                     textBlock.Inlines.Clear();
                     textBlock.Inlines.Add(new Run
                     {
-                        Text = listItem.Suffix,
+                        Text = shortcut.KeysConcatenation,
                         FontWeight = FontWeights.SemiBold
                     });
                 }
@@ -377,4 +365,3 @@ namespace Key_Wizard
         }
     }
 }
-
