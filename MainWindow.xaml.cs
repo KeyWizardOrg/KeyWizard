@@ -79,25 +79,51 @@ namespace Key_Wizard
 
             this.AppWindow.MoveAndResize(Screen.GetWindowSizeAndPos(this, Screen.MIN_WIDTH, Screen.MIN_HEIGHT));
 
-            // Add event handler for Window.Closed
+            // Add event handlers
             this.Closed += MainWindow_Closed;
+            this.Activated += Window_Activated;
 
             this.categories = LoadShortcuts.Read();
             this.searchList = categories.SelectMany(category => category.Shortcuts).ToList();
         }
 
-        private async void MainWindow_Closed(object sender, WindowEventArgs e)
+        private void ClearSearchAndClose()
         {
+            // Clear the search box and results
+            searchTextBox.Text = "";
+            searchTextBox.ClearUndoRedoHistory();
+            shortcutsList.ItemsSource = null;
+            keyList.ItemsSource = null;
+            ResultsBorderBar.Visibility = Visibility.Collapsed;
+
+            // Reset window size
+            this.AppWindow.MoveAndResize(Screen.GetWindowSizeAndPos(this, Screen.MIN_WIDTH, Screen.MIN_HEIGHT));
+
+            // Close the window
+            this.Close();
+        }
+
+        private void MainWindow_Closed(object sender, WindowEventArgs e)
+        {
+            // Clean up speech recognition
             if (_isListening && _speechRecognizer != null)
             {
-                await _speechRecognizer.StopRecognitionAsync();
+                _ = _speechRecognizer.StopRecognitionAsync();
                 _speechRecognizer.Dispose();
                 _speechRecognizer = null;
                 _isListening = false;
             }
         }
 
-        private async void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void Window_Activated(object sender, WindowActivatedEventArgs e)
+        {
+            if (e.WindowActivationState == WindowActivationState.Deactivated)
+            {
+                ClearSearchAndClose();
+            }
+        }
+
+        private void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             searchDelayTimer.Stop();
             searchDelayTimer.Start();
@@ -135,6 +161,10 @@ namespace Key_Wizard
                 var item = (Shortcut)listView.SelectedItem;
                 TriggerAction(item);
             }
+            else if (e.Key == VirtualKey.Escape)
+            {
+                ClearSearchAndClose();
+            }
         }
 
         private void ListView_ItemClick(object sender, ItemClickEventArgs e)
@@ -152,8 +182,8 @@ namespace Key_Wizard
                 if (fieldInfo == null)
                 {
                     Debug.WriteLine("ERROR: Provided key does not exist.");
-                    // TODO: Better error handling here
-                } else
+                }
+                else
                 {
                     MainGrid.UpdateLayout();
                     double contentWidth = this.AppWindow.Size.Width;
@@ -218,33 +248,39 @@ namespace Key_Wizard
             }
         }
 
-
         private async Task StartSpeechRecognitionAsync()
         {
             try
             {
-                // Ensure the app is visible while listening
                 this.AppWindow.Show(true);
-
                 _speechRecognizer = new SpeechRecognizer();
                 await _speechRecognizer.CompileConstraintsAsync();
 
-                // Start recognition
                 SpeechRecognitionResult result = await _speechRecognizer.RecognizeAsync();
 
                 if (result.Status == SpeechRecognitionResultStatus.Success)
                 {
+                    string recognizedText = result.Text;
+
                     searchTextBox.DispatcherQueue.TryEnqueue(() =>
                     {
                         searchTextBox.ClearUndoRedoHistory();
-                        searchTextBox.Text = result.Text;
+                        searchTextBox.Text = recognizedText;
+
+                        var exactMatch = searchList.FirstOrDefault(s =>
+                            string.Equals(s.Description, recognizedText, StringComparison.OrdinalIgnoreCase));
+
+                        if (exactMatch != null)
+                        {
+                            TriggerAction(exactMatch);
+                        }
                     });
                 }
                 else
                 {
                     searchTextBox.DispatcherQueue.TryEnqueue(() =>
                     {
-                        searchTextBox.Text = "Could not recognize speech.";
+                        searchTextBox.Text = "";
                     });
                 }
             }
@@ -253,7 +289,7 @@ namespace Key_Wizard
                 Debug.WriteLine($"Speech Recognition Error: {ex.Message}");
                 searchTextBox.DispatcherQueue.TryEnqueue(() =>
                 {
-                    searchTextBox.Text = "Speech Recognition not supported.";
+                    searchTextBox.Text = "";
                 });
             }
             finally
@@ -273,15 +309,7 @@ namespace Key_Wizard
         {
             if (e.Key == Windows.System.VirtualKey.Escape)
             {
-                this.Close();
-            }
-        }
-
-        private void Window_Activated(object sender, WindowActivatedEventArgs e)
-        {
-            if (e.WindowActivationState == WindowActivationState.Deactivated)
-            {
-                this.Close();
+                ClearSearchAndClose();
             }
         }
 
@@ -327,11 +355,9 @@ namespace Key_Wizard
         {
             if (sender is TextBlock textBlock && textBlock.DataContext is Shortcut shortcut)
             {
-                // Check which ListView contains this TextBlock
                 bool isInShortcutsList = IsInVisualTree(textBlock, shortcutsList);
                 bool isInKeyList = IsInVisualTree(textBlock, keyList);
 
-                // Only add suffix if in the main list
                 if (isInShortcutsList)
                 {
                     textBlock.Inlines.Clear();
@@ -352,7 +378,6 @@ namespace Key_Wizard
             }
         }
 
-        // Helper to check if an element exists in a specific ListView's visual tree
         private bool IsInVisualTree(DependencyObject element, DependencyObject parent)
         {
             while (element != null)
