@@ -343,7 +343,7 @@
         },
         {
             "Description": "Toggle Chinese IME",
-            "Keys": [ "CTRL", "SPACEBAR" ]
+            "Keys": [ "CTRL", "SPACE" ]
         },
         {
             "Description": "Redo action",
@@ -375,7 +375,7 @@
         },
         {
             "Description": "Capture screen region to clipboard",
-            "Keys": [ "PRTSC" ]
+            "Keys": [ "PRTSCN" ]
         },
         {
             "Description": "Open Copilot",

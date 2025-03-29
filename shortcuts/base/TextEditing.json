@@ -122,16 +122,8 @@
             "Keys": [ "PAGE DOWN" ]
         },
         {
-            "Description": "Move forward one page",
-            "Keys": [ "PGDN" ]
-        },
-        {
             "Description": "Move backward one page",
             "Keys": [ "PAGE UP" ]
-        },
-        {
-            "Description": "Move backward one page",
-            "Keys": [ "PGUP" ]
         },
         {
             "Description": "Move to next character",
