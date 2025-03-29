@@ -6,6 +6,10 @@
             "Keys": [ "WINDOWS" ]
         },
         {
+            "Description": "Start presentation",
+            "Keys": [ "F5" ]
+        },
+        {
             "Description": "Open action center",
             "Keys": [ "WINDOWS", "A" ]
         },
