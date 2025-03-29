@@ -99,8 +99,20 @@ namespace Key_Wizard
 
         private async void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            // Show/hide clear button based on whether there's text
+            ClearSearchButton.Visibility = string.IsNullOrWhiteSpace(searchTextBox.Text)
+                ? Visibility.Collapsed
+                : Visibility.Visible;
+
             searchDelayTimer.Stop();
             searchDelayTimer.Start();
+        }
+
+        private void ClearSearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            searchTextBox.Text = string.Empty;
+            // Also stop voice recognition if active
+            
         }
 
         private void SearchDelayTimer_Tick(object sender, object e)
