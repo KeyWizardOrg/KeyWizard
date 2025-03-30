@@ -10,7 +10,7 @@ namespace Key_Wizard.shortcuts
 {
     public class Shortcut
     {
-        public string Category { get; set; }
+        public string? Category { get; set; }
         public string Description { get; }
         public List<string> Keys { get; }
         public List<string> DisplayKeys { get; }
@@ -107,7 +107,7 @@ namespace Key_Wizard.shortcuts
     }
     public class Category
     {
-        public string Name { get; set; }
-        public ObservableCollection<Shortcut> Shortcuts { get; set; }
+        public required string Name { get; set; }
+        public required ObservableCollection<Shortcut> Shortcuts { get; set; }
     }
 }

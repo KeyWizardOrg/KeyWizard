@@ -50,7 +50,7 @@ namespace Key_Wizard
         private const int MAX_VISIBLE_ITEMS = 10;
         private const double ITEM_HEIGHT = 40;
 
-        private SpeechRecognizer _speechRecognizer;
+        private SpeechRecognizer? _speechRecognizer;
         private bool _isListening = false;
 
         public MainWindow()
@@ -101,7 +101,7 @@ namespace Key_Wizard
             }
         }
 
-        private async void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             // Show/hide clear button based on whether there's text
             ClearSearchButton.Visibility = string.IsNullOrWhiteSpace(searchTextBox.Text)
@@ -119,7 +119,7 @@ namespace Key_Wizard
             
         }
 
-        private void SearchDelayTimer_Tick(object sender, object e)
+        private void SearchDelayTimer_Tick(object? sender, object? e)
         {
             searchDelayTimer.Stop();
             string searchQuery = searchTextBox.Text;
@@ -176,30 +176,25 @@ namespace Key_Wizard
         }
 
         private void TriggerAction(Shortcut shortcut)
-        {
+        {   
             List<byte> keys = new();
             foreach (var key in shortcut.Keys)
             {
                 var fieldInfo = typeof(Keys).GetField(key, BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
                 if (fieldInfo == null)
                 {
-                    Debug.WriteLine("ERROR: Provided key does not exist.");
-                    // TODO: Better error handling here
+                    searchTextBox.Text = $"Unable to find key '{key}'";
+                    return;
                 }
-                else
+
+                var keyByte = fieldInfo.GetValue(null);
+                if (keyByte == null)
                 {
-                    MainGrid.UpdateLayout();
-                    double contentWidth = this.AppWindow.Size.Width;
-                    double contentHeight = 0.0;
-                    var workArea = DisplayArea.Primary.WorkArea;
-
-                    this.AppWindow.MoveAndResize(Screen.GetWindowSizeAndPos(this, contentWidth / workArea.Width, contentHeight / workArea.Height));
-                    WindowHelper.MinimizeWindow(this);
-                    searchTextBox.Text = "";
-                    searchTextBox.ClearUndoRedoHistory();
-
-                    keys.Add((byte)fieldInfo.GetValue(null));
+                    searchTextBox.Text = "Unknown error";
+                    return;
                 }
+
+                keys.Add((byte)keyByte);
             }
 
             foreach (var key in keys)
@@ -211,6 +206,16 @@ namespace Key_Wizard
             {
                 Keys.Release(key);
             }
+
+            MainGrid.UpdateLayout();
+            double contentWidth = this.AppWindow.Size.Width;
+            double contentHeight = 0.0;
+            var workArea = DisplayArea.Primary.WorkArea;
+
+            this.AppWindow.MoveAndResize(Screen.GetWindowSizeAndPos(this, contentWidth / workArea.Width, contentHeight / workArea.Height));
+            WindowHelper.MinimizeWindow(this);
+            searchTextBox.Text = "";
+            searchTextBox.ClearUndoRedoHistory();
         }
 
         // Removed shortcutsList_SizeChanged method
@@ -359,17 +364,24 @@ namespace Key_Wizard
                 if (isInShortcutsList)
                 {
                     textBlock.Inlines.Clear();
-                    foreach (var run in shortcut.SearchResults)
+                    if (shortcut.SearchResults != null)
                     {
-                        textBlock.Inlines.Add(run);
+                        for (int i = 0; i < shortcut.SearchResults.Count; i++)
+                        {
+                            Run? run = shortcut.SearchResults[i];
+                            textBlock.Inlines.Add(run);
+                        }
                     }
                 }
                 else if (isInKeysList)
                 {
                     if (textBlock.Text == "")
                     {
-                        FrameworkElement parentElement = textBlock.Parent as FrameworkElement;
-                        parentElement.Visibility = Visibility.Collapsed;
+                        FrameworkElement? parentElement = textBlock.Parent as FrameworkElement;
+                        if (parentElement != null)
+                        {
+                            parentElement.Visibility = Visibility.Collapsed;
+                        }
                     }
                 }
             }
@@ -388,7 +400,7 @@ namespace Key_Wizard
         }
 
         // Helper method for recursive Visual Tree search.
-        private T FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
+        private T? FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
         {
             int childCount = VisualTreeHelper.GetChildrenCount(parent);
             for (int i = 0; i < childCount; i++)
@@ -398,7 +410,7 @@ namespace Key_Wizard
                 {
                     return correctlyTyped;
                 }
-                T childOfChild = FindVisualChild<T>(child);
+                T? childOfChild = FindVisualChild<T>(child);
                 if (childOfChild != null)
                 {
                     return childOfChild;
@@ -440,15 +452,15 @@ namespace Key_Wizard
         {
             if (e.Key == Windows.System.VirtualKey.Down && shortcutsList.Items.Count > 0)
             {
-                ListViewItem firstCategoryContainer = shortcutsList.ContainerFromIndex(0) as ListViewItem;
+                ListViewItem? firstCategoryContainer = shortcutsList.ContainerFromIndex(0) as ListViewItem;
                 if (firstCategoryContainer != null)
                 {
                     // Find the inner (nested) ListView within the first category's visual tree.
-                    ListView innerListView = FindVisualChild<ListView>(firstCategoryContainer);
+                    ListView? innerListView = FindVisualChild<ListView>(firstCategoryContainer);
                     if (innerListView != null && innerListView.Items.Count > 0)
                     {
                         // Get the container for the top item in the inner ListView.
-                        ListViewItem topItem = innerListView.ContainerFromIndex(0) as ListViewItem;
+                        ListViewItem? topItem = innerListView.ContainerFromIndex(0) as ListViewItem;
                         // Set focus to the top item.
                         topItem?.Focus(FocusState.Programmatic);
                     }

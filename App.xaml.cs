@@ -321,7 +321,7 @@ namespace Key_Wizard
             args.Handled = true;
         }
 
-        private void OnProcessExit(object sender, EventArgs e)
+        private void OnProcessExit(object? sender, EventArgs e)
         {
             CleanupHook();
         }

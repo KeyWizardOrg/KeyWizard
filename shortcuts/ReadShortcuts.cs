@@ -28,11 +28,15 @@ namespace Key_Wizard.shortcuts
             {
                 var fileContents = File.ReadAllText(file);
                 Category? category = JsonSerializer.Deserialize<Category>(fileContents);
-                foreach (var item in category.Shortcuts)
+                if (category != null && category.Shortcuts != null)
                 {
-                    item.Category = category.Name;
+                    for (int i = 0; i < category.Shortcuts.Count; i++)
+                    {
+                        Shortcut? item = category.Shortcuts[i];
+                        item.Category = category.Name;
+                    }
+                    shortcuts.Add(category);
                 }
-                shortcuts.Add(category);
             }
 
             return shortcuts;
