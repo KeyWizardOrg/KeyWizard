@@ -10,6 +10,7 @@ namespace Key_Wizard
 {
     public class Shortcut
     {
+        public string Category { get; set; }
         public string Description { get; }
         public List<string> Keys { get; }
         public List<string> DisplayKeys { get; }

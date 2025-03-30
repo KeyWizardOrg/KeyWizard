@@ -18,14 +18,20 @@ namespace Key_Wizard.startup
             string baseDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "shortcuts\\base");
             string[] baseJson = Directory.GetFiles(baseDir, "*.json");
 
-            string customDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Key Wizard");
+            string customDir = System.IO.Directory.CreateDirectory(String.Concat(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "\\Key Wizard")).FullName;
             string[] customJson = Directory.GetFiles(customDir, "*.json");
-
+            
+            string[] files = [.. baseJson, .. customJson];
+            
             var shortcuts = new List<Category>();
-            foreach (var file in baseJson.Concat(customJson).ToArray())
+            foreach (var file in files)
             {
                 var fileContents = File.ReadAllText(file);
                 Category? category = JsonSerializer.Deserialize<Category>(fileContents);
+                foreach (var item in category.Shortcuts)
+                {
+                    item.Category = category.Name;
+                }
                 shortcuts.Add(category);
             }
 
