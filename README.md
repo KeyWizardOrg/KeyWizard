@@ -8,15 +8,16 @@ Key Wizard is available [here](https://apps.microsoft.com/detail/9nf4pjffzzms?hl
 
 The Key Wizard app runs in the background, and once installed, can be accessed using the keyboard shortcut **Ctrl + Alt + K**
 
-## Extending the Code
+## Extending the Code Using JSON
 Key Wizard is an open source project that has the capacity for users adapt the app for any shortcuts they desire. The steps to personalize the code to add shortcuts are as follows:
 
-Clone the project from the [Key Wizard Gitlab](https://gitlab.scss.tcd.ie/sweng-25-group-12/sweng25_group12-microsoftkeywizard) into Microsoft Visual Studio 
+Using the instructions on formatting the shortcuts, create a correctly formatted .json file and navigate to the Documents\Key Wizard folder. Once completed, drag and drop the correct file into the folder, and Key Wizard should automatically create a new folder for the shortcuts upon running. This is all that is needed for implementing new shortcuts.
 
-```bash
-git clone https://gitlab.scss.tcd.ie/sweng-25-group-12/sweng25_group12-microsoftkeywizard.git
-```
-Navigate to the shortcuts/base folder within the project in the Visual Studio solution explorer. Right click on the folder, select add file, and select .json as the type. Name the file how you would like to group the shortcuts. For example, the .json file containing command prompt shorcuts is named CommandPrompt.json. For the instructions, the category Example will be used.
+Once this is complete, users will have successfully personalized their own Key Wizard tool.
+
+## Formatting the Shortcuts
+
+Name the file how you would like to group the shortcuts. For example, the .json file containing command prompt shorcuts is named CommandPrompt.json. For the instructions, the category Example will be used.
 
 ```bash
 Example.json
@@ -66,15 +67,6 @@ public const byte A = 0x41;
 ```
 
 Whereas the character A can simply be referenced as A
-
-## Adding References 
-To have the app function correctly, it is important to include these references when contributing to the code locally. Right click on the project solution in solution explorer in Visual Studio, then hit add, then references to add the following:
-```c#
-System.Drawing.Common.dll
-System.Speech.dll
-System.Windows.Forms.dll
-```
-To enable voice recognition, verify that in the Package.appxmanifest file under capabilities, Internet (Client & Server) and Microphone are checked.
 
 ## Contributing
 
