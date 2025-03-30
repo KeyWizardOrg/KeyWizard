@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Key_Wizard.shortcuts;
 using Microsoft.UI.Xaml.Documents;
 
 namespace Key_Wizard.search

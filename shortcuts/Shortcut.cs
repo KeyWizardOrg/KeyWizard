@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml.Documents;
 
-namespace Key_Wizard
+namespace Key_Wizard.shortcuts
 {
     public class Shortcut
     {
@@ -20,12 +20,12 @@ namespace Key_Wizard
         {
             this.Description = Description;
             this.Keys = Keys;
-            this.DisplayKeys = ConvertKeys(this.Keys);
+            DisplayKeys = ConvertKeys(this.Keys);
         }
 
         public static List<string> ConvertKeys(List<string> keys)
         {
-            List<String> displayKeys = new List<string>();
+            List<string> displayKeys = new List<string>();
             foreach (var key in keys)
             {
                 switch (key.ToUpper())

@@ -8,20 +8,20 @@ using Microsoft.UI;
 using Windows.Graphics;
 using WinRT.Interop;
 
-namespace Key_Wizard.startup
+namespace Key_Wizard.screen
 {
     internal class Screen
     {
         // Constants for different aspect ratios
-        public const Double MAX_HEIGHT = 0.4;
-        public const Double MAX_WIDTH = 0.35;
-        public const Double MIN_HEIGHT = 0.06;
-        public const Double MIN_WIDTH = 0.35;
-        public const Double ABSOLUTE_MIN_HEIGHT = 50;
+        public const double MAX_HEIGHT = 0.4;
+        public const double MAX_WIDTH = 0.35;
+        public const double MIN_HEIGHT = 0.06;
+        public const double MIN_WIDTH = 0.35;
+        public const double ABSOLUTE_MIN_HEIGHT = 50;
 
         // Aspect ratio reference points
-        public const Double ULTRAWIDE_RATIO = 1.78; // 16:9
-        public const Double STANDARD_RATIO = 1.33; // 4:3
+        public const double ULTRAWIDE_RATIO = 1.78; // 16:9
+        public const double STANDARD_RATIO = 1.33; // 4:3
 
         public static RectInt32 GetWindowSizeAndPos(MainWindow mainWindow, double widthPercentage, double heightPercentage)
         {
@@ -62,10 +62,10 @@ namespace Key_Wizard.startup
             }
 
             // Calculate base max and min dimensions
-            var maxWidth = workArea.Width * Screen.MAX_WIDTH;
-            var maxHeight = workArea.Height * Screen.MAX_HEIGHT;
-            var minWidth = workArea.Width * Screen.MIN_WIDTH;
-            var minHeight = workArea.Height * Screen.MIN_HEIGHT;
+            var maxWidth = workArea.Width * MAX_WIDTH;
+            var maxHeight = workArea.Height * MAX_HEIGHT;
+            var minWidth = workArea.Width * MIN_WIDTH;
+            var minHeight = workArea.Height * MIN_HEIGHT;
 
             // Apply constraints
             windowWidth = Math.Min(windowWidth, maxWidth);
@@ -74,7 +74,7 @@ namespace Key_Wizard.startup
             windowWidth = Math.Max(windowWidth, minWidth);
             windowHeight = Math.Max(windowHeight, minHeight);
 
-            windowHeight = Math.Max(windowHeight, Screen.ABSOLUTE_MIN_HEIGHT);
+            windowHeight = Math.Max(windowHeight, ABSOLUTE_MIN_HEIGHT);
 
             // Center the window on screen
             int windowX = (int)(workArea.Width - windowWidth) / 2;
