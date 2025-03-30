@@ -6,11 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml.Documents;
 
-namespace Key_Wizard
+namespace Key_Wizard.shortcuts
 {
     public class Shortcut
     {
-        public string Category { get; set; }
+        public string? Category { get; set; }
         public string Description { get; }
         public List<string> Keys { get; }
         public List<string> DisplayKeys { get; }
@@ -20,12 +20,12 @@ namespace Key_Wizard
         {
             this.Description = Description;
             this.Keys = Keys;
-            this.DisplayKeys = ConvertKeys(this.Keys);
+            DisplayKeys = ConvertKeys(this.Keys);
         }
 
         public static List<string> ConvertKeys(List<string> keys)
         {
-            List<String> displayKeys = new List<string>();
+            List<string> displayKeys = new List<string>();
             foreach (var key in keys)
             {
                 switch (key.ToUpper())
@@ -107,7 +107,7 @@ namespace Key_Wizard
     }
     public class Category
     {
-        public string Name { get; set; }
-        public ObservableCollection<Shortcut> Shortcuts { get; set; }
+        public required string Name { get; set; }
+        public required ObservableCollection<Shortcut> Shortcuts { get; set; }
     }
 }
