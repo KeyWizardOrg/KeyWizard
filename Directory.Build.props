@@ -1,0 +1,13 @@
+<Project>
+  <PropertyGroup>
+    <!-- If not specified, default IsCIBuild to false. -->
+    <IsCIBuild Condition="'$(IsCIBuild)'==''">false</IsCIBuild>
+
+    <!-- When building on CI (IsCIBuild=true), disable MSIX packaging tasks -->
+    <EnableMsixTooling Condition="'$(IsCIBuild)'=='true'">false</EnableMsixTooling>
+    <EnableAssemblyPriGeneration Condition="'$(IsCIBuild)'=='true'">false</EnableAssemblyPriGeneration>
+    <WindowsPackageType Condition="'$(IsCIBuild)'=='true'">None</WindowsPackageType>
+    <DisableMsixProjectCapabilityAddedByProject Condition="'$(IsCIBuild)'=='true'">true</DisableMsixProjectCapabilityAddedByProject>
+    <DisableHasPackageAndPublishMenuAddedByProject Condition="'$(IsCIBuild)'=='true'">true</DisableHasPackageAndPublishMenuAddedByProject>
+  </PropertyGroup>
+</Project>
