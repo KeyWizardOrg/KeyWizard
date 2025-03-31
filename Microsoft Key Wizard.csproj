@@ -14,6 +14,17 @@
     <SelfContained>true</SelfContained>
   </PropertyGroup>
 
+  <!-- When IsCIBuild=true (from GitLab CI), disable packaging + WinUI references -->
+  <PropertyGroup Condition="'$(IsCIBuild)'=='true'">
+    <UseWinUI>false</UseWinUI>
+    <EnableMsixTooling>false</EnableMsixTooling>
+    <PublishProfile></PublishProfile>
+    <EnableAssemblyPriGeneration>false</EnableAssemblyPriGeneration>
+    <WindowsPackageType>None</WindowsPackageType>
+    <DisableMsixProjectCapabilityAddedByProject>true</DisableMsixProjectCapabilityAddedByProject>
+    <DisableHasPackageAndPublishMenuAddedByProject>true</DisableHasPackageAndPublishMenuAddedByProject>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="tests\**" />
     <EmbeddedResource Remove="tests\**" />
@@ -35,19 +46,20 @@
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
 
-  <!--
-    Defining the "Msix" ProjectCapability here allows the Single-project MSIX Packaging
-    Tools extension to be activated for this project even if the Windows App SDK Nuget
-    package has not yet been restored.
-  -->
+  <!-- Msix ProjectCapability only if Msix is enabled -->
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
   </ItemGroup>
 
+  <!-- Always included references that won't break the packaging tasks on CI -->
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.250108002" />
     <PackageReference Include="MSTest.TestFramework" Version="3.7.3" />
+  </ItemGroup>
+
+  <!-- Conditionally add WindowsAppSDK only if NOT on CI -->
+  <ItemGroup Condition="'$(IsCIBuild)'!='true'">
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.250108002" />
   </ItemGroup>
 
   <ItemGroup>
@@ -56,39 +68,7 @@
     </None>
   </ItemGroup>
 
-  <!--
-    Defining the "HasPackageAndPublishMenuAddedByProject" property here allows the Solution
-    Explorer "Package and Publish" context menu entry to be enabled for this project even if
-    the Windows App SDK Nuget package has not yet been restored.
-  -->
-  <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
-    <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
-  </PropertyGroup>
-
-  <!-- Publish Properties -->
-  <!-- 
-  <PropertyGroup>
-    <PublishReadyToRun Condition="'$(Configuration)' == 'Debug'">False</PublishReadyToRun>
-    <PublishReadyToRun Condition="'$(Configuration)' != 'Debug'">True</PublishReadyToRun>
-    <PublishTrimmed Condition="'$(Configuration)' == 'Debug'">False</PublishTrimmed>
-    <PublishTrimmed Condition="'$(Configuration)' != 'Debug'">True</PublishTrimmed>
-  </PropertyGroup> 
-  -->
   <ItemGroup>
     <PRIResource Remove="tests\**" />
   </ItemGroup>
-
-  <!--
-    NEW: When IsCIBuild=true, we disable all WinUI/MSIX packaging + PRI generation.
-    This ensures no "ExpandPriContent" task is invoked on CI.
-  -->
-  <PropertyGroup Condition="'$(IsCIBuild)'=='true'">
-    <UseWinUI>false</UseWinUI>
-    <EnableMsixTooling>false</EnableMsixTooling>
-    <PublishProfile></PublishProfile>
-    <EnableAssemblyPriGeneration>false</EnableAssemblyPriGeneration>
-    <WindowsPackageType>None</WindowsPackageType>
-    <DisableMsixProjectCapabilityAddedByProject>true</DisableMsixProjectCapabilityAddedByProject>
-    <DisableHasPackageAndPublishMenuAddedByProject>true</DisableHasPackageAndPublishMenuAddedByProject>
-  </PropertyGroup>
 </Project>
