@@ -1,93 +1,76 @@
-# SwEng25_Group12-MicrosoftKeyWizard
+# Microsoft Key Wizard 
 
-
-
-## Getting started
-
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
-
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
-
-```
-cd existing_repo
-git remote add origin https://gitlab.scss.tcd.ie/sweng-25-group-12/sweng25_group12-microsoftkeywizard.git
-git branch -M main
-git push -uf origin main
-```
-
-## Integrate with your tools
-
-- [ ] [Set up project integrations](https://gitlab.scss.tcd.ie/sweng-25-group-12/sweng25_group12-microsoftkeywizard/-/settings/integrations)
-
-## Collaborate with your team
-
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+Key Wizard is a tool that helps users discover and use keyboard shortcuts across different applications. It allows users to search for shortcuts using voice or text input, recognizing fuzzy searches and synonyms. Key Wizard can show searched up shortcuts, explain their purpose, and perform the action for you. It is a Windows-only application, meant to make everyday tasks simpler and more efficient.
 
 ## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+Key Wizard is available [here](https://apps.microsoft.com/detail/9nf4pjffzzms?hl=en-us&gl=US) on the Microsoft Store
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+The Key Wizard app runs in the background, and once installed, can be accessed using the keyboard shortcut **Ctrl + Alt + K**
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+## Extending the Code Using JSON
+Key Wizard is an open source project that has the capacity for users adapt the app for any shortcuts they desire. The steps to personalize the code to add shortcuts are as follows:
+
+Using the instructions on formatting the shortcuts, create a correctly formatted .json file and navigate to the Documents\Key Wizard folder. Once completed, drag and drop the correct file into the folder, and Key Wizard should automatically create a new folder for the shortcuts upon running. This is all that is needed for implementing new shortcuts.
+
+Once this is complete, users will have successfully personalized their own Key Wizard tool.
+
+## Formatting the Shortcuts
+
+Name the file how you would like to group the shortcuts. For example, the .json file containing command prompt shorcuts is named CommandPrompt.json. For the instructions, the category Example will be used.
+
+```bash
+Example.json
+```
+
+Shortcuts are implemented in the following format
+```json
+{
+    "Name": "Example",
+    "Shortcuts": [
+        {
+            "Description": "TESTING 123",
+            "Keys": [ "CTRL", "PLUS", "A", "Q" ]
+        },
+        {
+            "Description": "ANOTHER TEST",
+            "Keys": [ "CTRL", "PLUS", "B", "K"]
+        }
+    ]
+}
+```
+In this example, the shortcut description may be **TESTING 123**, and the keyboard presses associated would be **CTRL + PLUS + A + Q**. 
+
+For a classic keyboard shortcut example, this is the format that would be used for **Ctrl + C** (Copy)
+```json       
+ {
+      "Description": "COPY",
+      "Keys": [ "CTRL", "C"]
+ }
+```
+By extending and personalizing the code, users are able to support almost any keyboard shortcut function.
+
+When compiling the .json document, it is important that the key names match the syntax of those within the shortcuts/[Keys.cs](https://gitlab.scss.tcd.ie/sweng-25-group-12/sweng25_group12-microsoftkeywizard/-/blob/main/shortcuts/Keys.cs?ref_type=heads) file. 
+
+For example, if the following appears in the Keys.cs file
+```c#
+public const byte OEM_COMMA = 0xBC;      // ,
+```
+The comma (,) button must be referenced as OEM_COMMA when used in Example.json
+
+```c#
+public const byte LEFT = 0x25;
+```
+The left arrow button can be referenced as LEFT 
+```c#
+public const byte A = 0x41;
+```
+
+Whereas the character A can simply be referenced as A
 
 ## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+Key Wizard was designed in a way to encourage users to adapt based on their shortcut needs. The base of the Key Wizard has commands for PowerPoint, Command Prompt, File Explorer, and Text Editing. As the app already contains the keyboard press constants, has most basic keyboard shortcuts already available, and is implemented in a readable and well structured manor, it is an accessible app to customize. 
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+## About Us
+Key Wizard was created by a team of 7 computer science students from Trinity College Dublin, with 2 professional mentors from Microsoft Dublin. This work has taken place as part of Trinity's Software Engineering Project Programme (SwEng), where students are paired with world-class mentors to work on a real project. 
