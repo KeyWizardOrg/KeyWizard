@@ -14,13 +14,18 @@
     <SelfContained>true</SelfContained>
   </PropertyGroup>
 
-  <!-- When IsCIBuild=true (from GitLab CI), disable packaging + WinUI references -->
+  <!-- When building on CI, turn OFF MSIX packaging tasks 
+       but KEEP UseWinUI=true so that Microsoft.UI.* references compile. -->
   <PropertyGroup Condition="'$(IsCIBuild)'=='true'">
-    <UseWinUI>false</UseWinUI>
+    <!-- Keep WinUI references so code compiles -->
+    <UseWinUI>true</UseWinUI>
+
+    <!-- Turn off MSIX packaging + PRI generation -->
     <EnableMsixTooling>false</EnableMsixTooling>
-    <PublishProfile></PublishProfile>
     <EnableAssemblyPriGeneration>false</EnableAssemblyPriGeneration>
     <WindowsPackageType>None</WindowsPackageType>
+
+    <!-- Also remove Msix capabilities from the project -->
     <DisableMsixProjectCapabilityAddedByProject>true</DisableMsixProjectCapabilityAddedByProject>
     <DisableHasPackageAndPublishMenuAddedByProject>true</DisableHasPackageAndPublishMenuAddedByProject>
   </PropertyGroup>
@@ -46,20 +51,16 @@
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
 
-  <!-- Msix ProjectCapability only if Msix is enabled -->
+  <!-- Msix project capability only if not disabled -->
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
   </ItemGroup>
 
-  <!-- Always included references that won't break the packaging tasks on CI -->
+  <!-- We ALWAYS reference WindowsAppSDK so code referencing Microsoft.UI.* can compile -->
   <ItemGroup>
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.250108002" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
     <PackageReference Include="MSTest.TestFramework" Version="3.7.3" />
-  </ItemGroup>
-
-  <!-- Conditionally add WindowsAppSDK only if NOT on CI -->
-  <ItemGroup Condition="'$(IsCIBuild)'!='true'">
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.250108002" />
   </ItemGroup>
 
   <ItemGroup>
