@@ -18,8 +18,7 @@ namespace Key_Wizard.startup
             string baseDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "shortcuts\\base");
             string[] baseJson = Directory.GetFiles(baseDir, "*.json");
 
-            string customDir = "C:\\Users\\Jan Zacarias\\source\\repos\\sweng25_group12-microsoftkeywizard";
-
+            string customDir = Directory.CreateDirectory(string.Concat(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "\\Key Wizard")).FullName;
             string[] customJson = Directory.GetFiles(customDir, "*.json");
 
             var shortcuts = new List<Category>();
