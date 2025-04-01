@@ -13,50 +13,50 @@ namespace Microsoft_Key_Wizard_Tests
         [TestMethod]
         public void TestFuzzySearchOnNoMatch()
         {
-            var items = new List<Key_Wizard.ListItem>
+            var items = new List<Key_Wizard.shortcuts.Shortcut>
             {
-                new Key_Wizard.ListItem { Prefix = "Test", Suffix = "Item", Action = "TestAction" }
+                new Key_Wizard.shortcuts.Shortcut("Test", ["A", "B", "C"])
             };
-            var results = Key_Wizard.search.Search.Search(items, "ThisWillNotMatch");
+            var results = Key_Wizard.search.Search.Do(items, "ThisWillNotMatch");
             Assert.AreEqual(0, results.Count);
         }
 
         [TestMethod]
         public void TestFuzzySearchOnOneMatch()
         {
-            var items = new List<Key_Wizard.ListItem>
+            var items = new List<Key_Wizard.shortcuts.Shortcut>
             {
-                new Key_Wizard.ListItem { Prefix = "Test", Suffix = "Item", Action = "TestAction" }
+                new Key_Wizard.shortcuts.Shortcut("Test", ["A", "B", "C"])
             };
-            var results = Key_Wizard.search.Search.Search(items, "Test");
+            var results = Key_Wizard.search.Search.Do(items, "Test");
             Assert.AreEqual(1, results.Count);
-            Assert.AreEqual("Test Item", results[0].Prefix + " " + results[0].Suffix);
+            Assert.AreEqual("Test", results[0].Description);
         }
 
         [TestMethod]
         public void TestFuzzySearchOnMultipleMatches()
         {
-            var items = new List<Key_Wizard.ListItem>
+            var items = new List<Key_Wizard.shortcuts.Shortcut>
             {
-                new Key_Wizard.ListItem { Prefix = "Test", Suffix = "Item", Action = "TestAction" },
-                new Key_Wizard.ListItem { Prefix = "Another", Suffix = "Item", Action = "AnotherAction" }
+                new Key_Wizard.shortcuts.Shortcut("Test", ["A", "B", "C"]),
+                new Key_Wizard.shortcuts.Shortcut("Testing 123", ["D", "E"]),
             };
-            var results = Key_Wizard.search.Search.FuzzySearch(items, "Item");
+            var results = Key_Wizard.search.Search.Do(items, "Test");
             Assert.AreEqual(2, results.Count);
-            Assert.AreEqual("Test Item", results[0].Prefix + " " + results[0].Suffix);
-            Assert.AreEqual("Another Item", results[1].Prefix + " " + results[1].Suffix);
+            Assert.AreEqual("Test", results[0].Description);
+            Assert.AreEqual("Testing 123", results[1].Description);
         }
 
         [TestMethod]
         public void TestFuzzySearchWithTypo()
         {
-            var items = new List<Key_Wizard.ListItem>
+            var items = new List<Key_Wizard.shortcuts.Shortcut>
             {
-                new Key_Wizard.ListItem { Prefix = "Testing", Suffix = "Item", Action = "TestAction" }
+                new Key_Wizard.shortcuts.Shortcut("Test", ["A", "B", "C"]),
             };
-            var results = Key_Wizard.search.Search.FuzzySearch(items, "Tstng");
+            var results = Key_Wizard.search.Search.Do(items, "Tset");
             Assert.AreEqual(1, results.Count);
-            Assert.AreEqual("Testing Item", results[0].Prefix + " " + results[0].Suffix);
+            Assert.AreEqual("Test", results[0].Description);
         }
     }
 }
