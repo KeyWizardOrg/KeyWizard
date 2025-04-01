@@ -361,16 +361,33 @@ namespace Key_Wizard
                 bool isInKeysList = IsInVisualTree(textBlock, keyList);
 
                 // Only add suffix if in the main list
+                
                 if (isInShortcutsList)
                 {
                     textBlock.Inlines.Clear();
+
+                    // Add category if it exists
+                    if (!string.IsNullOrEmpty(shortcut.Category))
+                    {
+                        textBlock.Inlines.Add(new Run
+                        {
+                            Text = $"{shortcut.Category}: ",
+                            FontWeight = FontWeights.SemiBold,
+                            Foreground = (SolidColorBrush)Application.Current.Resources["SystemControlForegroundBaseMediumLowBrush"]
+                        });
+                    }
+
+                    // Add the description (with search highlighting if available)
                     if (shortcut.SearchResults != null)
                     {
-                        for (int i = 0; i < shortcut.SearchResults.Count; i++)
+                        foreach (var run in shortcut.SearchResults)
                         {
-                            Run? run = shortcut.SearchResults[i];
                             textBlock.Inlines.Add(run);
                         }
+                    }
+                    else
+                    {
+                        textBlock.Inlines.Add(new Run { Text = shortcut.Description });
                     }
                 }
                 else if (isInKeysList)
