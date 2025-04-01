@@ -79,51 +79,25 @@ namespace Key_Wizard
 
             this.AppWindow.MoveAndResize(Screen.GetWindowSizeAndPos(this, Screen.MIN_WIDTH, Screen.MIN_HEIGHT));
 
-            // Add event handlers
+            // Add event handler for Window.Closed
             this.Closed += MainWindow_Closed;
-            this.Activated += Window_Activated;
 
             this.categories = LoadShortcuts.Read();
             this.searchList = categories.SelectMany(category => category.Shortcuts).ToList();
         }
 
-        private void ClearSearchAndClose()
+        private async void MainWindow_Closed(object sender, WindowEventArgs e)
         {
-            // Clear the search box and results
-            searchTextBox.Text = "";
-            searchTextBox.ClearUndoRedoHistory();
-            shortcutsList.ItemsSource = null;
-            keyList.ItemsSource = null;
-            ResultsBorderBar.Visibility = Visibility.Collapsed;
-
-            // Reset window size
-            this.AppWindow.MoveAndResize(Screen.GetWindowSizeAndPos(this, Screen.MIN_WIDTH, Screen.MIN_HEIGHT));
-
-            // Close the window
-            this.Close();
-        }
-
-        private void MainWindow_Closed(object sender, WindowEventArgs e)
-        {
-            // Clean up speech recognition
             if (_isListening && _speechRecognizer != null)
             {
-                _ = _speechRecognizer.StopRecognitionAsync();
+                await _speechRecognizer.StopRecognitionAsync();
                 _speechRecognizer.Dispose();
                 _speechRecognizer = null;
                 _isListening = false;
             }
         }
 
-        private void Window_Activated(object sender, WindowActivatedEventArgs e)
-        {
-            if (e.WindowActivationState == WindowActivationState.Deactivated)
-            {
-                ClearSearchAndClose();
-            }
-        }
-
-        private void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private async void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             searchDelayTimer.Stop();
             searchDelayTimer.Start();
@@ -161,10 +135,6 @@ namespace Key_Wizard
                 var item = (Shortcut)listView.SelectedItem;
                 TriggerAction(item);
             }
-            else if (e.Key == VirtualKey.Escape)
-            {
-                ClearSearchAndClose();
-            }
         }
 
         private void ListView_ItemClick(object sender, ItemClickEventArgs e)
@@ -182,6 +152,7 @@ namespace Key_Wizard
                 if (fieldInfo == null)
                 {
                     Debug.WriteLine("ERROR: Provided key does not exist.");
+                    // TODO: Better error handling here
                 }
                 else
                 {
@@ -248,14 +219,19 @@ namespace Key_Wizard
             }
         }
 
+
+        // Add this modification to your StartSpeechRecognitionAsync method
         private async Task StartSpeechRecognitionAsync()
         {
             try
             {
+                // Ensure the app is visible while listening
                 this.AppWindow.Show(true);
+
                 _speechRecognizer = new SpeechRecognizer();
                 await _speechRecognizer.CompileConstraintsAsync();
 
+                // Start recognition
                 SpeechRecognitionResult result = await _speechRecognizer.RecognizeAsync();
 
                 if (result.Status == SpeechRecognitionResultStatus.Success)
@@ -267,11 +243,13 @@ namespace Key_Wizard
                         searchTextBox.ClearUndoRedoHistory();
                         searchTextBox.Text = recognizedText;
 
+                        // Check for exact match with any shortcut description
                         var exactMatch = searchList.FirstOrDefault(s =>
                             string.Equals(s.Description, recognizedText, StringComparison.OrdinalIgnoreCase));
 
                         if (exactMatch != null)
                         {
+                            // Auto-trigger the shortcut
                             TriggerAction(exactMatch);
                         }
                     });
@@ -280,7 +258,7 @@ namespace Key_Wizard
                 {
                     searchTextBox.DispatcherQueue.TryEnqueue(() =>
                     {
-                        searchTextBox.Text = "";
+                        searchTextBox.Text = "Could not recognize speech.";
                     });
                 }
             }
@@ -289,7 +267,7 @@ namespace Key_Wizard
                 Debug.WriteLine($"Speech Recognition Error: {ex.Message}");
                 searchTextBox.DispatcherQueue.TryEnqueue(() =>
                 {
-                    searchTextBox.Text = "";
+                    searchTextBox.Text = "Speech Recognition not supported.";
                 });
             }
             finally
@@ -309,7 +287,15 @@ namespace Key_Wizard
         {
             if (e.Key == Windows.System.VirtualKey.Escape)
             {
-                ClearSearchAndClose();
+                this.Close();
+            }
+        }
+
+        private void Window_Activated(object sender, WindowActivatedEventArgs e)
+        {
+            if (e.WindowActivationState == WindowActivationState.Deactivated)
+            {
+                this.Close();
             }
         }
 
@@ -355,9 +341,11 @@ namespace Key_Wizard
         {
             if (sender is TextBlock textBlock && textBlock.DataContext is Shortcut shortcut)
             {
+                // Check which ListView contains this TextBlock
                 bool isInShortcutsList = IsInVisualTree(textBlock, shortcutsList);
                 bool isInKeyList = IsInVisualTree(textBlock, keyList);
 
+                // Only add suffix if in the main list
                 if (isInShortcutsList)
                 {
                     textBlock.Inlines.Clear();
@@ -378,6 +366,7 @@ namespace Key_Wizard
             }
         }
 
+        // Helper to check if an element exists in a specific ListView's visual tree
         private bool IsInVisualTree(DependencyObject element, DependencyObject parent)
         {
             while (element != null)

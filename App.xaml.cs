@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
-using Windows.ApplicationModel.Activation;
+using Windows.Media.SpeechRecognition;
+using Microsoft.Windows.AppLifecycle;
 
 namespace Key_Wizard
 {
@@ -13,7 +16,7 @@ namespace Key_Wizard
         private Window? m_window;
         private AppWindow? m_appWindow;
         private IntPtr m_hookHandle = IntPtr.Zero;
-        private HookProc? m_hookProc;
+        private HookProc m_hookProc; // Strong reference to prevent garbage collection
         private const int WH_KEYBOARD_LL = 13;
         private const int WM_KEYDOWN = 0x0100;
         private const int WM_SYSKEYDOWN = 0x0104;
@@ -31,10 +34,14 @@ namespace Key_Wizard
         private const int HWND_TOP = 0;
         private const uint SWP_NOSIZE = 0x0001;
         private const uint SWP_NOMOVE = 0x0002;
+        private const uint SWP_SHOWWINDOW = 0x0040;
 
         private bool m_ctrlPressed = false;
         private bool m_altPressed = false;
         private bool m_keepRunning = true;
+        private SpeechRecognizer? _speechRecognizer;
+        private bool _isListening = false;
+        private bool _windowVisible = true;
 
         [DllImport("user32.dll", SetLastError = true)]
         private static extern IntPtr SetWindowsHookEx(int idHook, HookProc lpfn, IntPtr hMod, uint dwThreadId);
@@ -49,13 +56,13 @@ namespace Key_Wizard
         private static extern IntPtr GetModuleHandle(string lpModuleName);
 
         [DllImport("user32.dll")]
-        private static extern short GetAsyncKeyState(int vKey);
-
-        [DllImport("user32.dll")]
         private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
         [DllImport("user32.dll")]
         private static extern bool BringWindowToTop(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        private static extern short GetAsyncKeyState(int vKey);
 
         [DllImport("user32.dll")]
         private static extern bool SetForegroundWindow(IntPtr hWnd);
@@ -69,6 +76,7 @@ namespace Key_Wizard
 
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
+
         private static extern bool IsWindowVisible(IntPtr hWnd);
 
         [StructLayout(LayoutKind.Sequential)]
@@ -96,13 +104,15 @@ namespace Key_Wizard
         private int m_originalHeight;
         private int m_originalX;
         private int m_originalY;
-        private bool m_isFirstLaunch = true;
 
         public App()
         {
             this.InitializeComponent();
             this.UnhandledException += OnUnhandledException;
             AppDomain.CurrentDomain.ProcessExit += OnProcessExit;
+
+            // Initialize the hook procedure to prevent garbage collection
+            m_hookProc = new HookProc(KeyboardHookProc);
         }
 
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
@@ -113,37 +123,137 @@ namespace Key_Wizard
             m_window.Closed += OnWindowClosed;
             m_window.Activate();
             Debug.WriteLine("Window activated");
+
+            // Setup keyboard hook first
             SetupKeyboardHook();
+
+            // Then save window position
             SaveWindowPosition();
+
+            // Hide the window
             HideWindow();
+
+            // Keep a reference to the window to prevent garbage collection
             GC.KeepAlive(m_window);
-            GC.KeepAlive(m_hookProc);
+        }
+
+        private async void StartSpeechRecognitionAsync()
+        {
+            try
+            {
+                // If we already have a speech recognizer, clean it up first
+                if (_speechRecognizer != null)
+                {
+                    await StopSpeechRecognitionAsync();
+                }
+
+                _speechRecognizer = new SpeechRecognizer();
+
+                // Add constraints BEFORE compiling
+                var listConstraint = new SpeechRecognitionListConstraint(
+                    new List<string> {
+                        "Key Wizard",
+                        "Open Key Wizard",
+                        "Show Key Wizard",
+                        "Launch Key Wizard",
+                        "Open Wizard",
+                        "Show Wizard",
+                        "Launch Wizard",
+                        "Wizard"
+                    }, "activationPhrases");
+
+                _speechRecognizer.Constraints.Add(listConstraint);
+
+                // Compile constraints
+                var compilationResult = await _speechRecognizer.CompileConstraintsAsync();
+                if (compilationResult.Status != SpeechRecognitionResultStatus.Success)
+                {
+                    Debug.WriteLine($"Constraint compilation failed: {compilationResult.Status}");
+                    return;
+                }
+
+                // Start continuous recognition
+                _speechRecognizer.ContinuousRecognitionSession.ResultGenerated +=
+                    ContinuousRecognitionSession_ResultGenerated;
+
+                await _speechRecognizer.ContinuousRecognitionSession.StartAsync();
+                _isListening = true;
+                Debug.WriteLine("Continuous speech recognition started");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Speech Recognition Error: {ex.Message}");
+            }
+        }
+
+        private async Task StopSpeechRecognitionAsync()
+        {
+            if (_speechRecognizer != null && _isListening)
+            {
+                try
+                {
+                    _speechRecognizer.ContinuousRecognitionSession.ResultGenerated -=
+                        ContinuousRecognitionSession_ResultGenerated;
+                    await _speechRecognizer.ContinuousRecognitionSession.StopAsync();
+                    _isListening = false;
+                    _speechRecognizer.Dispose();
+                    _speechRecognizer = null;
+                    Debug.WriteLine("Speech recognition stopped and cleaned up");
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"Error stopping speech recognition: {ex.Message}");
+                }
+            }
+        }
+
+        private void ContinuousRecognitionSession_ResultGenerated(
+            SpeechContinuousRecognitionSession sender,
+            SpeechContinuousRecognitionResultGeneratedEventArgs args)
+        {
+            if (args.Result.Status == SpeechRecognitionResultStatus.Success)
+            {
+                string recognizedText = args.Result.Text;
+                Debug.WriteLine($"Recognized: {recognizedText}");
+
+                if ((recognizedText.Contains("Key") || recognizedText.Contains("Wizard")) &&
+                    (recognizedText.Contains("Open") || recognizedText.Contains("Launch") || recognizedText.Contains("Show")))
+                {
+                    // Run on UI thread
+                    _ = m_window?.DispatcherQueue.TryEnqueue(() =>
+                    {
+                        ShowAndActivateWindow();
+                    });
+                }
+            }
         }
 
         private void SetupKeyboardHook()
         {
             try
             {
-                m_hookProc = new HookProc(KeyboardHookProc);
                 string moduleName = Process.GetCurrentProcess().MainModule?.ModuleName ?? "";
                 IntPtr hInstance = GetModuleHandle(moduleName);
-                Debug.WriteLine($"Setting up keyboard hook with module: {moduleName}");
+                Debug.WriteLine($"🔧 Setting up keyboard hook with module: {moduleName}");
+
                 m_hookHandle = SetWindowsHookEx(WH_KEYBOARD_LL, m_hookProc, hInstance, 0);
                 if (m_hookHandle == IntPtr.Zero)
                 {
                     int errorCode = Marshal.GetLastWin32Error();
-                    Debug.WriteLine($"Failed to set keyboard hook. Error code: {errorCode}");
+                    Debug.WriteLine($"❌ Failed to set keyboard hook! Error code: {errorCode}");
                 }
                 else
                 {
-                    Debug.WriteLine("Keyboard hook set successfully.");
+                    Debug.WriteLine("✅ Keyboard hook set successfully.");
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Exception setting up keyboard hook: {ex.Message}");
+                Debug.WriteLine($"❌ Exception setting up keyboard hook: {ex.Message}");
             }
         }
+
+
 
         private void SaveWindowPosition()
         {
@@ -180,6 +290,10 @@ namespace Key_Wizard
                     IntPtr hwnd = GetWindowHandle();
                     ShowWindow(hwnd, SW_HIDE);
                     Debug.WriteLine("Window hidden.");
+                    _windowVisible = false;
+
+                    // Restart speech recognition when window is hidden
+                    StartSpeechRecognitionAsync();
                 }
             }
             catch (Exception ex)
@@ -188,115 +302,79 @@ namespace Key_Wizard
             }
         }
 
+        private bool IsKeyPressed(int key)
+        {
+            return (GetAsyncKeyState(key) & 0x8000) != 0;
+        }
+
         private IntPtr KeyboardHookProc(int nCode, IntPtr wParam, IntPtr lParam)
         {
-            try
+            if (nCode >= 0)
             {
-                if (nCode >= 0)
+                KBDLLHOOKSTRUCT hookStruct = Marshal.PtrToStructure<KBDLLHOOKSTRUCT>(lParam);
+                int wParamInt = wParam.ToInt32();
+
+                Debug.WriteLine($"Key: {hookStruct.vkCode}, wParam: {wParamInt}");
+
+                // Check if Ctrl + Alt + K is pressed
+                if (hookStruct.vkCode == VK_K &&
+                    (GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0 &&
+                    (GetAsyncKeyState(VK_MENU) & 0x8000) != 0 &&
+                    (wParamInt == WM_KEYDOWN || wParamInt == WM_SYSKEYDOWN))
                 {
-                    int wParamInt = wParam.ToInt32();
-                    KBDLLHOOKSTRUCT hookStruct = Marshal.PtrToStructure<KBDLLHOOKSTRUCT>(lParam);
-
-                    if (hookStruct.vkCode == VK_CONTROL)
-                    {
-                        m_ctrlPressed = wParamInt == WM_KEYDOWN || wParamInt == WM_SYSKEYDOWN;
-                        Debug.WriteLine($"Ctrl key {(m_ctrlPressed ? "pressed" : "released")}");
-                    }
-                    else if (hookStruct.vkCode == VK_MENU)
-                    {
-                        m_altPressed = wParamInt == WM_KEYDOWN || wParamInt == WM_SYSKEYDOWN;
-                        Debug.WriteLine($"Alt key {(m_altPressed ? "pressed" : "released")}");
-                    }
-
-                    if (m_ctrlPressed && m_altPressed && hookStruct.vkCode == VK_K &&
-                        (wParamInt == WM_KEYDOWN || wParamInt == WM_SYSKEYDOWN))
-                    {
-                        Debug.WriteLine("Hotkey Ctrl+Alt+K detected!");
-                        if (m_window != null && m_window.DispatcherQueue != null)
-                        {
-                            bool enqueued = m_window.DispatcherQueue.TryEnqueue(Microsoft.UI.Dispatching.DispatcherQueuePriority.High, () =>
-                            {
-                                ShowAndActivateWindow();
-                            });
-                            Debug.WriteLine($"Enqueue result: {enqueued}");
-                        }
-                        else
-                        {
-                            Debug.WriteLine("Window or dispatcher is null!");
-                        }
-                        return new IntPtr(1);
-                    }
-
-                    bool ctrlDown = (GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0;
-                    bool altDown = (GetAsyncKeyState(VK_MENU) & 0x8000) != 0;
-                    bool kDown = (GetAsyncKeyState(VK_K) & 0x8000) != 0;
-
-                    if (ctrlDown && altDown && kDown && hookStruct.vkCode == VK_K)
-                    {
-                        Debug.WriteLine("Hotkey Ctrl+Alt+K detected via GetAsyncKeyState!");
-                        if (m_window != null && m_window.DispatcherQueue != null)
-                        {
-                            bool enqueued = m_window.DispatcherQueue.TryEnqueue(Microsoft.UI.Dispatching.DispatcherQueuePriority.High, () =>
-                            {
-                                ShowAndActivateWindow();
-                            });
-                            Debug.WriteLine($"Fallback enqueue result: {enqueued}");
-                        }
-                    }
+                    Debug.WriteLine("🔥 Hotkey Ctrl+Alt+K detected!");
+                    ShowAndActivateWindow(); // Call your hotkey action
+                    return (IntPtr)1; // Block the key event (optional)
                 }
             }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Error in keyboard hook: {ex.Message}");
-            }
+
+            // Call the next hook in the chain
             return CallNextHookEx(m_hookHandle, nCode, wParam, lParam);
         }
 
+
+
+
+        private bool _isActivating = false; // Prevent duplicate activations
+
         private void ShowAndActivateWindow()
         {
+            if (_isActivating) return;
+            _isActivating = true;
+
             try
             {
-                Debug.WriteLine("ShowAndActivateWindow called.");
+                Debug.WriteLine("Activating window...");
+
                 if (m_window != null)
                 {
+                    _ = StopSpeechRecognitionAsync(); // Stop voice recognition
+
                     IntPtr hwnd = GetWindowHandle();
-                    bool isVisible = IsWindowVisible(hwnd);
-                    Debug.WriteLine($"Window is currently {(isVisible ? "visible" : "hidden")}");
-                    if (!isVisible)
+                    if (!IsWindowVisible(hwnd))
                     {
                         ShowWindow(hwnd, SW_SHOWNA);
-                        if (m_originalWidth > 0 && m_originalHeight > 0)
-                        {
-                            SetWindowPos(
-                                hwnd,
-                                (IntPtr)HWND_TOP,
-                                m_originalX,
-                                m_originalY,
-                                m_originalWidth,
-                                m_originalHeight,
-                                SWP_SHOWWINDOW
-                            );
-                            Debug.WriteLine($"Restored window to: X={m_originalX}, Y={m_originalY}, Width={m_originalWidth}, Height={m_originalHeight}");
-                        }
+                        SetWindowPos(hwnd, (IntPtr)HWND_TOP, m_originalX, m_originalY, m_originalWidth, m_originalHeight, SWP_SHOWWINDOW);
                     }
+
                     ShowWindow(hwnd, SW_NORMAL);
                     m_window.Activate();
                     BringWindowToTop(hwnd);
                     SetForegroundWindow(hwnd);
-                    Debug.WriteLine("Window shown and activated.");
-                }
-                else
-                {
-                    Debug.WriteLine("m_window is null.");
+
+                    _windowVisible = true;
                 }
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error in ShowAndActivateWindow: {ex.Message}");
             }
+            finally
+            {
+                _isActivating = false;
+            }
         }
 
-        private const uint SWP_SHOWWINDOW = 0x0040;
 
         private IntPtr GetWindowHandle()
         {
@@ -316,13 +394,21 @@ namespace Key_Wizard
 
         private void OnWindowClosed(object sender, WindowEventArgs args)
         {
-            Debug.WriteLine("Window closed event - NOT unregistering hook");
+            Debug.WriteLine("Window closed event");
+            _ = StopSpeechRecognitionAsync();
+
+            // We don't want to clean up the hook here, as the app is still running
+            // Just hide the window instead
             HideWindow();
+
+            // Mark the event as handled to prevent the default behavior
             args.Handled = true;
         }
 
         private void OnProcessExit(object sender, EventArgs e)
         {
+            Debug.WriteLine("Process exit event");
+            _ = StopSpeechRecognitionAsync();
             CleanupHook();
         }
 

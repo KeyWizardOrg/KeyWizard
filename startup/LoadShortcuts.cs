@@ -19,6 +19,7 @@ namespace Key_Wizard.startup
             string[] baseJson = Directory.GetFiles(baseDir, "*.json");
 
             string customDir = "C:\\Users\\Jan Zacarias\\source\\repos\\sweng25_group12-microsoftkeywizard";
+
             string[] customJson = Directory.GetFiles(customDir, "*.json");
 
             var shortcuts = new List<Category>();
