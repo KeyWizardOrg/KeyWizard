@@ -5,6 +5,7 @@ using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using WinRT.Interop;
 
 namespace Key_Wizard.backend.shortcuts
 {
@@ -129,6 +130,30 @@ namespace Key_Wizard.backend.shortcuts
         public const byte OEM_5 = 0xDC;          // \|
         public const byte OEM_6 = 0xDD;          // ]}
         public const byte OEM_7 = 0xDE;          // '"
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetWindow(IntPtr hWnd, uint uCmd);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool IsWindowVisible(IntPtr hWnd);
+
+        private MainWindow mainWindow;
+        private const uint GW_HWNDNEXT = 2;
+
+        public static void FocusWindowBehind(MainWindow mainWindow)
+        {
+            IntPtr hWnd = GetWindow(WindowNative.GetWindowHandle(mainWindow), GW_HWNDNEXT);
+            while (hWnd != IntPtr.Zero && !IsWindowVisible(hWnd))
+            {
+                hWnd = GetWindow(hWnd, GW_HWNDNEXT);
+            }
+            SetForegroundWindow(hWnd);
+        }
 
         public static void Press(byte key)
         {
