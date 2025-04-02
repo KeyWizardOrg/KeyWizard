@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml.Documents;
 
-namespace Key_Wizard.shortcuts
+namespace Key_Wizard.backend.shortcuts
 {
     public class Shortcut
     {

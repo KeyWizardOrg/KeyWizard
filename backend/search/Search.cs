@@ -5,13 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Key_Wizard.shortcuts;
+using Key_Wizard.backend.shortcuts;
 using Microsoft.UI.Xaml.Documents;
 
-namespace Key_Wizard.search
+namespace Key_Wizard.backend.search
 {
     public class Search
     {
+        /**
+         * Search a list of Shortcuts for Shortcuts that match the query
+         */
         public static List<Shortcut> Do(List<Shortcut> items, string query)
         {
             // remove special characters, remove non-essential whitespace, set to lowercase
@@ -27,8 +30,11 @@ namespace Key_Wizard.search
             // save scores in separate max-heap, this is the most elegant solution bc C# data structures suck
             var scores = new PriorityQueue<double, double>(new MaxHeapComparer());
 
+            // factor the weighing of two of our algorithms by query length:
+            // the longer the string, the more impressive we expect the match should be
             var querySizeFactor = (double)normalizedQuery.Length / 10;
 
+            // determine if there are any synonyms of the current query. if there are, include them
             var queries = SearchLib.ExtraQueries(normalizedQuery);
             foreach (var item in items)
             {
@@ -37,7 +43,7 @@ namespace Key_Wizard.search
                 double distance = 1;
                 foreach (var currentQuery in queries)
                 {
-                    // if query is part o
+                    // if query is part of 
                     if (target.Contains(currentQuery))
                     {
                         distance = 0.1 + 0.0001 * target.Length;
@@ -146,7 +152,7 @@ namespace Key_Wizard.search
             HashSet<char> union = new(set1);
             union.UnionWith(set2);
 
-            double jaccardIndex = (double)intersection.Count / (1.2 * union.Count);
+            double jaccardIndex = intersection.Count / (1.2 * union.Count);
             return 1 - jaccardIndex;
         }
 
@@ -154,6 +160,9 @@ namespace Key_Wizard.search
     }
 }
 
+/**
+ * Yes, C# does not have a more elegant way to do a max heap.
+ */
 internal class MaxHeapComparer : IComparer<double>
 {
     public int Compare(double x, double y)
