@@ -44,7 +44,7 @@ namespace Key_Wizard
         private List<Shortcut> searchList;
         private DispatcherTimer searchDelayTimer;
         private const int SEARCH_DELAY_MS = 200;
-        
+
         // used for voice control
         private SpeechRecognizer? _speechRecognizer;
         private bool _isListening = false;
@@ -211,7 +211,7 @@ namespace Key_Wizard
 
                 keys.Add((byte)keyByte);
             }
-            
+
             // minimise window, clear history
             MainGrid.UpdateLayout();
             double contentWidth = this.AppWindow.Size.Width;
@@ -242,7 +242,7 @@ namespace Key_Wizard
         {
             if (_isListening)
             {
-                // stop listening
+                // Stop listening
                 ListenIcon.Glyph = "\uF781";
                 searchTextBox.Text = null;
                 _isListening = false;
@@ -256,7 +256,7 @@ namespace Key_Wizard
             }
             else
             {
-                // start listening
+                // Start listening
                 ListenIcon.Glyph = "\xE720";
                 searchTextBox.Text = "Listening...";
                 _isListening = true;
@@ -266,29 +266,40 @@ namespace Key_Wizard
         }
 
 
+        // Add this modification to your StartSpeechRecognitionAsync method
         private async Task StartSpeechRecognitionAsync()
         {
             try
             {
-                // ensure the app is visible while listening
+                // Ensure the app is visible while listening
                 this.AppWindow.Show(true);
 
                 _speechRecognizer = new SpeechRecognizer();
                 await _speechRecognizer.CompileConstraintsAsync();
 
-                // start recognising what the speaker is saying
+                // Start recognition
                 SpeechRecognitionResult result = await _speechRecognizer.RecognizeAsync();
 
-                // if successful, display in search box
                 if (result.Status == SpeechRecognitionResultStatus.Success)
                 {
+                    string recognizedText = result.Text;
+
                     searchTextBox.DispatcherQueue.TryEnqueue(() =>
                     {
                         searchTextBox.ClearUndoRedoHistory();
-                        searchTextBox.Text = result.Text;
+                        searchTextBox.Text = recognizedText;
+
+                        // Check for exact match with any shortcut description
+                        var exactMatch = searchList.FirstOrDefault(s =>
+                            string.Equals(s.Description, recognizedText, StringComparison.OrdinalIgnoreCase));
+
+                        if (exactMatch != null)
+                        {
+                            // Auto-trigger the shortcut
+                            TriggerAction(exactMatch);
+                        }
                     });
                 }
-                // else, provide the user a friendly error
                 else
                 {
                     searchTextBox.DispatcherQueue.TryEnqueue(() =>
@@ -307,7 +318,6 @@ namespace Key_Wizard
             }
             finally
             {
-                // disable
                 _isListening = false;
                 ListenIcon.Glyph = "\uF781";
 
@@ -318,6 +328,7 @@ namespace Key_Wizard
                 }
             }
         }
+
 
         private void MainGrid_KeyDown(object sender, KeyRoutedEventArgs e)
         {
