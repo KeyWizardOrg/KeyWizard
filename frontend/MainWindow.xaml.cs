@@ -213,6 +213,7 @@ namespace Key_Wizard
             }
 
             // minimise window, clear history
+            backend.shortcuts.Keys.FocusWindowBehind(this);
             MainGrid.UpdateLayout();
             double contentWidth = this.AppWindow.Size.Width;
             double contentHeight = 0.0;
