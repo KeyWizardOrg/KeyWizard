@@ -6,6 +6,10 @@
             "Keys": [ "WINDOWS" ]
         },
         {
+            "Description": "Open First on Taskbar",
+            "Keys": [ "WINDOWS", "ONE" ]
+        },
+        {
             "Description": "Open action center",
             "Keys": [ "WINDOWS", "A" ]
         },
