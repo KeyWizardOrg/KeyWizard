@@ -36,7 +36,7 @@ namespace Key_Wizard.backend.shortcuts
         public const byte SELECT = 0x29;
         public const byte PRbyte = 0x2A;
         public const byte EXECUTE = 0x2B;
-        public const byte PRTSCR = 0x2C;
+        public const byte PRTSCN= 0x2C;
         public const byte INSERT = 0x2D;
         public const byte DELETE = 0x2E;
         public const byte HELP = 0x2F;
