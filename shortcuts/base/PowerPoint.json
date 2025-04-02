@@ -1,9 +1,0 @@
-{
-    "Name": "PowerPoint",
-    "Shortcuts": [
-        {
-            "Description": "Start Presentation",
-            "Keys": [ "F5" ]
-        }
-    ]
-}

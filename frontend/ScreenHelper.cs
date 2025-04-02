@@ -10,7 +10,7 @@ using WinRT.Interop;
 
 namespace Key_Wizard.screen
 {
-    internal class Screen
+    internal class ScreenHelper
     {
         // Constants for different aspect ratios
         public const double MAX_HEIGHT = 0.4;
@@ -23,6 +23,9 @@ namespace Key_Wizard.screen
         public const double ULTRAWIDE_RATIO = 1.78; // 16:9
         public const double STANDARD_RATIO = 1.33; // 4:3
 
+        /*
+         * Calculates the size and position of the window based on the screen width and height
+         */
         public static RectInt32 GetWindowSizeAndPos(MainWindow mainWindow, double widthPercentage, double heightPercentage)
         {
             var hWnd = WindowNative.GetWindowHandle(mainWindow);
@@ -76,7 +79,7 @@ namespace Key_Wizard.screen
 
             windowHeight = Math.Max(windowHeight, ABSOLUTE_MIN_HEIGHT);
 
-            // Center the window on screen
+            // Centre the window on screen
             int windowX = (int)(workArea.Width - windowWidth) / 2;
             int windowY = (int)(workArea.Height - maxHeight) / 2;
 

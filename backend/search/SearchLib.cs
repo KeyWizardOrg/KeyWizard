@@ -5,15 +5,24 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml.Controls;
 
-namespace Key_Wizard.search
+namespace Key_Wizard.backend.search
 {
     internal class SearchLib
     {
+        /*
+         * Remove extraneous whitespace, make lowercase
+         */
         internal static string NormalizeQuery(string query)
         {
             return System.Text.RegularExpressions.Regex.Replace(query, @"[^\w\s]+|\s+", " ").ToLower();
         }
 
+        /*
+         * Compare each word in the query to a predefined list of synonyms.
+         * If a word 'a' matches a query, then the query is replaced with a list of versions
+         * of the query where 'a' is substituted for each of its synonyms.
+         * The idea here is that if I type "launch foobar", then "start foobar" should also show up.
+         */
         internal static List<string> ExtraQueries(string query)
         {
             var queryWords = query.Split(" ");

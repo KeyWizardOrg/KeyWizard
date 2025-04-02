@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Key_Wizard"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local1="using:Key_Wizard.shortcuts"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local1="using:Key_Wizard.backend.shortcuts"
     mc:Ignorable="d"
     Title="Microsoft Key Wizard"
     Activated="Window_Activated">
@@ -65,7 +65,7 @@
                      TextWrapping="Wrap"
                      HorizontalContentAlignment="Center"
                      VerticalContentAlignment="Center"
-                     KeyDown="searchTextBox_KeyDown"
+                     KeyDown="SearchTextBox_KeyDown"
                      TextChanged="SearchTextBox_TextChanged"
                      BorderThickness="0">
                 <TextBox.Style>

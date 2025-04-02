@@ -9,13 +9,13 @@ using Microsoft.UI.Xaml;
 using Windows.ApplicationModel.Appointments.AppointmentsProvider;
 using static System.Collections.Specialized.BitVector32;
 
-namespace Key_Wizard.shortcuts
+namespace Key_Wizard.backend.shortcuts
 {
     internal class ReadShortcuts
     {
         public static List<Category> Read()
         {
-            string baseDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "shortcuts\\base");
+            string baseDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "backend\\shortcuts\\base");
             string[] baseJson = Directory.GetFiles(baseDir, "*.json");
 
             string customDir = Directory.CreateDirectory(string.Concat(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "\\Key Wizard")).FullName;

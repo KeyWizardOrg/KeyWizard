@@ -6,12 +6,12 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Key_Wizard.shortcuts
+namespace Key_Wizard.backend.shortcuts
 {
     internal class Keys
     {
         [DllImport("user32.dll")]
-        static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, IntPtr dwExtraInfo);
+        static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, nint dwExtraInfo);
         private const byte KEYUP = 0x0002;
 
         public const byte BACKSPACE = 0x08;
@@ -132,12 +132,12 @@ namespace Key_Wizard.shortcuts
 
         public static void Press(byte key)
         {
-            keybd_event(key, 0, 0, IntPtr.Zero);
+            keybd_event(key, 0, 0, nint.Zero);
         }
 
         public static void Release(byte key)
         {
-            keybd_event(key, 0, KEYUP, IntPtr.Zero);
+            keybd_event(key, 0, KEYUP, nint.Zero);
         }
     }
 }
