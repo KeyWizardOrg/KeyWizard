@@ -77,10 +77,7 @@
             "Description": "Create new folder",
             "Keys": [ "CTRL", "SHIFT", "N" ]
         },
-        {
-            "Description": "Change view style",
-            "Keys": [ "CTRL", "SHIFT" ]
-        },
+
         {
             "Description": "Previous tab",
             "Keys": [ "CTRL", "SHIFT", "TAB" ]

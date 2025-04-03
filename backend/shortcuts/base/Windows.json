@@ -18,15 +18,11 @@
             "Keys": [ "WINDOWS", "ALT", "B" ]
         },
         {
-            "Description": "Show or hide date and time",
-            "Keys": [ "WINDOWS", "ALT", "D" ]
-        },
-        {
             "Description": "Snap window to bottom half",
             "Keys": [ "WINDOWS", "ALT", "DOWN" ]
         },
         {
-            "Description": "Focus on voice typing keyboard",
+            "Description": "Open Help Menu in applications",
             "Keys": [ "WINDOWS", "ALT", "H" ]
         },
         {
@@ -39,7 +35,7 @@
         },
         {
             "Description": "Peek at desktop",
-            "Keys": [ "WINDOWS", "COMMA" ]
+            "Keys": [ "WINDOWS", "OEM_COMMA" ]
         },
         {
             "Description": "Toggle color filters",
@@ -110,16 +106,8 @@
             "Keys": [ "WINDOWS", "I" ]
         },
         {
-            "Description": "Focus on Windows tip",
-            "Keys": [ "WINDOWS", "J" ]
-        },
-        {
             "Description": "Open Cast",
             "Keys": [ "WINDOWS", "K" ]
-        },
-        {
-            "Description": "Lock computer",
-            "Keys": [ "WINDOWS", "L" ]
         },
         {
             "Description": "Snap window to left",
@@ -131,7 +119,7 @@
         },
         {
             "Description": "Zoom out in Magnifier",
-            "Keys": [ "WINDOWS", "MINUS" ]
+            "Keys": [ "WINDOWS", "OEM_MINUS" ]
         },
         {
             "Description": "Open notification center",
@@ -159,7 +147,7 @@
         },
         {
             "Description": "Zoom in with Magnifier",
-            "Keys": [ "WINDOWS", "PLUS" ]
+            "Keys": [ "WINDOWS", "OEM_PLUS" ]
         },
         {
             "Description": "Capture full screen screenshot",
@@ -278,14 +266,6 @@
             "Keys": [ "ALT", "LEFT" ]
         },
         {
-            "Description": "Move down one screen",
-            "Keys": [ "ALT", "PAGE DOWN" ]
-        },
-        {
-            "Description": "Move up one screen",
-            "Keys": [ "ALT", "PAGE UP" ]
-        },
-        {
             "Description": "Screenshot active window to clipboard",
             "Keys": [ "ALT", "PRTSCN" ]
         },
@@ -308,10 +288,6 @@
         {
             "Description": "Select all items in window",
             "Keys": [ "CTRL", "A" ]
-        },
-        {
-            "Description": "Open security screen",
-            "Keys": [ "CTRL", "ALT", "DEL" ]
         },
         {
             "Description": "View thumbnails of open apps",
@@ -347,7 +323,7 @@
         },
         {
             "Description": "Toggle Chinese IME",
-            "Keys": [ "CTRL", "SPACE" ]
+            "Keys": [ "CTRL", "SPACEBAR" ]
         },
         {
             "Description": "Redo action",
@@ -383,7 +359,7 @@
         },
         {
             "Description": "Open Copilot",
-            "Keys": [ "F23" ]
+            "Keys": [ "ALT", "SPACEBAR" ]
         },
         {
             "Description": "Open Task view",

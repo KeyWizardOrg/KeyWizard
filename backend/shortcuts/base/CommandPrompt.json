@@ -27,11 +27,11 @@
         },
         {
             "Description": "Move cursor up one page",
-            "Keys": [ "PAGE UP" ]
+            "Keys": [ "PAGEUP" ]
         },
         {
             "Description": "Move cursor down one page",
-            "Keys": [ "PAGE DOWN" ]
+            "Keys": [ "PAGEDOWN" ]
         },
         {
             "Description": "Move to start of buffer (Mark mode)",

@@ -27,7 +27,7 @@
         },
         {
             "Description": "Delete word to the right",
-            "Keys": [ "CTRL", "DEL" ]
+            "Keys": [ "CTRL", "DELETE" ]
         },
         {
             "Description": "Move to next paragraph",
@@ -92,10 +92,6 @@
         {
             "Description": "Undo last action",
             "Keys": [ "CTRL", "Z" ]
-        },
-        {
-            "Description": "Delete character to the right",
-            "Keys": [ "DEL" ]
         },
         {
             "Description": "Delete character to the right",
@@ -171,11 +167,11 @@
         },
         {
             "Description": "Select forward one page",
-            "Keys": [ "SHIFT", "PAGE DOWN" ]
+            "Keys": [ "SHIFT", "PAGEDOWN" ]
         },
         {
             "Description": "Select backward one page",
-            "Keys": [ "SHIFT", "PAGE UP" ]
+            "Keys": [ "SHIFT", "PAGEUP" ]
         },
         {
             "Description": "Select next character",
