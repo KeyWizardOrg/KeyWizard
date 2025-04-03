@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Microsoft.UI;
@@ -262,27 +262,41 @@ namespace Key_Wizard
                     IntPtr hwnd = GetWindowHandle();
                     bool isVisible = IsWindowVisible(hwnd);
                     Debug.WriteLine($"Window is currently {(isVisible ? "visible" : "hidden")}");
-                    if (!isVisible)
-                    {
-                        ShowWindow(hwnd, SW_SHOWNA);
-                        if (m_originalWidth > 0 && m_originalHeight > 0)
-                        {
-                            SetWindowPos(
-                                hwnd,
-                                (IntPtr)HWND_TOP,
-                                m_originalX,
-                                m_originalY,
-                                m_originalWidth,
-                                m_originalHeight,
-                                SWP_SHOWWINDOW
-                            );
-                            Debug.WriteLine($"Restored window to: X={m_originalX}, Y={m_originalY}, Width={m_originalWidth}, Height={m_originalHeight}");
-                        }
-                    }
+
+                    // First, show the window
                     ShowWindow(hwnd, SW_NORMAL);
+
+                    // Then restore its position if needed
+                    if (!isVisible && m_originalWidth > 0 && m_originalHeight > 0)
+                    {
+                        SetWindowPos(
+                            hwnd,
+                            (IntPtr)HWND_TOP,
+                            m_originalX,
+                            m_originalY,
+                            m_originalWidth,
+                            m_originalHeight,
+                            SWP_SHOWWINDOW
+                        );
+                        Debug.WriteLine($"Restored window to: X={m_originalX}, Y={m_originalY}, Width={m_originalWidth}, Height={m_originalHeight}");
+                    }
+
+                    // Activate the window first
                     m_window.Activate();
+
+                    // Then bring it to top and set foreground
                     BringWindowToTop(hwnd);
                     SetForegroundWindow(hwnd);
+
+                    // Finally focus the search box
+                    if (m_window is MainWindow mainWindow)
+                    {
+                        mainWindow.DispatcherQueue.TryEnqueue(() =>
+                        {
+                            mainWindow.FocusSearchBox();
+                        });
+                    }
+
                     Debug.WriteLine("Window shown and activated.");
                 }
                 else

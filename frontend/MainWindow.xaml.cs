@@ -94,6 +94,15 @@ namespace Key_Wizard
             this.searchList = categories.SelectMany(category => category.Shortcuts).ToList();
         }
 
+        public void FocusSearchBox()
+        {
+            this.DispatcherQueue.TryEnqueue(() =>
+            {
+                searchTextBox.Focus(FocusState.Programmatic);
+                searchTextBox.SelectAll();
+            });
+        }
+
         private async void MainWindow_Closed(object sender, WindowEventArgs e)
         {
             // discard speech recognition info
@@ -344,6 +353,14 @@ namespace Key_Wizard
             if (e.WindowActivationState == WindowActivationState.Deactivated)
             {
                 this.Close();
+            }
+            else if (e.WindowActivationState == WindowActivationState.CodeActivated || e.WindowActivationState == WindowActivationState.PointerActivated)
+            {
+                this.DispatcherQueue.TryEnqueue(() =>
+                {
+                    searchTextBox.Focus(FocusState.Programmatic);
+                    searchTextBox.SelectAll();
+                });
             }
         }
 
