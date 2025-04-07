@@ -40,6 +40,7 @@ namespace Key_Wizard
         private const double ITEM_HEIGHT = 40;
 
         // used to handle search
+        private List<Category> baseCategories;
         private List<Category> categories;
         private List<Shortcut> searchList;
         private DispatcherTimer searchDelayTimer;
@@ -90,8 +91,8 @@ namespace Key_Wizard
             this.Closed += MainWindow_Closed;
 
             // load categories list and shortcuts list
-            this.categories = ReadShortcuts.Read();
-            this.searchList = categories.SelectMany(category => category.Shortcuts).ToList();
+            this.baseCategories = ReadShortcuts.ReadBase();
+            this.UpdateShortcuts();
         }
 
         public void FocusSearchBox()
@@ -558,6 +559,13 @@ namespace Key_Wizard
         {
             var hWnd = WindowNative.GetWindowHandle(this);
             ShowWindow(hWnd, SW_MINIMIZE);
+        }
+
+        public void UpdateShortcuts()
+        {
+            var customShortcuts = ReadShortcuts.ReadCustom();
+            this.categories = this.baseCategories.Concat(ReadShortcuts.ReadCustom()).ToList();
+            this.searchList = categories.SelectMany(category => category.Shortcuts).ToList();
         }
     }
 }
