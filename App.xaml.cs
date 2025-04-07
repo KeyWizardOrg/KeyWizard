@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
@@ -97,10 +98,13 @@ namespace Key_Wizard
         private int m_originalX;
         private int m_originalY;
         private bool m_isFirstLaunch = true;
+        private FileSystemWatcher? m_fileSystemWatcher;
+        private bool customShortcutsUpdated = false;
 
         public App()
         {
             this.InitializeComponent();
+            this.SetupFileSystemWatcher();
             this.UnhandledException += OnUnhandledException;
             AppDomain.CurrentDomain.ProcessExit += OnProcessExit;
         }
@@ -295,6 +299,12 @@ namespace Key_Wizard
                         {
                             mainWindow.FocusSearchBox();
                         });
+                        
+                        if (this.customShortcutsUpdated)
+                        {
+                            mainWindow.UpdateShortcuts();
+                            this.customShortcutsUpdated = false;
+                        }
                     }
 
                     Debug.WriteLine("Window shown and activated.");
@@ -308,6 +318,37 @@ namespace Key_Wizard
             {
                 Debug.WriteLine($"Error in ShowAndActivateWindow: {ex.Message}");
             }
+        }
+
+        private void SetupFileSystemWatcher() // Added method to setup FileSystemWatcher
+        {
+            string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Key Wizard");
+
+            if (!Directory.Exists(folderPath))
+            {
+                Debug.WriteLine($"Directory '{folderPath}' does not exist.");
+                return;
+            }
+
+            m_fileSystemWatcher = new FileSystemWatcher(folderPath)
+            {
+                IncludeSubdirectories = true,
+                NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName
+            };
+
+            m_fileSystemWatcher.Changed += OnDirectoryChanged;
+            m_fileSystemWatcher.Created += OnDirectoryChanged;
+            m_fileSystemWatcher.Deleted += OnDirectoryChanged;
+
+            m_fileSystemWatcher.EnableRaisingEvents = true;
+
+            Debug.WriteLine($"Started monitoring directory: {folderPath}");
+        }
+
+        private void OnDirectoryChanged(object sender, FileSystemEventArgs e)
+        {
+            Debug.WriteLine($"Directory changed: {e.FullPath} - {e.ChangeType}");
+            this.customShortcutsUpdated = true;
         }
 
         private const uint SWP_SHOWWINDOW = 0x0040;
